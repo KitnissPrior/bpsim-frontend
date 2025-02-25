@@ -39,7 +39,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import WorkFieldScreen from './screens/WorkField';
 import StartScreen from './screens/Start';
 import { urls } from './navigation/app.urls';
-import Layout from './shared/Layout';
+import Layout from './shared/components/Layout';
 import { useEffect } from 'react';
 
 

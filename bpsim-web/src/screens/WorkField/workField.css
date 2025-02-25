@@ -1,26 +1,15 @@
 .work-field {
     display: flex;
     flex-direction: column;
-    margin-top: -50px;
-}
-
-.toolbar-field {
-    display: flex;
-    align-items: flex-start !important;
-    position: relative;
-    margin: 0px;
-    width: 1550px;
 }
 
 .work-field-main {
     display: grid;
     grid-template-columns: 200px 2px 1fr;
     gap: 20px;
-    padding: 10px 0px;
-    align-items: center !important;
-    justify-content: center !important;
+    padding: 20px 0px;
     font-weight: bold;
-    height: 400px;
+    height: 550px;
 }
 
 .vertical-line {
@@ -31,15 +20,15 @@
     margin: 0 auto;
 }
 
-
 .sidebar {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     gap: 10px;
+    padding: 20px 0px;
 }
 
 .work-field-content {
-    align-items: center !important;
-    margin: 0 auto;
+    margin: auto;
+    font-size: 20px;
+    align-items: center;
 }
