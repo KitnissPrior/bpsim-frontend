@@ -54,6 +54,7 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+
         <Route path="/" element={<Layout />}>
           <Route path={urls.start} element={<StartScreen />} />
           <Route path={urls.workField} element={<WorkFieldScreen />} />

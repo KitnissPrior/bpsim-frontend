@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
+import "./start.css"
 
 const StartScreen = () => {
     const navigate = useNavigate()
@@ -9,11 +10,13 @@ const StartScreen = () => {
     }
 
     return (
-        <>
-            <h1>Начните работу прямо сейчас!</h1>
-            <button onClick={onOpenSubjectArea}>Создать предметную область</button>
-            <button onClick={onOpenSubjectArea}>Открыть предметную область</button>
-        </>
+        <div className="start-screen">
+            <h2>Начните работу прямо сейчас!</h2>
+            <div className="buttons-area">
+                <button onClick={onOpenSubjectArea}>Создать ПО</button>
+                <button onClick={onOpenSubjectArea}>Открыть ПО</button>
+            </div>
+        </div>
     )
 }
 
