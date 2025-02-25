@@ -1,7 +1,6 @@
 .base-button {
     padding: 7px 20px 8px 20px;
     height: 40px;
-    width: 100%;
     border: 1px solid black;
     background-color: var(--grey-light);
     align-items: center;

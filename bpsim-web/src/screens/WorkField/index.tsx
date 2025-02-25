@@ -1,4 +1,5 @@
 import Toolbar from "../../shared/components/Toolbar"
+import { ItemsBar } from "./ItemsBar"
 import "./workField.css"
 import { BaseButton } from "../../shared/components/Buttons/BaseButton"
 
@@ -6,6 +7,7 @@ const WorkFieldScreen = () => {
     return (
         <div className="work-field">
             <Toolbar />
+            <ItemsBar />
             <div className="work-field-main">
                 <div className="sidebar">
                     <BaseButton text="Создать ПО" onClick={() => console.log("Создать ПО")} />
