@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom"
-import { urls } from "../../navigation/app.urls"
+import { urls } from "../../../../navigation/app.urls"
 import "./header.css"
 
 const Header = () => {
     const navigate = useNavigate()
-
 
     return (
         <>

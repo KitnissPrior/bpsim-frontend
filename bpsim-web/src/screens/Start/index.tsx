@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
+import { BaseButton } from "../../shared/components/Buttons/BaseButton"
 import "./start.css"
 
 const StartScreen = () => {
@@ -13,8 +14,8 @@ const StartScreen = () => {
         <div className="start-screen">
             <h2>Начните работу прямо сейчас!</h2>
             <div className="buttons-area">
-                <button onClick={onOpenSubjectArea}>Создать ПО</button>
-                <button onClick={onOpenSubjectArea}>Открыть ПО</button>
+                <BaseButton text="Открыть ПО" onClick={onOpenSubjectArea} />
+                <BaseButton text="Создать ПО" onClick={onOpenSubjectArea} />
             </div>
         </div>
     )

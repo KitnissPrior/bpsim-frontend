@@ -9,3 +9,7 @@
 .toolbar-item {
     cursor: pointer;
 }
+
+.toolbar-item:hover {
+    opacity: 0.8;
+}
