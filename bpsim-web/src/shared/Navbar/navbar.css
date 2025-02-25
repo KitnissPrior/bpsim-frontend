@@ -1,0 +1,9 @@
+.top-nav {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: start;
+    align-items: left;
+    width: var(--window-width);
+    padding: 20px 50px;
+}

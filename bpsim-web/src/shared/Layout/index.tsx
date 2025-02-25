@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import './layout.css'
 import { Suspense } from 'react'
+import Navbar from '../Navbar'
+import Footer from '../Footer'
 
 interface ILayoutProps {
   children?: React.ReactNode
@@ -12,15 +14,16 @@ const Layout = ({ children }: ILayoutProps = {}) => {
     <>
       <div className="main">
         <div className="top">
-          навбар
+          <Navbar />
         </div>
         <div className="page-content">
           <Suspense fallback={<div>Загрузка...</div>}>
             <Outlet context={children} />
           </Suspense>
         </div>
+        <hr />
         <div className="footer">
-          подвал
+          <Footer />
         </div>
       </div>
     </>

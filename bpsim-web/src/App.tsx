@@ -37,6 +37,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import WorkFieldScreen from './screens/WorkField';
+import StartScreen from './screens/Start';
 import { urls } from './navigation/app.urls';
 import Layout from './shared/Layout';
 import { useEffect } from 'react';
@@ -46,7 +47,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (location.pathname == "/") {
-      location.replace(urls.workField);
+      location.replace(urls.start);
     }
   })
 
@@ -54,6 +55,7 @@ const App: React.FC = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
+          <Route path={urls.start} element={<StartScreen />} />
           <Route path={urls.workField} element={<WorkFieldScreen />} />
         </Route>
       </Routes>

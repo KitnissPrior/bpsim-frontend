@@ -2,7 +2,6 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  height: 100%;
   width: 100%;
   align-items: center;
   top: 0;
@@ -13,10 +12,9 @@
 .top {
   z-index: 2;
   display: flex;
-  width: 100%;
+  align-items: left;
   height: 70px;
-  align-items: center;
-  justify-content: center;
+  width: var(--window-width);
   position: fixed;
   background-color: var(--white);
   padding-top: 30px;
@@ -26,7 +24,6 @@
   z-index: 3;
   bottom: 0;
   display: flex;
-  width: 100%;
   max-height: 244px;
   min-height: 200px;
   align-items: center;
@@ -45,94 +42,5 @@
   flex-direction: column;
   position: relative;
   align-items: center;
-  width: 100%;
   padding: 140px 50px 0px 50px;
-}
-
-.navbar {
-  display: flex;
-  min-height: 30px;
-  height: 40px;
-  gap: 8px;
-  position: relative;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 1160px;
-  margin-top: -50px;
-}
-
-.navlinkContainer {
-  display: flex;
-  background-color: var(--white);
-  border-radius: 10px;
-  padding: 5px 20px;
-  /* width: 120px; */
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: var(--box-shadow-black);
-  cursor: pointer;
-}
-
-.navlinkContainer:hover {
-  box-shadow: var(--box-shadow-pink);
-  color: var(--pink);
-}
-
-.navlinkContainer:hover>*:first-child {
-  color: var(--pink);
-}
-
-.navlinkContainerActive {
-  box-shadow: var(--box-shadow-pink);
-  color: var(--pink);
-}
-
-.logoBlock {
-  display: flex;
-  float: left;
-  position: relative;
-}
-
-.logoImg {
-  position: relative;
-  width: 200px;
-  height: 40px;
-}
-
-.logoImg:hover {
-  opacity: 0.7;
-}
-
-.navLinksBlock {
-  display: flex;
-  float: right;
-  gap: 20px;
-  justify-content: space-between;
-}
-
-.btn.subjectsContainer {
-  background-color: var(--white);
-  color: var(--black);
-  box-shadow: var(--box-shadow-black);
-  border-radius: 10px;
-  width: 160px;
-  height: 40px;
-  border-color: var(--white);
-  transition: all 0.3s ease;
-  font-size: 16px;
-}
-
-.btn.userContainer {
-  display: flex;
-  align-items: center;
-  border-radius: 10px;
-  width: 220px;
-  height: 40px;
-  text-align: start;
-}
-
-.svg.img.btn.userContainer :hover {
-  color: var(--blue-dark)
 }
