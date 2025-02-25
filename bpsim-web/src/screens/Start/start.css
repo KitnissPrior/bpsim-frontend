@@ -1,0 +1,14 @@
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center !important;
+    gap: 50px;
+    height: 400px;
+}
+
+.buttons-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

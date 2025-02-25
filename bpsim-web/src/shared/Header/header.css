@@ -1,0 +1,28 @@
+.top-nav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: var(--window-width);
+    height: 60px;
+    gap: 20px;
+    /* padding-left: 80px; */
+}
+
+.bpsim {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.system {
+    width: 250px;
+    overflow-wrap: break-word;
+    padding: 5px;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.bpsim:hover,
+.system:hover {
+    opacity: 0.8;
+}

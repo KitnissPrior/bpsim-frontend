@@ -1,0 +1,45 @@
+.work-field {
+    display: flex;
+    flex-direction: column;
+    margin-top: -50px;
+}
+
+.toolbar-field {
+    display: flex;
+    align-items: flex-start !important;
+    position: relative;
+    margin: 0px;
+    width: 1550px;
+}
+
+.work-field-main {
+    display: grid;
+    grid-template-columns: 200px 2px 1fr;
+    gap: 20px;
+    padding: 10px 0px;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: bold;
+    height: 400px;
+}
+
+.vertical-line {
+    position: inherit;
+    height: 100%;
+    width: 1px;
+    background-color: black;
+    margin: 0 auto;
+}
+
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.work-field-content {
+    align-items: center !important;
+    margin: 0 auto;
+}

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import './layout.css'
 import { Suspense } from 'react'
-import Navbar from '../Navbar'
+import Header from '../Header'
 import Footer from '../Footer'
 
 interface ILayoutProps {
@@ -13,8 +13,8 @@ const Layout = ({ children }: ILayoutProps = {}) => {
   return (
     <>
       <div className="main">
-        <div className="top">
-          <Navbar />
+        <div className="header">
+          <Header />
         </div>
         <div className="page-content">
           <Suspense fallback={<div>Загрузка...</div>}>
