@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@xyflow/react": "^12.4.4",
+    "axios": "^1.8.1"
+  }
+}
