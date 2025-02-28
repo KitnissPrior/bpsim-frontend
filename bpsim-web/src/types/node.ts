@@ -1,4 +1,5 @@
 export type Node = {
+    key?: string | null;
     id?: string | null;
     name?: string | null;
     posX?: number | null;
