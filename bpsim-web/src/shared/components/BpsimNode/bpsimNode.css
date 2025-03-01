@@ -1,0 +1,23 @@
+.node-text-field:enabled {
+    width: 140px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    /* overflow-wrap: break-word; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.node-text-field:hover,
+.node-text-field:focus-within,
+.node-text-field:active,
+.node-text-field:focus {
+    outline: none;
+    word-wrap: break-word;
+}
+
+.node-text-container {
+    margin-top: 0px;
+}

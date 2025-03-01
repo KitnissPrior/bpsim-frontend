@@ -1,0 +1,17 @@
+.text-updater-node {
+    height: 40px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--grey-light);
+    align-items: center;
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    background-color: transparent;
+    border: none;
+    /* -webkit-box-shadow: 0 0 0 30px white inset !important; */
+}

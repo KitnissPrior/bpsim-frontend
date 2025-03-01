@@ -9,6 +9,8 @@ import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
+import { BpsimNode } from "../../shared/components/BpsimNode"
+import { toast } from "react-toastify"
 
 interface INode {
     key: string | number;
@@ -20,23 +22,26 @@ interface INode {
         x: number;
         y: number;
     }
+    type: string;
 }
+
+const initialNodes = [
+    {
+        key: "1", id: '1',
+        data: { label: 'Узел 1' },
+        position: { x: 100, y: 100 },
+        type: 'textNode'
+    }]
+
+const nodeTypes = { textNode: BpsimNode };
 
 const WorkFieldScreen = () => {
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
-
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
 
-    const [nodes, setNodes] = useState<INode[]>([]);
+    const [nodes, setNodes] = useState<INode[]>(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
-
-    // const onNodesChange = useCallback(
-    //     (changes: any) => {
-    //         setNodes((nds) => applyNodeChanges(changes, nds))
-    //     },
-    //     [],
-    // );
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
         setNodes((nds) => {
@@ -52,6 +57,7 @@ const WorkFieldScreen = () => {
                     } : node;
                 });
             });
+            //console.log(updatedNodes)
             return updatedNodes;
         });
     }, []);
@@ -74,12 +80,13 @@ const WorkFieldScreen = () => {
             const newNodes: any = [];
             response.data.forEach((node: any) => {
                 newNodes.push({
-                    key: node.id,
+                    key: node.id.toString(),
                     id: node.id.toString(),
                     position: { x: node.posX, y: node.posY },
                     data: { label: node.name },
                     sourcePosition: "right",
-                    targetPosition: "left"
+                    targetPosition: "left",
+                    type: 'textNode'
                 });
             });
             setNodes(newNodes);
@@ -92,19 +99,22 @@ const WorkFieldScreen = () => {
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
+                console.log(createdNode);
                 setBpsimNodes(prevNodes => [...prevNodes, createdNode]);
 
-                setNodes(prevNodes => {
-                    const newNodes = [...prevNodes];
-                    newNodes.push({
-                        key: (createdNode.id + 1) as string,
-                        id: createdNode.id as string,
-                        position: { x: createdNode.posX, y: createdNode.posY },
-                        data: { label: createdNode.name }
-                    });
-                    return newNodes;
-                });
-
+                // setNodes(prevNodes => {
+                //     const newNodes = [...prevNodes];
+                //     newNodes.push({
+                //         key: (createdNode.id + 100).toString(),
+                //         id: createdNode.id.toString(),
+                //         position: { x: createdNode.posX, y: createdNode.posY },
+                //         data: { label: createdNode.name },
+                //         type: 'textNode'
+                //     });
+                //     console.log(newNodes);
+                //     toast.success('Новый узел создан');
+                //     return newNodes;
+                // });
                 setNodesCount(prev => prev + 1);
             })
     }
@@ -113,6 +123,7 @@ const WorkFieldScreen = () => {
         bpsimNodes.forEach((node: any) => {
             updateNode(node);
         })
+        toast.success('Сохранено');
     }
 
     return (
@@ -127,8 +138,11 @@ const WorkFieldScreen = () => {
                 <div className="vertical-line"></div>
                 <div className="work-field-content">
                     <ReactFlow nodes={nodes} edges={edges}
-                        onNodesChange={memoizedOnNodesChange} onEdgesChange={onEdgesChange}
+                        onNodesChange={memoizedOnNodesChange}
+                        onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
+                        nodeTypes={nodeTypes}
+                        proOptions={{ hideAttribution: true }}
                     >
                         <Background />
                         <Controls />
