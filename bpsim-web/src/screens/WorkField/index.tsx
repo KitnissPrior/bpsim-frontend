@@ -1,5 +1,5 @@
-import Toolbar from "../../shared/components/Toolbar"
-import { ItemsBar } from "./ItemsBar"
+import Toolbar from "../../shared/components/Bars/Toolbar"
+import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
 import "./workField.css"
 import { BaseButton } from "../../shared/components/Buttons/BaseButton"
 import { createNode, getNodes } from "../../services/node.service"
@@ -30,13 +30,30 @@ const WorkFieldScreen = () => {
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
 
-    const onNodesChange = useCallback(
-        (changes: any) => {
-            setNodes((nds) => applyNodeChanges(changes, nds))
+    // const onNodesChange = useCallback(
+    //     (changes: any) => {
+    //         setNodes((nds) => applyNodeChanges(changes, nds))
+    //     },
+    //     [],
+    // );
 
-        },
-        [],
-    );
+    const memoizedOnNodesChange = useCallback((changes: any) => {
+        setNodes((nds) => {
+            const updatedNodes = applyNodeChanges(changes, nds);
+            setBpsimNodes(prevNodes => {
+                return prevNodes.map(node => {
+                    const updatedNode = updatedNodes.find(n => n.id == node.id);
+                    return updatedNode ? {
+                        ...node,
+                        name: updatedNode.data?.label,
+                        posX: updatedNode.position?.x,
+                        posY: updatedNode.position?.y
+                    } : node;
+                });
+            });
+            return updatedNodes;
+        });
+    }, []);
 
     const onEdgesChange = useCallback(
         (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
@@ -70,7 +87,6 @@ const WorkFieldScreen = () => {
     }, [nodesCount])
 
 
-
     const onNodeAddClick = () => {
         createNode(defaultNode)
             .then((response: any) => {
@@ -87,15 +103,18 @@ const WorkFieldScreen = () => {
                     });
                     return newNodes;
                 });
-                console.log(bpsimNodes)
 
                 setNodesCount(prev => prev + 1);
             })
     }
 
+    const onSaveClick = () => {
+        console.log(bpsimNodes);
+    }
+
     return (
         <div className="work-field">
-            <Toolbar />
+            <Toolbar onSaveClick={onSaveClick} />
             <ItemsBar onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <div className="sidebar">
@@ -105,7 +124,7 @@ const WorkFieldScreen = () => {
                 <div className="vertical-line"></div>
                 <div className="work-field-content">
                     <ReactFlow nodes={nodes} edges={edges}
-                        onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}
+                        onNodesChange={memoizedOnNodesChange} onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                     >
                         <Background />
