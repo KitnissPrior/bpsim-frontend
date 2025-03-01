@@ -57,7 +57,7 @@ const WorkFieldScreen = () => {
                     } : node;
                 });
             });
-            console.log(updatedNodes)
+            //console.log(updatedNodes)
             return updatedNodes;
         });
     }, []);
@@ -80,7 +80,7 @@ const WorkFieldScreen = () => {
             const newNodes: any = [];
             response.data.forEach((node: any) => {
                 newNodes.push({
-                    key: node.id,
+                    key: node.id.toString(),
                     id: node.id.toString(),
                     position: { x: node.posX, y: node.posY },
                     data: { label: node.name },
@@ -99,19 +99,22 @@ const WorkFieldScreen = () => {
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
+                console.log(createdNode);
                 setBpsimNodes(prevNodes => [...prevNodes, createdNode]);
 
-                setNodes(prevNodes => {
-                    const newNodes = [...prevNodes];
-                    newNodes.push({
-                        key: (createdNode.id + 1) as string,
-                        id: createdNode.id as string,
-                        position: { x: createdNode.posX, y: createdNode.posY },
-                        data: { label: createdNode.name },
-                        type: 'textNode'
-                    });
-                    return newNodes;
-                });
+                // setNodes(prevNodes => {
+                //     const newNodes = [...prevNodes];
+                //     newNodes.push({
+                //         key: (createdNode.id + 100).toString(),
+                //         id: createdNode.id.toString(),
+                //         position: { x: createdNode.posX, y: createdNode.posY },
+                //         data: { label: createdNode.name },
+                //         type: 'textNode'
+                //     });
+                //     console.log(newNodes);
+                //     toast.success('Новый узел создан');
+                //     return newNodes;
+                // });
                 setNodesCount(prev => prev + 1);
             })
     }
@@ -139,6 +142,7 @@ const WorkFieldScreen = () => {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
+                        proOptions={{ hideAttribution: true }}
                     >
                         <Background />
                         <Controls />

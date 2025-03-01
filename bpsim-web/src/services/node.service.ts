@@ -34,7 +34,7 @@ export const updateNode = async (node: Node): Promise<AxiosResponse | AxiosError
     try {
         const response = await publicApi.put(`/node/${node.id}/`, node);
 
-        console.log('Node update status:', response);
+        //console.log('Node update status:', response);
 
         return response;
     }

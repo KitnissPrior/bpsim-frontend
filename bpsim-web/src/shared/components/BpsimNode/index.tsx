@@ -37,7 +37,6 @@ export const BpsimNode = ({ id, data }: IProps) => {
 
   return (
     <>
-
       <div className="text-updater-node">
         <Handle
           type="source"
@@ -56,7 +55,6 @@ export const BpsimNode = ({ id, data }: IProps) => {
           <input id="text" name="text" onChange={onChange} className="node-text-field" defaultValue={label} onBlur={onBlur} />
         </div>
       </div>
-
     </>
   );
 }

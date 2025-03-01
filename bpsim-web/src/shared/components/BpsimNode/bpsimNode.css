@@ -1,5 +1,5 @@
 .node-text-field:enabled {
-    width: 100%;
+    width: 140px;
     height: 40px;
     border: none;
     background-color: transparent;
@@ -16,4 +16,8 @@
 .node-text-field:focus {
     outline: none;
     word-wrap: break-word;
+}
+
+.node-text-container {
+    margin-top: 0px;
 }
