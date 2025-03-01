@@ -8,6 +8,7 @@ import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, ad
 import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
+import { updateNode } from "../../services/node.service"
 
 interface INode {
     key: string | number;
@@ -109,7 +110,9 @@ const WorkFieldScreen = () => {
     }
 
     const onSaveClick = () => {
-        console.log(bpsimNodes);
+        bpsimNodes.forEach((node: any) => {
+            updateNode(node);
+        })
     }
 
     return (
