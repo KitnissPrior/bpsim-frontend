@@ -5,7 +5,7 @@ type ToolBarItem = {
     onClick?: () => void;
 }
 
-interface IProps{
+interface IProps {
     onSaveClick?: () => void
 }
 
@@ -14,9 +14,7 @@ const Toolbar = (props: IProps) => {
         { name: "Общие", onClick: () => console.log("Общие") },
         { name: "Справочники", onClick: () => console.log("Справочники") },
         { name: "Модель", onClick: () => console.log("Модель") },
-        { name: "Вид", onClick: () => console.log("Вид") },
         { name: "Проигрывание", onClick: () => console.log("Проигрывание") },
-        { name: "О программе", onClick: () => console.log("О программе") },
         { name: "Сохранить", onClick: props.onSaveClick },
     ]
     return (

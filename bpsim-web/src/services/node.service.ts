@@ -6,7 +6,7 @@ export const createNode = async (node: Node): Promise<AxiosResponse | AxiosError
     try {
         const response = await publicApi.post('/node/', node);
 
-        console.log('Node creation status:', response);
+        //console.log('Node creation status:', response);
 
         return response;
     }
@@ -20,7 +20,7 @@ export const getNodes = async (): Promise<AxiosResponse | AxiosError> => {
     try {
         const response = await publicApi.get('/nodes/');
 
-        console.log('Get nodes status:', response);
+        //console.log('Get nodes status:', response);
 
         return response;
     }

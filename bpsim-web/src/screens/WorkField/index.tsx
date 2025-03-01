@@ -9,6 +9,8 @@ import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
+import { BpsimNode } from "../../shared/components/BpsimNode"
+import { toast } from "react-toastify"
 
 interface INode {
     key: string | number;
@@ -20,23 +22,26 @@ interface INode {
         x: number;
         y: number;
     }
+    type: string;
 }
+
+const initialNodes = [
+    {
+        key: "1", id: '1',
+        data: { label: 'Узел 1' },
+        position: { x: 100, y: 100 },
+        type: 'textNode'
+    }]
+
+const nodeTypes = { textNode: BpsimNode };
 
 const WorkFieldScreen = () => {
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
-
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
 
-    const [nodes, setNodes] = useState<INode[]>([]);
+    const [nodes, setNodes] = useState<INode[]>(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
-
-    // const onNodesChange = useCallback(
-    //     (changes: any) => {
-    //         setNodes((nds) => applyNodeChanges(changes, nds))
-    //     },
-    //     [],
-    // );
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
         setNodes((nds) => {
@@ -52,6 +57,7 @@ const WorkFieldScreen = () => {
                     } : node;
                 });
             });
+            console.log(updatedNodes)
             return updatedNodes;
         });
     }, []);
@@ -79,7 +85,8 @@ const WorkFieldScreen = () => {
                     position: { x: node.posX, y: node.posY },
                     data: { label: node.name },
                     sourcePosition: "right",
-                    targetPosition: "left"
+                    targetPosition: "left",
+                    type: 'textNode'
                 });
             });
             setNodes(newNodes);
@@ -100,11 +107,11 @@ const WorkFieldScreen = () => {
                         key: (createdNode.id + 1) as string,
                         id: createdNode.id as string,
                         position: { x: createdNode.posX, y: createdNode.posY },
-                        data: { label: createdNode.name }
+                        data: { label: createdNode.name },
+                        type: 'textNode'
                     });
                     return newNodes;
                 });
-
                 setNodesCount(prev => prev + 1);
             })
     }
@@ -113,6 +120,7 @@ const WorkFieldScreen = () => {
         bpsimNodes.forEach((node: any) => {
             updateNode(node);
         })
+        toast.success('Сохранено');
     }
 
     return (
@@ -127,8 +135,10 @@ const WorkFieldScreen = () => {
                 <div className="vertical-line"></div>
                 <div className="work-field-content">
                     <ReactFlow nodes={nodes} edges={edges}
-                        onNodesChange={memoizedOnNodesChange} onEdgesChange={onEdgesChange}
+                        onNodesChange={memoizedOnNodesChange}
+                        onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
+                        nodeTypes={nodeTypes}
                     >
                         <Background />
                         <Controls />

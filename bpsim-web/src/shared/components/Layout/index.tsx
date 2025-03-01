@@ -3,6 +3,7 @@ import './layout.css'
 import { Suspense } from 'react'
 import Header from './Header'
 import Footer from './Footer'
+import { ToastContainer, toast } from 'react-toastify';
 
 interface ILayoutProps {
   children?: React.ReactNode
@@ -18,6 +19,7 @@ const Layout = ({ children }: ILayoutProps = {}) => {
         </div>
         <div className="page-content">
           <Suspense fallback={<div>Загрузка...</div>}>
+            <ToastContainer aria-label={'alert'} autoClose={1500} />
             <Outlet context={children} />
           </Suspense>
         </div>
