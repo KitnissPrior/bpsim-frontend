@@ -12,6 +12,12 @@ import { BpsimNode } from "../../shared/components/BpsimNode"
 import { toast } from "react-toastify"
 import { AxiosError } from "axios"
 import SubjectAreaAddModal from "../../shared/components/Modals/SubAreaAdd"
+import { useNavigate } from "react-router-dom"
+import { urls } from "../../navigation/app.urls"
+import { getSubjectArea } from "../../services/subjectArea.service"
+import { SubjectArea } from "../../types/subjectArea"
+import { set } from "react-hook-form"
+import SubjectAreaChoiceModal from "../../shared/components/Modals/SubAreaChoice"
 
 interface INode {
     key: string | number;
@@ -33,15 +39,18 @@ interface IProps {
     isCreateSubAreaModal?: boolean
 }
 
-const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
+const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = false }: IProps) => {
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
+    const navigate = useNavigate();
 
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
+    const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
+    const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
         setNodes((nds) => {
@@ -57,7 +66,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
                     } : node;
                 });
             });
-            //console.log(updatedNodes)
             return updatedNodes;
         });
     }, []);
@@ -76,9 +84,10 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
     useEffect(() => {
         getNodes().then((response: any) => {
             setNodesCount(response.data.length);
-            setBpsimNodes(response.data);
+            const filteredNodes = response.data.filter((node: any) => node.model_id == Number(localStorage.getItem('subjectAreaId')));
+            setBpsimNodes(filteredNodes);
             const newNodes: any = [];
-            response.data.forEach((node: any) => {
+            filteredNodes.forEach((node: any) => {
                 newNodes.push({
                     key: node.id.toString(),
                     id: node.id.toString(),
@@ -92,7 +101,13 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
             setNodes(newNodes);
         })
 
-    }, [nodesCount])
+        if (localStorage.getItem('subjectAreaId')) {
+            getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
+                setSubjectArea(response.data);
+            });
+        }
+
+    }, [nodesCount, localStorage.getItem('subjectAreaId')]);
 
 
     const onNodeAddClick = () => {
@@ -102,20 +117,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
                 const createdNode = response.data;
                 console.log(createdNode);
                 setBpsimNodes(prevNodes => [...prevNodes, createdNode]);
-
-                // setNodes(prevNodes => {
-                //     const newNodes = [...prevNodes];
-                //     newNodes.push({
-                //         key: (createdNode.id + 100).toString(),
-                //         id: createdNode.id.toString(),
-                //         position: { x: createdNode.posX, y: createdNode.posY },
-                //         data: { label: createdNode.name },
-                //         type: 'textNode'
-                //     });
-                //     console.log(newNodes);
-                //     toast.success('Новый узел создан');
-                //     return newNodes;
-                // });
                 setNodesCount(prev => prev + 1);
             })
     }
@@ -130,12 +131,14 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
         errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
     }
 
-    const onSubjectAreaAdd = () => {
-
+    const onSubAreaModalCreateClose = () => {
+        setShowNewSubAreaModal(false);
+        navigate(urls.workField);
     }
 
-    const onSubAreaModalClose = () => {
-        setShowNewSubAreaModal(false);
+    const onSubAreaModalChoiceClose = () => {
+        setShowOpenSubAreaModal(false);
+        navigate(urls.workField);
     }
 
     return (
@@ -144,7 +147,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
             <ItemsBar onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <div className="sidebar">
-
+                    <div>Предметная область: {subjectArea ? subjectArea.name : "Не выбрана"}</div>
                 </div>
                 <div className="vertical-line"></div>
                 <div className="work-field-content">
@@ -159,7 +162,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
                         <Controls />
                     </ReactFlow>
                 </div>
-                <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalClose} onSubjectAdd={onSubjectAreaAdd} />
+                <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />
+                <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />
             </div>
         </div>
     )

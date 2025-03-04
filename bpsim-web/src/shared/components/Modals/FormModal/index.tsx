@@ -10,7 +10,7 @@ interface IProps {
     className?: string
 }
 
-const CreationModal: React.FC<IProps> = (
+const FormModal: React.FC<IProps> = (
     { isOpen, title, content, className }) => {
 
     const modalRef = React.useRef(null);
@@ -28,4 +28,4 @@ const CreationModal: React.FC<IProps> = (
     );
 };
 
-export default CreationModal;
+export default FormModal;

@@ -1,4 +1,4 @@
-import CreationModal from "../Creation";
+import FormModal from "../FormModal";
 import TextInput from "../../Inputs/TextInput";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import { useState } from "react";
 interface IProps {
     isOpen: boolean
     onClose: () => void
-    onSubjectAdd: (number: number) => void
+    onSubjectAdd?: (number: number) => void
 }
 
 
@@ -24,14 +24,15 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
         const response = await createSubjectArea(data);
 
         if (!(response instanceof AxiosError)) {
-            onSubjectAdd(response.data.length);
+            //onSubjectAdd(response.data.length);
             onClose();
+            localStorage.setItem('subjectAreaId', response.data.id.toString());
             setLoading(false);
         }
     }
 
     return (
-        <CreationModal isOpen={props.isOpen} title={"Создать предметную область"}
+        <FormModal isOpen={props.isOpen} title={"Создать предметную область"}
             content={
                 <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectSubmit)}>
                     <div className="">
