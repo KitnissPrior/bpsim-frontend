@@ -7,6 +7,17 @@
     align-items: center;
 }
 
+.text-input:enabled {
+    padding: 13px 16px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    line-height: 20px;
+    background-color: #f6f5fb;
+    transition: all 0.3s ease;
+}
+
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
@@ -14,4 +25,16 @@
     background-color: transparent;
     border: none;
     /* -webkit-box-shadow: 0 0 0 30px white inset !important; */
+}
+
+.inputText:enabled,
+.inputText:-webkit-autofill {
+    height: 40px;
+    background-color: var(--white);
+    border-radius: 10px;
+    color: var(--black);
+    padding: 10px 13px;
+    box-shadow: var(--box-inner-shadow-black);
+    border: 1px solid var(--grey-medium);
+    margin: 0 0 5px 0;
 }

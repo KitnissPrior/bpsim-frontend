@@ -3,37 +3,39 @@ import { useCallback, useState } from 'react';
 import './bpsimNode.css';
 import { updateNode } from '../../../services/node.service';
 import { toast } from 'react-toastify';
-// import { Node } from "../../types/node"
+import { FRUITS_MODEL_ID } from '../../../screens/WorkField';
 
 interface IProps {
   id: string;
   data: {
     label: string;
   };
-  position: {
-    x: number;
-    y: number;
-  };
+  position?: Position; // Используем тип Position из @xyflow/react
+  model_id?: number;
 }
 
-const handleStyle = { left: 10 };
-
 export const BpsimNode = ({ id, data }: IProps) => {
-
   const [label, setLabel] = useState(data.label);
 
-  const onChange = (evt: any) => setLabel(evt.target.value);
+  const onChange = (evt: any) => {
+    setLabel(evt.target.value);
+  };
 
-  const onBlur = useCallback((evt: React.FocusEvent<HTMLInputElement>) => {
-    if (label === evt.target.value) return;
+  const onBlur = useCallback((evt: any) => {
+    if (data.label === evt.target.value) return;
     updateNode({
       id: id,
-      name: evt.target.value
+      name: evt.target.value,
+      model_id: FRUITS_MODEL_ID
     }).then((response: any) => {
-      toast.success('Название узла изменено');
-      setLabel(evt.target.value);
+      if (response.status === 200) {
+        setLabel(evt.target.value);
+        toast.success('Имя узла успешно изменено');
+      } else {
+        toast.error('Имя сохранить не удалось');
+      }
     });
-  }, [id]);
+  }, [id, label]);
 
   return (
     <>
@@ -51,10 +53,16 @@ export const BpsimNode = ({ id, data }: IProps) => {
           isConnectable={true}
         />
         <div className='node-text-container'>
-          {/* <input id="text" name="text" onChange={onChange} className="nodrag" defaultValue={data.label} /> */}
-          <input id="text" name="text" onChange={onChange} className="node-text-field" defaultValue={label} onBlur={onBlur} />
+          <input
+            id="text"
+            name="text"
+            onChange={onChange}
+            className="text--body-xs node-text-field"
+            defaultValue={label}
+            onBlur={onBlur}
+          />
         </div>
       </div>
     </>
   );
-}
+};
