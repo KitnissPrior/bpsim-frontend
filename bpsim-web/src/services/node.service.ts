@@ -35,6 +35,7 @@ export const updateNode = async (node: Node): Promise<AxiosResponse | AxiosError
         const response = await publicApi.put(`/node/${node.id}/`, node);
 
         //console.log('Node update status:', response);
+        //toast.success('Узел успешно изменен');
 
         return response;
     }

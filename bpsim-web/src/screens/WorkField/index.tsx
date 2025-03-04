@@ -1,7 +1,6 @@
 import Toolbar from "../../shared/components/Bars/Toolbar"
 import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
 import "./workField.css"
-import { BaseButton } from "../../shared/components/Buttons/BaseButton"
 import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
@@ -11,6 +10,8 @@ import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
 import { BpsimNode } from "../../shared/components/BpsimNode"
 import { toast } from "react-toastify"
+import { AxiosError } from "axios"
+import SubjectAreaAddModal from "../../shared/components/Modals/SubAreaAdd"
 
 interface INode {
     key: string | number;
@@ -25,23 +26,22 @@ interface INode {
     type: string;
 }
 
-const initialNodes = [
-    {
-        key: "1", id: '1',
-        data: { label: 'Узел 1' },
-        position: { x: 100, y: 100 },
-        type: 'textNode'
-    }]
-
 const nodeTypes = { textNode: BpsimNode };
 
-const WorkFieldScreen = () => {
+interface IProps {
+    isOpenSubAreaModal?: boolean
+    isCreateSubAreaModal?: boolean
+}
+
+const WorkFieldScreen = ({ isCreateSubAreaModal = false }: IProps) => {
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
 
-    const [nodes, setNodes] = useState<INode[]>(initialNodes);
+    const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
+
+    const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
         setNodes((nds) => {
@@ -53,7 +53,7 @@ const WorkFieldScreen = () => {
                         ...node,
                         name: updatedNode.data?.label,
                         posX: updatedNode.position?.x,
-                        posY: updatedNode.position?.y
+                        posY: updatedNode.position?.y,
                     } : node;
                 });
             });
@@ -96,6 +96,7 @@ const WorkFieldScreen = () => {
 
 
     const onNodeAddClick = () => {
+        defaultNode.model_id = 3;
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
@@ -120,10 +121,21 @@ const WorkFieldScreen = () => {
     }
 
     const onSaveClick = () => {
+        const errors = [];
         bpsimNodes.forEach((node: any) => {
-            updateNode(node);
+            updateNode(node).catch((error: AxiosError) => {
+                errors.push(error);
+            });
         })
-        toast.success('Сохранено');
+        errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
+    }
+
+    const onSubjectAreaAdd = () => {
+
+    }
+
+    const onSubAreaModalClose = () => {
+        setShowNewSubAreaModal(false);
     }
 
     return (
@@ -132,8 +144,7 @@ const WorkFieldScreen = () => {
             <ItemsBar onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <div className="sidebar">
-                    <BaseButton text="Создать ПО" onClick={() => console.log("Создать ПО")} />
-                    <BaseButton text="Открыть ПО" onClick={() => console.log("Открыть ПО")} />
+
                 </div>
                 <div className="vertical-line"></div>
                 <div className="work-field-content">
@@ -148,6 +159,7 @@ const WorkFieldScreen = () => {
                         <Controls />
                     </ReactFlow>
                 </div>
+                <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalClose} onSubjectAdd={onSubjectAreaAdd} />
             </div>
         </div>
     )

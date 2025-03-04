@@ -7,15 +7,19 @@ const StartScreen = () => {
     const navigate = useNavigate()
 
     const onOpenSubjectArea = () => {
-        navigate(urls.workField)
+        navigate(urls.subjectAreaOpen);
+    }
+
+    const onCreateSubjectArea = () => {
+        navigate(urls.subjectAreaCreate);
     }
 
     return (
         <div className="start-screen">
-            <h2>Начните работу прямо сейчас!</h2>
+            <div className="text--heading1 text--center">Начните работу прямо сейчас!</div>
             <div className="buttons-area">
                 <BaseButton text="Открыть ПО" onClick={onOpenSubjectArea} />
-                <BaseButton text="Создать ПО" onClick={onOpenSubjectArea} />
+                <BaseButton text="Создать ПО" onClick={onCreateSubjectArea} />
             </div>
         </div>
     )

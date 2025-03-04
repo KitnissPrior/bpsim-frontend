@@ -4,6 +4,7 @@
     border: none;
     background-color: transparent;
     text-align: center;
+    justify-content: center;
     /* overflow-wrap: break-word; */
     overflow: hidden;
     text-overflow: ellipsis;
@@ -19,5 +20,5 @@
 }
 
 .node-text-container {
-    margin-top: 0px;
+    margin-top: -10px;
 }
