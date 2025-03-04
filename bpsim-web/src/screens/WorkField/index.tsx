@@ -87,43 +87,50 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     useEffect(() => {
 
-        if (localStorage.getItem('subjectAreaId')) {
+        if (localStorage.getItem('subjectAreaId') && !isCreateSubAreaModal && !isOpenSubAreaModal) {
             getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
                 setSubjectArea(response.data);
             });
+
+            getModels().then((response: any) => {
+                if (response instanceof AxiosError) {
+                    toast.error('Модели не загрузились');
+                }
+                else {
+                    const filteredModels = response.data.filter((model: any) => model.sub_area_id == Number(localStorage.getItem('subjectAreaId')));
+                    setModels(filteredModels);
+
+                    if (filteredModels.length > 0) {
+                        const id = filteredModels[0].id;
+                        getNodes().then((response: any) => {
+                            setNodesCount(response.data.length);
+                            const filteredNodes = response.data.filter((node: any) => node.model_id == id);
+                            //const filteredNodes = response.data;
+                            setBpsimNodes(filteredNodes);
+                            const newNodes: any = [];
+                            filteredNodes.forEach((node: any) => {
+                                newNodes.push({
+                                    key: node.id.toString(),
+                                    id: node.id.toString(),
+                                    position: { x: node.posX, y: node.posY },
+                                    data: { label: node.name },
+                                    sourcePosition: "right",
+                                    targetPosition: "left",
+                                    type: 'textNode'
+                                });
+                            });
+                            setNodes(newNodes);
+                        })
+                    }
+
+                }
+            })
+
+
+
         }
 
-        getModels().then((response: any) => {
-            if (response instanceof AxiosError) {
-                toast.error('Модели не загрузились');
-            }
-            else {
-                const filteredModels = response.data.filter((model: any) => model.sub_area_id == Number(localStorage.getItem('subjectAreaId')));
-                setModels(filteredModels);
-            }
-        })
-
-        getNodes().then((response: any) => {
-            setNodesCount(response.data.length);
-            const filteredNodes = response.data.filter((node: any) => node.model_id == FRUITS_MODEL_ID);
-            //const filteredNodes = response.data;
-            setBpsimNodes(filteredNodes);
-            const newNodes: any = [];
-            filteredNodes.forEach((node: any) => {
-                newNodes.push({
-                    key: node.id.toString(),
-                    id: node.id.toString(),
-                    position: { x: node.posX, y: node.posY },
-                    data: { label: node.name },
-                    sourcePosition: "right",
-                    targetPosition: "left",
-                    type: 'textNode'
-                });
-            });
-            setNodes(newNodes);
-        })
-
-    }, [nodesCount, localStorage.getItem('subjectAreaId')]);
+    }, [nodesCount, localStorage.getItem('subjectAreaId'), isCreateSubAreaModal, isOpenSubAreaModal]);
 
 
     const onNodeAddClick = () => {
@@ -163,16 +170,17 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <ItemsBar onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <div className="sidebar">
-                    <div>Предметная область: {subjectArea ? subjectArea.name : "Не выбрана"}</div>
-                    <div>Модели:</div>
+                    <div className="text-600">Предметная область:</div>
+                    <div> {subjectArea ? subjectArea.name : "Не выбрана"}</div>
+                    <div className="text-600">Модели:</div>
                     {models.map((model: any) => {
                         if (model.id == FRUITS_MODEL_ID) {
                             return (
-                                <div key={model.id}>{model.name}*</div>
+                                <div style={{ paddingLeft: '10px' }} key={model.id}>{model.name}*</div>
                             )
                         }
                         return (
-                            <div key={model.id}>{model.name}</div>
+                            <div style={{ paddingLeft: '10px' }} key={model.id}>{model.name}</div>
                         )
                     })}
                 </div>
