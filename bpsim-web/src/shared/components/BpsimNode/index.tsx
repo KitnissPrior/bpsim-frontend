@@ -22,11 +22,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
   };
 
   const onBlur = useCallback((evt: any) => {
-    if (data.label === evt.target.value) {
-      console.log(label, evt.target.value);
-      toast.info('Имя не изменилось');
-      return;
-    }
+    if (data.label === evt.target.value) return;
     updateNode({
       id: id,
       name: evt.target.value,
