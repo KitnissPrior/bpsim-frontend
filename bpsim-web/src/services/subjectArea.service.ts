@@ -18,9 +18,9 @@ export const createSubjectArea = async (subArea: SubjectArea): Promise<AxiosResp
 
 export const getSubjectAreas = async (): Promise<AxiosResponse | AxiosError> => {
     try {
-        const response = await publicApi.get('/subjectAreas/'); 
+        const response = await publicApi.get('/subjectAreas/');
 
-        console.log('Get subject areas status:', response);
+        //console.log('Get subject areas status:', response);
 
         return response;
     }
@@ -34,9 +34,9 @@ export const getSubjectArea = async (subAreaId: number): Promise<AxiosResponse |
     try {
         const response = await publicApi.get(`/subjectArea/${subAreaId}/`);
 
-        console.log('Get subject area status:', response);
+        //console.log('Get subject area status:', response);
 
-        return response;        
+        return response;
     }
     catch (error: any) {
         console.error('Get subject area error:', error);

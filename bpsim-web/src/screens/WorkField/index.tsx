@@ -16,8 +16,9 @@ import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { getSubjectArea } from "../../services/subjectArea.service"
 import { SubjectArea } from "../../types/subjectArea"
-import { set } from "react-hook-form"
 import SubjectAreaChoiceModal from "../../shared/components/Modals/SubAreaChoice"
+import { getModels } from "../../services/model.service"
+import { Model } from "../../types/model"
 
 interface INode {
     key: string | number;
@@ -38,6 +39,7 @@ interface IProps {
     isOpenSubAreaModal?: boolean
     isCreateSubAreaModal?: boolean
 }
+export const FRUITS_MODEL_ID = 3;
 
 const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = false }: IProps) => {
     const [nodesCount, setNodesCount] = useState(0);
@@ -48,6 +50,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
     const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
+
+    const [models, setModels] = useState<Model[]>([]);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -82,9 +86,27 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
 
     useEffect(() => {
+
+        if (localStorage.getItem('subjectAreaId')) {
+            getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
+                setSubjectArea(response.data);
+            });
+        }
+
+        getModels().then((response: any) => {
+            if (response instanceof AxiosError) {
+                toast.error('Модели не загрузились');
+            }
+            else {
+                const filteredModels = response.data.filter((model: any) => model.sub_area_id == Number(localStorage.getItem('subjectAreaId')));
+                setModels(filteredModels);
+            }
+        })
+
         getNodes().then((response: any) => {
             setNodesCount(response.data.length);
-            const filteredNodes = response.data.filter((node: any) => node.model_id == Number(localStorage.getItem('subjectAreaId')));
+            const filteredNodes = response.data.filter((node: any) => node.model_id == FRUITS_MODEL_ID);
+            //const filteredNodes = response.data;
             setBpsimNodes(filteredNodes);
             const newNodes: any = [];
             filteredNodes.forEach((node: any) => {
@@ -101,17 +123,11 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             setNodes(newNodes);
         })
 
-        if (localStorage.getItem('subjectAreaId')) {
-            getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
-                setSubjectArea(response.data);
-            });
-        }
-
     }, [nodesCount, localStorage.getItem('subjectAreaId')]);
 
 
     const onNodeAddClick = () => {
-        defaultNode.model_id = 3;
+        defaultNode.model_id = FRUITS_MODEL_ID;
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
@@ -148,6 +164,17 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <div className="work-field-main">
                 <div className="sidebar">
                     <div>Предметная область: {subjectArea ? subjectArea.name : "Не выбрана"}</div>
+                    <div>Модели:</div>
+                    {models.map((model: any) => {
+                        if (model.id == FRUITS_MODEL_ID) {
+                            return (
+                                <div key={model.id}>{model.name}*</div>
+                            )
+                        }
+                        return (
+                            <div key={model.id}>{model.name}</div>
+                        )
+                    })}
                 </div>
                 <div className="vertical-line"></div>
                 <div className="work-field-content">

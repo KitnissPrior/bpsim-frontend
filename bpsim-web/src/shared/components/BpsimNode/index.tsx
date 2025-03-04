@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import './bpsimNode.css';
 import { updateNode } from '../../../services/node.service';
 import { toast } from 'react-toastify';
+import { FRUITS_MODEL_ID } from '../../../screens/WorkField';
 
 interface IProps {
   id: string;
@@ -16,16 +17,20 @@ interface IProps {
 export const BpsimNode = ({ id, data }: IProps) => {
   const [label, setLabel] = useState(data.label);
 
-  const onChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (evt: any) => {
     setLabel(evt.target.value);
   };
 
-  const onBlur = useCallback((evt: React.FocusEvent<HTMLInputElement>) => {
-    if (label === evt.target.value) return;
+  const onBlur = useCallback((evt: any) => {
+    if (data.label === evt.target.value) {
+      console.log(label, evt.target.value);
+      toast.info('Имя не изменилось');
+      return;
+    }
     updateNode({
       id: id,
       name: evt.target.value,
-      model_id: 3
+      model_id: FRUITS_MODEL_ID
     }).then((response: any) => {
       if (response.status === 200) {
         setLabel(evt.target.value);

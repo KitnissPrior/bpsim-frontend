@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { BaseButton } from "../../Buttons/BaseButton";
 import { AxiosError } from "axios";
 import TextError from "../../Errors/TextError";
+import "./subAreaChoice.css"
 
 interface IProps {
     isOpen: boolean
@@ -35,7 +36,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
         <FormModal isOpen={props.isOpen} title={"Открыть предметную область"}
             content={
                 <div>
-                    {data.map((item, index) => <div key={index}
+                    {data.map((item, index) => <div key={index} className="subarea-item"
                         onDoubleClick={() => {
                             localStorage.setItem('subjectAreaId', item.id ? item.id.toString() : "")
                             onClose();

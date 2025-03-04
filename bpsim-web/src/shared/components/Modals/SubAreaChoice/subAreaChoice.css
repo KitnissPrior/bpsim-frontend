@@ -1,0 +1,8 @@
+.subarea-item {
+    display: flex;
+    cursor: pointer;
+}
+
+.subarea-item:hover {
+    opacity: 0.8;
+}
