@@ -26,3 +26,5 @@ export const subjectAreaReducer = (state = defaultState, action: any) => {
 }
 
 export const setCurrentArea = (current: any) => ({ type: actions.SET_CURRENT_AREA, payload: current })
+
+export const setDefaultArea = () => ({ type: actions.SET_CURRENT_AREA, payload: null })

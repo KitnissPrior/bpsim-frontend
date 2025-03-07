@@ -23,3 +23,6 @@ export const modelReducer = (state = defaultState, action: any) => {
 
 export const setCurrentModel = (current: any) => ({ type: actions.SET_CURRENT_MODEL, payload: current })
 export const setModelItems = (items: any) => ({ type: actions.SET_MODEL_ITEMS, payload: items })
+
+export const setDefaultModel = () => ({ type: actions.SET_CURRENT_MODEL, payload: null })
+export const clearModelItems = () => ({ type: actions.SET_MODEL_ITEMS, payload: [] })
