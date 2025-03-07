@@ -1,5 +1,5 @@
 export const actions = {
-    SET_CURRENT: 'SET_CURRENT',
+    SET_CURRENT_AREA: 'SET_CURRENT_AREA',
     GET_SUBJECT_AREAS: 'GET_SUBJECT_AREAS',
     GET_SUBJECT_AREA: 'GET_SUBJECT_AREA',
     CREATE_SUBJECT_AREA: 'CREATE_SUBJECT_AREA',
@@ -16,7 +16,7 @@ const defaultState = {
 
 export const subjectAreaReducer = (state = defaultState, action: any) => {
     switch (action.type) {
-        case actions.SET_CURRENT:
+        case actions.SET_CURRENT_AREA:
             return { ...state, current: action.payload }
         case actions.GET_SUBJECT_AREAS:
             return { ...state, items: action.payload }
@@ -25,4 +25,4 @@ export const subjectAreaReducer = (state = defaultState, action: any) => {
     }
 }
 
-export const setCurrent = (current: any) => ({ type: actions.SET_CURRENT, payload: current })
+export const setCurrentArea = (current: any) => ({ type: actions.SET_CURRENT_AREA, payload: current })

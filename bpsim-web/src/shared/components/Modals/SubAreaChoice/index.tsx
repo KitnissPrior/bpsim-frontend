@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import TextError from "../../Errors/TextError";
 import "./subAreaChoice.css"
 import { useDispatch } from "react-redux";
-import { setCurrent } from "../../../../store/reducers/subjectAreaReducer";
+import { setCurrentArea } from "../../../../store/reducers/subjectAreaReducer";
 
 interface IProps {
     isOpen: boolean
@@ -36,7 +36,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
     }, []);
 
     const onChoiseClick = (item: SubjectArea) => {
-        dispatch(setCurrent(item))
+        dispatch(setCurrentArea(item))
     }
 
     return (
