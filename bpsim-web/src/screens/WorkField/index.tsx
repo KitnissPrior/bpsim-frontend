@@ -15,10 +15,11 @@ import SubjectAreaAddModal from "../../shared/components/Modals/SubAreaAdd"
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { getSubjectArea } from "../../services/subjectArea.service"
-import { SubjectArea } from "../../types/subjectArea"
+import { setCurrent } from "../../store/reducers/subjectAreaReducer"
 import SubjectAreaChoiceModal from "../../shared/components/Modals/SubAreaChoice"
 import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
+import { useDispatch, useSelector } from "react-redux"
 
 interface INode {
     key: string | number;
@@ -47,9 +48,12 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+    const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
+
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
-    const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
+    //const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
 
     const [models, setModels] = useState<Model[]>([]);
 
@@ -89,7 +93,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
         if (localStorage.getItem('subjectAreaId') && !isCreateSubAreaModal && !isOpenSubAreaModal) {
             getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
-                setSubjectArea(response.data);
+                dispatch(setCurrent(response.data));
             });
 
             getModels().then((response: any) => {
@@ -170,9 +174,9 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <ItemsBar onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <div className="sidebar">
-                    <div className="text-600">Предметная область:</div>
-                    <div> {subjectArea ? subjectArea.name : "Не выбрана"}</div>
-                    <div className="text-600">Модели:</div>
+                    {/* <div className="text-600">Предметная область:</div> */}
+                    <div> {currentSubjectArea ? currentSubjectArea.name : "Не выбрана"}</div>
+                    {/* <div className="text-600">Модели:</div> */}
                     {models.map((model: any) => {
                         if (model.id == FRUITS_MODEL_ID) {
                             return (

@@ -10,7 +10,7 @@ interface IProps {
   data: {
     label: string;
   };
-  position?: Position; // Используем тип Position из @xyflow/react
+  position?: Position;
   model_id?: number;
 }
 
