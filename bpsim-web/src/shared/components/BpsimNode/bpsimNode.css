@@ -10,6 +10,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
 }
 
 .node-text-field:hover,

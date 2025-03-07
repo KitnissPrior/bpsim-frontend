@@ -22,5 +22,7 @@
   --box-shadow-green-big: 1px 1px 15px 0px var(--green-grass);
   --checkbox-shadow: 1px 1px 5px var(var(--grey));
 
+  --hover-opasity: 0.8;
+
   --window-width: 1400px;
 }
