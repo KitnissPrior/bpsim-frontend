@@ -15,14 +15,14 @@ export interface ITextInputProps {
 const TextInput = (props: ITextInputProps) => {
     return (
         <div className={"mb-3" + " " + props.containerClassName}>
-            <input type={props.type} className="form-control inputText"
+            <input type={props.type} className="form-control input-text"
                 id={props.id}
                 placeholder={props.placeholder}
                 value={props.defaultValue}
                 {...props.register}
                 disabled={props.disabled}
             />
-            {props.error?.message && <TextError text={props.error.message.toString() || ''}/>}
+            {props.error?.message && <TextError text={props.error.message.toString() || ''} />}
         </div>
     )
 }

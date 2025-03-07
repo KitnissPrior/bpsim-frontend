@@ -16,9 +16,9 @@ export const createNode = async (node: Node): Promise<AxiosResponse | AxiosError
     }
 };
 
-export const getNodes = async (): Promise<AxiosResponse | AxiosError> => {
+export const getNodes = async (model_id: number): Promise<AxiosResponse | AxiosError> => {
     try {
-        const response = await publicApi.get('/nodes/');
+        const response = await publicApi.get(`/nodes/${model_id}/`);
 
         //console.log('Get nodes status:', response);
 

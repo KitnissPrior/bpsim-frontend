@@ -15,10 +15,12 @@ import SubjectAreaAddModal from "../../shared/components/Modals/SubAreaAdd"
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { getSubjectArea } from "../../services/subjectArea.service"
-import { SubjectArea } from "../../types/subjectArea"
+import { setCurrentArea } from "../../store/reducers/subjectAreaReducer"
 import SubjectAreaChoiceModal from "../../shared/components/Modals/SubAreaChoice"
 import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
+import { useDispatch, useSelector } from "react-redux"
+import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
 
 interface INode {
     key: string | number;
@@ -39,7 +41,6 @@ interface IProps {
     isOpenSubAreaModal?: boolean
     isCreateSubAreaModal?: boolean
 }
-export const FRUITS_MODEL_ID = 3;
 
 const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = false }: IProps) => {
     const [nodesCount, setNodesCount] = useState(0);
@@ -47,11 +48,16 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
     const navigate = useNavigate();
 
+    const dispatch = useDispatch();
+    const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
+
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
-    const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
+    //const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
 
-    const [models, setModels] = useState<Model[]>([]);
+    //const [models, setModels] = useState<Model[]>([]);
+    const models = useSelector((state: any) => state.model.items);
+    const currentModel = useSelector((state: any) => state.model.current);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -84,31 +90,56 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         [],
     );
 
+    const onModelChoose = (model: Model) => {
+        dispatch(setCurrentModel(model));
+
+        const modelId = Number(model.id)
+        getNodes(modelId).then((response: any) => {
+            getNodes(modelId).then((response: any) => {
+                const data = response.data;
+                setNodesCount(data.length);
+
+                setBpsimNodes(data);
+                const newNodes: any = [];
+                data.forEach((node: any) => {
+                    newNodes.push({
+                        key: node.id.toString(),
+                        id: node.id.toString(),
+                        position: { x: node.posX, y: node.posY },
+                        data: { label: node.name },
+                        sourcePosition: "right",
+                        targetPosition: "left",
+                        type: 'textNode'
+                    });
+                });
+                setNodes(newNodes);
+            })
+        })
+    }
+
 
     useEffect(() => {
 
         if (localStorage.getItem('subjectAreaId') && !isCreateSubAreaModal && !isOpenSubAreaModal) {
             getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
-                setSubjectArea(response.data);
+                dispatch(setCurrentArea(response.data));
             });
 
-            getModels().then((response: any) => {
+            getModels(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
                 if (response instanceof AxiosError) {
                     toast.error('Модели не загрузились');
                 }
                 else {
-                    const filteredModels = response.data.filter((model: any) => model.sub_area_id == Number(localStorage.getItem('subjectAreaId')));
-                    setModels(filteredModels);
+                    dispatch(setModelItems(response.data));
 
-                    if (filteredModels.length > 0) {
-                        const id = filteredModels[0].id;
-                        getNodes().then((response: any) => {
+                    if (models.length > 0) {
+                        getNodes(currentModel.id).then((response: any) => {
                             setNodesCount(response.data.length);
-                            const filteredNodes = response.data.filter((node: any) => node.model_id == id);
-                            //const filteredNodes = response.data;
-                            setBpsimNodes(filteredNodes);
+
+                            const nodes = response.data;
+                            setBpsimNodes(nodes);
                             const newNodes: any = [];
-                            filteredNodes.forEach((node: any) => {
+                            nodes.forEach((node: any) => {
                                 newNodes.push({
                                     key: node.id.toString(),
                                     id: node.id.toString(),
@@ -134,7 +165,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
 
     const onNodeAddClick = () => {
-        defaultNode.model_id = FRUITS_MODEL_ID;
+        defaultNode.model_id = currentModel.id;
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
@@ -170,17 +201,14 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <ItemsBar onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <div className="sidebar">
-                    <div className="text-600">Предметная область:</div>
-                    <div> {subjectArea ? subjectArea.name : "Не выбрана"}</div>
-                    <div className="text-600">Модели:</div>
+                    {/* <div className="text-600">Предметная область:</div> */}
+                    <div> {currentSubjectArea ? currentSubjectArea.name : "Не выбрана"}</div>
+                    {/* <div className="text-600">Модели:</div> */}
                     {models.map((model: any) => {
-                        if (model.id == FRUITS_MODEL_ID) {
-                            return (
-                                <div style={{ paddingLeft: '10px' }} key={model.id}>{model.name}*</div>
-                            )
-                        }
+                        const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
                         return (
-                            <div style={{ paddingLeft: '10px' }} key={model.id}>{model.name}</div>
+                            <div style={{ paddingLeft: '10px' }} key={model.id} onClick={() => onModelChoose(model)}
+                            >{name}</div>
                         )
                     })}
                 </div>

@@ -3,19 +3,20 @@ import { useCallback, useState } from 'react';
 import './bpsimNode.css';
 import { updateNode } from '../../../services/node.service';
 import { toast } from 'react-toastify';
-import { FRUITS_MODEL_ID } from '../../../screens/WorkField';
+import { useSelector } from 'react-redux';
 
 interface IProps {
   id: string;
   data: {
     label: string;
   };
-  position?: Position; // Используем тип Position из @xyflow/react
+  position?: Position;
   model_id?: number;
 }
 
 export const BpsimNode = ({ id, data }: IProps) => {
   const [label, setLabel] = useState(data.label);
+  const modelId = useSelector((state: any) => state.model.current.id);
 
   const onChange = (evt: any) => {
     setLabel(evt.target.value);
@@ -26,7 +27,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
     updateNode({
       id: id,
       name: evt.target.value,
-      model_id: FRUITS_MODEL_ID
+      model_id: modelId
     }).then((response: any) => {
       if (response.status === 200) {
         setLabel(evt.target.value);

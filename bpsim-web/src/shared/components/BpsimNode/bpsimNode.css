@@ -1,5 +1,6 @@
 .node-text-field:enabled {
-    width: 140px;
+    /* width: 140px; */
+    width: 130px;
     height: 40px;
     border: none;
     background-color: transparent;
@@ -21,4 +22,5 @@
 
 .node-text-container {
     margin-top: -10px;
+    width: fit-content;
 }
