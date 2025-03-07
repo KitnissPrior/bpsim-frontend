@@ -200,14 +200,24 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         navigate(urls.workField);
     }
 
+    const onOpenSubAreaModal = () => {
+        navigate(urls.subjectAreaOpen);
+        setShowOpenSubAreaModal(true);
+    }
+
+    const onCreateSubAreaModal = () => {
+        navigate(urls.subjectAreaCreate);
+        setShowNewSubAreaModal(true);
+    }
+
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
-            <ItemsBar onNodeAddClick={onNodeAddClick} />
+            <ItemsBar onNodeAddClick={onNodeAddClick} onCreateSubAreaModal={onCreateSubAreaModal} onOpenSubAreaModal={onOpenSubAreaModal} />
             <div className="work-field-main">
                 <div className="sidebar">
                     {/* <div className="text-600">Предметная область:</div> */}
-                    <div> {currentSubjectArea ? currentSubjectArea.name : "Не выбрана"}</div>
+                    <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
                     {/* <div className="text-600">Модели:</div> */}
                     {models.map((model: any) => {
                         const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');

@@ -7,7 +7,8 @@ import { AxiosError } from "axios";
 import TextError from "../../Errors/TextError";
 import "./subAreaChoice.css"
 import { useDispatch } from "react-redux";
-import { setCurrentArea } from "../../../../store/reducers/subjectAreaReducer";
+import { setCurrentArea, setDefaultArea } from "../../../../store/reducers/subjectAreaReducer";
+import { clearModelItems, setDefaultModel } from "../../../../store/reducers/modelReducer";
 
 interface IProps {
     isOpen: boolean
@@ -22,6 +23,10 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(setDefaultModel());
+        dispatch(clearModelItems());
+        dispatch(setDefaultArea());
+        localStorage.clear();
         getSubjectAreas()
             .then((res: any) => {
                 if (res instanceof AxiosError) {
@@ -30,7 +35,6 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
                 else {
                     setData(res.data)
                 }
-
             });
 
     }, []);
@@ -51,7 +55,12 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
                         }}>
                         {item.name}
                     </div>)}
-                    {error.length == 0 ? <TextError text={error} /> : <div>Всего ПО: {data.length}</div>}
+                    {error !== '' ?
+                        <TextError text={error} />
+                        : <>
+                            <hr />
+                            <div>Всего ПО: {data.length}</div>
+                        </>}
                     <BaseButton text="Закрыть" onClick={onClose} />
                 </div>
 
