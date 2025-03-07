@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { deleteNode } from '../../../services/node.service';
 import NodeContextMenu from './components/ContextMenu';
+import ConfirmModal from '../Modals/ConfirmModal';
+import { set } from 'react-hook-form';
 
 interface IProps {
   id: string;
@@ -21,6 +23,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
   const modelId = useSelector((state: any) => state.model.current.id);
   const [propsVisible, setPropsVisible] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
 
   const onChange = (evt: any) => {
     setLabel(evt.target.value);
@@ -58,6 +61,10 @@ export const BpsimNode = ({ id, data }: IProps) => {
       }
     })
     setPropsVisible(false);
+    setDeleteConfirmVisible(false);
+  }
+  const onDeleteConfirmOpen = () => {
+    setDeleteConfirmVisible(true);
   }
 
   return (
@@ -85,7 +92,17 @@ export const BpsimNode = ({ id, data }: IProps) => {
             onBlur={onBlur}
           />
         </div>
-        {propsVisible && <NodeContextMenu onPropsClose={() => setPropsVisible(false)} onDelete={onDelete} />}
+        {propsVisible && <NodeContextMenu onPropsClose={() => setPropsVisible(false)} onDelete={onDeleteConfirmOpen} />}
+        {deleteConfirmVisible &&
+          <ConfirmModal
+            isOpen={deleteConfirmVisible}
+            onCancel={() => {
+              setDeleteConfirmVisible(false);
+              setPropsVisible(false)
+            }}
+            onOk={onDelete}
+            content={"Вы уверены что хотите удалить узел?"}
+            okText="Удалить" />}
       </div>
     </>
   );
