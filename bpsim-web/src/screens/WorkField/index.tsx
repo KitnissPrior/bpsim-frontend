@@ -21,6 +21,7 @@ import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
+import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
 
 interface INode {
     key: string | number;
@@ -58,6 +59,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     //const [models, setModels] = useState<Model[]>([]);
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
+    const mathNodes = useSelector((state: any) => state.node.bpsimItems);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -78,6 +80,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             });
             return updatedNodes;
         });
+        //dispatch(setBpsimItems(bpsimNodes))
     }, []);
 
     const onEdgesChange = useCallback(
@@ -95,25 +98,27 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
         const modelId = Number(model.id)
         getNodes(modelId).then((response: any) => {
-            getNodes(modelId).then((response: any) => {
-                const data = response.data;
-                setNodesCount(data.length);
+            const data = response.data;
+            setNodesCount(data.length);
 
-                setBpsimNodes(data);
-                const newNodes: any = [];
-                data.forEach((node: any) => {
-                    newNodes.push({
-                        key: node.id.toString(),
-                        id: node.id.toString(),
-                        position: { x: node.posX, y: node.posY },
-                        data: { label: node.name },
-                        sourcePosition: "right",
-                        targetPosition: "left",
-                        type: 'textNode'
-                    });
+            setBpsimNodes(data);
+            dispatch(setBpsimItems(data))
+            dispatch(setGraphicItems(data))
+
+
+            const newNodes: any = [];
+            data.forEach((node: any) => {
+                newNodes.push({
+                    key: node.id.toString(),
+                    id: node.id.toString(),
+                    position: { x: node.posX, y: node.posY },
+                    data: { label: node.name },
+                    sourcePosition: "right",
+                    targetPosition: "left",
+                    type: 'textNode'
                 });
-                setNodes(newNodes);
-            })
+            });
+            setNodes(newNodes);
         })
     }
 
