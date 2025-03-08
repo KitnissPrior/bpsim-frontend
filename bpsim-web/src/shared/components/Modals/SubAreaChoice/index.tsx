@@ -40,6 +40,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
     }, []);
 
     const onChoiseClick = (item: SubjectArea) => {
+        //dispatch(setDefaultModel());
         dispatch(setCurrentArea(item))
     }
 
