@@ -1,19 +1,18 @@
-import "./nodeContext.css"
-
 interface IProps {
     onDelete: () => void
-    onPropsClose?: () => void
+    onPropsOpen: () => void
+    onClose: () => void
 }
 
 const NodeContextMenu = (props: IProps) => {
     return (
-        <div className="node-context-menu">
-            <div onClick={props.onPropsClose} className="context-item">Закрыть</div>
-            <hr />
-            <div className="context-item">Свойства</div>
-            <hr />
-            <div onClick={props.onDelete} className="context-item">Удалить</div>
-        </div>
+        <>
+            <div className="context-menu-item text--body-xs" onClick={props.onClose}>Закрыть</div>
+            <div className="context-menu-item text--body-xs">Переименовать</div>
+            <div className="context-menu-item text--body-xs" onClick={props.onPropsOpen}>Свойства</div>
+            <hr className="context-menu-hr" />
+            <div onClick={props.onDelete} className="context-menu-item text--body-xs">Удалить</div>
+        </>
     )
 }
 

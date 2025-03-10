@@ -5,7 +5,7 @@ import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, MouseEvent } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
 import { BpsimNode } from "../../shared/components/BpsimNode"
@@ -22,6 +22,7 @@ import { Model } from "../../types/model"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
 import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
+import { ModelContextMenu } from "../../shared/components/Model/ModelContextMenu"
 
 interface INode {
     key: string | number;
@@ -51,6 +52,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const dispatch = useDispatch();
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
+
+    const [modelAddContextVisible, setModelAddContextVisible] = useState(false);
 
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
@@ -210,6 +213,12 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         setShowNewSubAreaModal(true);
     }
 
+    const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
+        evt.preventDefault();
+        console.log("Типа добавить модель");
+        setModelAddContextVisible(true);
+    }
+
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
@@ -217,7 +226,12 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <div className="work-field-main">
                 <div className="sidebar">
                     <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
-                    <div className="text-600">Модели</div>
+                    {models.length > 0 &&
+                        <div className="text-600"
+                            onContextMenu={onModelsRightClick}>Модели</div>
+                    }
+                    {modelAddContextVisible &&
+                        <ModelContextMenu onModelAdd={() => { console.log("Добавить модель") }} />}
                     {models.map((model: any) => {
                         const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
                         return (

@@ -39,3 +39,27 @@
     border: 1px solid var(--grey-medium);
     margin: 0 0 5px 0;
 }
+
+.context-menu {
+    top: 100%;
+    float: right;
+    position: fixed;
+    transform: translate(120%, -60%);
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 10000;
+}
+
+.context-menu-item {
+    cursor: pointer;
+    opacity: var(--hover-opasity);
+    margin: 0px;
+    padding: 0px;
+}
+
+.context-menu-hr {
+    margin: 10px 0px;
+    padding: 0px;
+    width: 100%;
+}

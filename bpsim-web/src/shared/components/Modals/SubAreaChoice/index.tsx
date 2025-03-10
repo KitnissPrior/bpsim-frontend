@@ -1,4 +1,4 @@
-import FormModal from "../FormModal";
+import FormModal from "../Form";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { getSubjectAreas } from "../../../../services/subjectArea.service";
 import { useEffect, useState } from "react";

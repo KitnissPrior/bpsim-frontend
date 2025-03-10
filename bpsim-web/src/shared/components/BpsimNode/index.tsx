@@ -6,8 +6,9 @@ import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import { deleteNode } from '../../../services/node.service';
 import NodeContextMenu from './components/ContextMenu';
-import ConfirmModal from '../Modals/ConfirmModal';
-import { set } from 'react-hook-form';
+import ConfirmModal from '../Modals/Confirm';
+import ContextMenu from '../ContextMenu';
+import { NodePropsModal } from './components/PropsModal';
 
 interface IProps {
   id: string;
@@ -21,9 +22,10 @@ interface IProps {
 export const BpsimNode = ({ id, data }: IProps) => {
   const [label, setLabel] = useState(data.label);
   const modelId = useSelector((state: any) => state.model.current.id);
-  const [propsVisible, setPropsVisible] = useState(false);
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+  const [propsVisible, setPropsVisible] = useState(false);
 
   const onChange = (evt: any) => {
     setLabel(evt.target.value);
@@ -43,12 +45,11 @@ export const BpsimNode = ({ id, data }: IProps) => {
         toast.error('Имя сохранить не удалось');
       }
     });
-    setPropsVisible(false);
   }, [id, label]);
 
   const onRightClick = (evt: MouseEvent<HTMLDivElement>) => {
     evt.preventDefault();
-    setPropsVisible(true);
+    setContextMenuVisible(true);
   }
 
   const onDelete = () => {
@@ -60,11 +61,24 @@ export const BpsimNode = ({ id, data }: IProps) => {
         toast.error('Узел удалить не удалось');
       }
     })
-    setPropsVisible(false);
+    setContextMenuVisible(false);
     setDeleteConfirmVisible(false);
   }
   const onDeleteConfirmOpen = () => {
     setDeleteConfirmVisible(true);
+  }
+
+  const onHideContextMenu = () => {
+    setContextMenuVisible(false);
+  }
+
+  const onPropsOpen = () => {
+    setContextMenuVisible(false);
+    setPropsVisible(true);
+  }
+
+  const onPropsClose = () => {
+    setPropsVisible(false);
   }
 
   return (
@@ -92,18 +106,29 @@ export const BpsimNode = ({ id, data }: IProps) => {
             onBlur={onBlur}
           />
         </div>
-        {propsVisible && <NodeContextMenu onPropsClose={() => setPropsVisible(false)} onDelete={onDeleteConfirmOpen} />}
+
         {deleteConfirmVisible &&
           <ConfirmModal
             isOpen={deleteConfirmVisible}
             onCancel={() => {
               setDeleteConfirmVisible(false);
-              setPropsVisible(false)
+              setContextMenuVisible(false)
             }}
             onOk={onDelete}
             content={"Вы уверены что хотите удалить узел?"}
             okText="Удалить" />}
       </div>
+      {contextMenuVisible &&
+        <ContextMenu
+          children={
+            <NodeContextMenu
+              onDelete={onDeleteConfirmOpen}
+              onClose={onHideContextMenu}
+              onPropsOpen={onPropsOpen} />
+          }
+        />}
+      {propsVisible &&
+        <NodePropsModal isOpen={propsVisible} name={data.label} onClose={onPropsClose} />}
     </>
   );
 };
