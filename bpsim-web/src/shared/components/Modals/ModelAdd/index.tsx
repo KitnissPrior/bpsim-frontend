@@ -1,13 +1,13 @@
 import FormModal from "../Form";
 import TextInput from "../../Inputs/TextInput";
-import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";
 import { BaseButton } from "../../Buttons/BaseButton";
 import { AxiosError } from "axios";
 import { useState } from "react";
-import { setCurrentModel, } from "../../../../store/reducers/modelReducer";
-import { useDispatch } from "react-redux";
-import {createModel} from "../../../../services/model.service"
+import { addModel, setCurrentModel, } from "../../../../store/reducers/modelReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { createModel } from "../../../../services/model.service"
+import { Model } from "../../../../types/model";
 
 interface IProps {
     isOpen: boolean
@@ -16,33 +16,42 @@ interface IProps {
 }
 
 
-const SubjectAreaAddModal = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) => {
+const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm<SubjectArea | any>();
+    const { register, handleSubmit, formState: { errors } } = useForm<Model | any>();
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const subjectAreaId = Number(localStorage.getItem('subjectAreaId'));
 
-    const onSubjectAreaSubmit = async (data: SubjectArea) => {
+    const onModelSubmit = async (data: Model) => {
         setLoading(true);
-        const response = await createModel(data);
+        if (!subjectAreaId) {
+            throw new Error('Subject area id is not defined');
+        }
+        const response = await createModel(data, subjectAreaId);
 
         if (!(response instanceof AxiosError)) {
             //onSubjectAdd(response.data.length);
             onClose();
             setLoading(false);
             dispatch(setCurrentModel(response.data));
+            dispatch(addModel(response.data));
         }
     }
 
     return (
-        <FormModal isOpen={props.isOpen} title={"Создать предметную область"}
+        <FormModal isOpen={props.isOpen} title={"Создание модели"}
             content={
-                <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)}>
+                <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}>
                     <div className="">
                         <div className="text--heading3 text-600">Наименование модели</div>
                         <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
-                            register={{ ...register('name', { required: "Введите название ПО" }) }} error={errors.title} />
-
+                            register={{
+                                ...register('name', {
+                                    required: "Введите название модели",
+                                    maxLength: { value: 20, message: "Максимальная длина 20 символов" }
+                                })
+                            }} error={errors.title} />
                     </div>
                     <div>
                         <div className="text--heading3 text-600">Описание модели</div>
@@ -56,7 +65,7 @@ const SubjectAreaAddModal = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IP
                         />
                     </div>
                 </form>
-            } className="subarea-add-modal" />)
+            } className="model-add-form" />)
 }
 
-export default SubjectAreaAddModal
+export default ModelAddForm

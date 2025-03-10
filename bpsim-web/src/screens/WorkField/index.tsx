@@ -23,6 +23,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
 import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
 import { ModelContextMenu } from "../../shared/components/Model/ModelContextMenu"
+import ModelAddForm from "../../shared/components/Modals/ModelAdd"
 
 interface INode {
     key: string | number;
@@ -54,6 +55,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
 
     const [modelAddContextVisible, setModelAddContextVisible] = useState(false);
+    const [modelFormVisible, setModelFormVisible] = useState(false);
 
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
@@ -177,7 +179,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
-                console.log(createdNode);
                 setBpsimNodes(prevNodes => [...prevNodes, createdNode]);
                 setNodesCount(prev => prev + 1);
             })
@@ -215,7 +216,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
         evt.preventDefault();
-        console.log("Типа добавить модель");
         setModelAddContextVisible(true);
     }
 
@@ -226,16 +226,20 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <div className="work-field-main">
                 <div className="sidebar">
                     <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
-                    {models.length > 0 &&
-                        <div className="text-600"
+                    {currentSubjectArea &&
+                        <div className="text-600" style={{ paddingLeft: '10px' }}
                             onContextMenu={onModelsRightClick}>Модели</div>
                     }
                     {modelAddContextVisible &&
-                        <ModelContextMenu onModelAdd={() => { console.log("Добавить модель") }} />}
+                        <ModelContextMenu
+                            onModelAdd={() => {
+                                setModelFormVisible(true)
+                                setModelAddContextVisible(false)
+                            }} />}
                     {models.map((model: any) => {
                         const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
                         return (
-                            <div style={{ paddingLeft: '10px' }} key={model.id} onClick={() => onModelChoose(model)}
+                            <div style={{ paddingLeft: '20px' }} key={model.id} onClick={() => onModelChoose(model)}
                             >{name}</div>
                         )
                     })}
@@ -255,6 +259,11 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 </div>
                 <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />
                 <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />
+                <ModelAddForm isOpen={modelFormVisible}
+                    onClose={() => {
+                        setModelFormVisible(false)
+                        setModelAddContextVisible(false);
+                    }} />
             </div>
         </div>
     )
