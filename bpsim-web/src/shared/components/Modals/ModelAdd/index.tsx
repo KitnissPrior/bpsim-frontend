@@ -8,6 +8,7 @@ import { addModel, setCurrentModel, } from "../../../../store/reducers/modelRedu
 import { useDispatch, useSelector } from "react-redux";
 import { createModel } from "../../../../services/model.service"
 import { Model } from "../../../../types/model";
+import { toast } from "react-toastify";
 
 interface IProps {
     isOpen: boolean
@@ -33,9 +34,13 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
         if (!(response instanceof AxiosError)) {
             //onSubjectAdd(response.data.length);
             onClose();
+            toast.success('Модель успешно добавлена');
             setLoading(false);
             dispatch(setCurrentModel(response.data));
             dispatch(addModel(response.data));
+        }
+        else {
+            toast.error('При добавлении модели произошла ошибка');
         }
     }
 
