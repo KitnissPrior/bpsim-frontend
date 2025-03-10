@@ -25,21 +25,20 @@ export const ItemsBar = (props: IProps) => {
     return (
         <div className="items-bar">
             <IconButton iconPath={SubAreaOpen} iconClassName="icon"
-                onClick={props.onOpenSubAreaModal} placeholder="Открыть ПО" />
+                onClick={props.onOpenSubAreaModal} placeholder="Открыть ПО (предметную область)" />
             <IconButton iconPath={SubAreaCreate} iconClassName="icon"
-                onClick={props.onCreateSubAreaModal} placeholder="Создать ПО" />
-            <div className="items-bar-divier" />
+                onClick={props.onCreateSubAreaModal} placeholder="Создать ПО (предметную область)" />
+            <div className="items-bar-divider" />
             <IconButton iconPath={Play} iconClassName="icon" placeholder="Старт" />
-            <IconButton iconPath={Pause} iconClassName="icon" placeholder="Пауза" />
             <IconButton iconPath={Stop} iconClassName="icon" placeholder="Стоп" />
-            <div className="items-bar-divier" />
-            <IconButton className="component" iconPath={Coursor} iconClassName="icon" placeholder="Курсор" />
-            <IconButton className="component" iconPath={NodeAdd} iconClassName="icon"
-                onClick={props.onNodeAddClick} placeholder="Добавить узел" />
+            <div className="items-bar-divider" />
+            <IconButton iconPath={Coursor} iconClassName="icon" placeholder="Курсор" />
+            <IconButton iconPath={NodeAdd} iconClassName="icon"
+                onClick={props.onNodeAddClick} placeholder="Узел" />
             <IconButton iconPath={Agent} iconClassName="icon" placeholder="Агент" />
-            <IconButton iconPath={Checkbox} iconClassName="icon" placeholder="Checkbox" />
-            <IconButton iconPath={Radio} iconClassName="icon" placeholder="Radio" />
-            <IconButton iconPath={Slider} iconClassName="icon" placeholder="Slider" />
+            <IconButton iconPath={Checkbox} iconClassName="icon" placeholder="Чекбокс" />
+            <IconButton iconPath={Radio} iconClassName="icon" placeholder="Радиогруппа" />
+            <IconButton iconPath={Slider} iconClassName="icon" placeholder="бегунок" />
             <IconButton iconPath={Diagram} iconClassName="icon" placeholder="Диаграмма" />
             <IconButton iconPath={Text} iconClassName="icon" placeholder="Текст" />
         </div>

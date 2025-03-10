@@ -4,15 +4,17 @@
     justify-content: flex-start;
     gap: 10px;
     height: 40px;
-    background-color: var(--grey-light);
     width: 100vw;
     position: fixed;
     align-items: center;
+    padding-bottom: 5px;
+    background-color: var(--grey-background);
 }
 
 .items-bar-divider {
-    width: 2px;
+    width: 1px;
     height: 30px;
-    background-color: black;
-    border: 1px solid black;
+    background-color: var(--grey-dark);
+    margin-left: 5px;
+    padding: 0px;
 }
