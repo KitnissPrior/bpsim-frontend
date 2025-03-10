@@ -216,9 +216,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             <ItemsBar onNodeAddClick={onNodeAddClick} onCreateSubAreaModal={onCreateSubAreaModal} onOpenSubAreaModal={onOpenSubAreaModal} />
             <div className="work-field-main">
                 <div className="sidebar">
-                    {/* <div className="text-600">Предметная область:</div> */}
                     <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
-                    {/* <div className="text-600">Модели:</div> */}
+                    <div className="text-600">Модели</div>
                     {models.map((model: any) => {
                         const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
                         return (

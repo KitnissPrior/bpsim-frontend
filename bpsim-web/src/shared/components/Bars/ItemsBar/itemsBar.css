@@ -7,14 +7,12 @@
     background-color: var(--grey-light);
     width: 100vw;
     position: fixed;
+    align-items: center;
 }
 
-.component {
-    max-width: 120px;
+.items-bar-divider {
+    width: 2px;
     height: 30px;
-    border-radius: 5px;
-    justify-content: center;
-    background-color: white;
-    padding: 10px;
-    text-align: center;
+    background-color: black;
+    border: 1px solid black;
 }

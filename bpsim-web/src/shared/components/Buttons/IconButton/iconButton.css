@@ -1,0 +1,10 @@
+.icon-button {
+    border: none;
+    width: 20px;
+    height: 20px;
+    background-color: transparent;
+}
+
+.icon-button:hover {
+    opacity: var(--hover-opasity);
+}
