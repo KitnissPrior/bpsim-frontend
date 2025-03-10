@@ -1,4 +1,4 @@
-import FormModal from "../FormModal";
+import FormModal from "../Form";
 import TextInput from "../../Inputs/TextInput";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";

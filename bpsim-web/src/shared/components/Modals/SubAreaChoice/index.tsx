@@ -1,4 +1,4 @@
-import FormModal from "../FormModal";
+import FormModal from "../Form";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { getSubjectAreas } from "../../../../services/subjectArea.service";
 import { useEffect, useState } from "react";
@@ -40,6 +40,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
     }, []);
 
     const onChoiseClick = (item: SubjectArea) => {
+        //dispatch(setDefaultModel());
         dispatch(setCurrentArea(item))
     }
 

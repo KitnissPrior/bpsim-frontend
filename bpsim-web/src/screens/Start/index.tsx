@@ -18,8 +18,8 @@ const StartScreen = () => {
         <div className="start-screen">
             <div className="text--heading1 text--center">Начните работу прямо сейчас!</div>
             <div className="buttons-area">
-                <BaseButton text="Открыть ПО" onClick={onOpenSubjectArea} />
-                <BaseButton text="Создать ПО" onClick={onCreateSubjectArea} />
+                <BaseButton text="Открыть предметную область" onClick={onOpenSubjectArea} />
+                <BaseButton text="Создать предметную область" onClick={onCreateSubjectArea} />
             </div>
         </div>
     )

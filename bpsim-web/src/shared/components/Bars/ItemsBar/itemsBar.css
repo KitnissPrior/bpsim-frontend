@@ -4,17 +4,17 @@
     justify-content: flex-start;
     gap: 10px;
     height: 40px;
-    background-color: var(--grey-light);
     width: 100vw;
     position: fixed;
+    align-items: center;
+    padding-bottom: 5px;
+    background-color: var(--grey-background);
 }
 
-.component {
-    max-width: 120px;
+.items-bar-divider {
+    width: 1px;
     height: 30px;
-    border-radius: 5px;
-    justify-content: center;
-    background-color: white;
-    padding: 10px;
-    text-align: center;
+    background-color: var(--grey-dark);
+    margin-left: 5px;
+    padding: 0px;
 }

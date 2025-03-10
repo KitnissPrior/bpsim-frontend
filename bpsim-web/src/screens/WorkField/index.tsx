@@ -5,7 +5,7 @@ import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useState, MouseEvent } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
 import { BpsimNode } from "../../shared/components/BpsimNode"
@@ -22,6 +22,8 @@ import { Model } from "../../types/model"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
 import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
+import { ModelContextMenu } from "../../shared/components/Model/ModelContextMenu"
+import ModelAddForm from "../../shared/components/Modals/ModelAdd"
 
 interface INode {
     key: string | number;
@@ -51,6 +53,9 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const dispatch = useDispatch();
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
+
+    const [modelAddContextVisible, setModelAddContextVisible] = useState(false);
+    const [modelFormVisible, setModelFormVisible] = useState(false);
 
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
@@ -174,7 +179,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         createNode(defaultNode)
             .then((response: any) => {
                 const createdNode = response.data;
-                console.log(createdNode);
                 setBpsimNodes(prevNodes => [...prevNodes, createdNode]);
                 setNodesCount(prev => prev + 1);
             })
@@ -210,19 +214,32 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         setShowNewSubAreaModal(true);
     }
 
+    const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
+        evt.preventDefault();
+        setModelAddContextVisible(true);
+    }
+
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
             <ItemsBar onNodeAddClick={onNodeAddClick} onCreateSubAreaModal={onCreateSubAreaModal} onOpenSubAreaModal={onOpenSubAreaModal} />
             <div className="work-field-main">
                 <div className="sidebar">
-                    {/* <div className="text-600">Предметная область:</div> */}
                     <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
-                    {/* <div className="text-600">Модели:</div> */}
+                    {currentSubjectArea &&
+                        <div className="text-600" style={{ paddingLeft: '10px' }}
+                            onContextMenu={onModelsRightClick}>Модели</div>
+                    }
+                    {modelAddContextVisible &&
+                        <ModelContextMenu
+                            onModelAdd={() => {
+                                setModelFormVisible(true)
+                                setModelAddContextVisible(false)
+                            }} />}
                     {models.map((model: any) => {
                         const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
                         return (
-                            <div style={{ paddingLeft: '10px' }} key={model.id} onClick={() => onModelChoose(model)}
+                            <div style={{ paddingLeft: '20px' }} key={model.id} onClick={() => onModelChoose(model)}
                             >{name}</div>
                         )
                     })}
@@ -242,6 +259,11 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 </div>
                 <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />
                 <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />
+                <ModelAddForm isOpen={modelFormVisible}
+                    onClose={() => {
+                        setModelFormVisible(false)
+                        setModelAddContextVisible(false);
+                    }} />
             </div>
         </div>
     )
