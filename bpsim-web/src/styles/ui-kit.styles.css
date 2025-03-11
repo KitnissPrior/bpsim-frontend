@@ -1,0 +1,65 @@
+.text-updater-node {
+    height: 40px;
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--grey-light);
+    align-items: center;
+}
+
+/* .input-text:enabled {
+    padding: 13px 16px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    line-height: 20px;
+    background-color: #f6f5fb;
+    transition: all 0.3s ease;
+} */
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+    background-color: transparent;
+    border: none;
+    /* -webkit-box-shadow: 0 0 0 30px white inset !important; */
+}
+
+.input-text:enabled,
+.input-text:-webkit-autofill {
+    height: 40px;
+    width: fit-content;
+    background-color: var(--white);
+    border-radius: 10px;
+    color: var(--black);
+    padding: 10px;
+    box-shadow: var(--box-inner-shadow-black);
+    border: 1px solid var(--grey-medium);
+    margin: 0 0 5px 0;
+}
+
+.context-menu {
+    top: 100%;
+    float: right;
+    position: fixed;
+    transform: translate(120%, -60%);
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    z-index: 10000;
+}
+
+.context-menu-item {
+    cursor: pointer;
+    opacity: var(--hover-opasity);
+    margin: 0px;
+    padding: 0px;
+}
+
+.context-menu-hr {
+    margin: 10px 0px;
+    padding: 0px;
+    width: 100%;
+}

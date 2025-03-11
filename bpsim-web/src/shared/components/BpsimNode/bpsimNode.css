@@ -1,0 +1,28 @@
+.node-text-field:enabled {
+    /* width: 140px; */
+    width: 130px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
+    justify-content: center;
+    /* overflow-wrap: break-word; */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+}
+
+.node-text-field:hover,
+.node-text-field:focus-within,
+.node-text-field:active,
+.node-text-field:focus {
+    outline: none;
+    word-wrap: break-word;
+}
+
+.node-text-container {
+    margin-top: -10px;
+    width: fit-content;
+}

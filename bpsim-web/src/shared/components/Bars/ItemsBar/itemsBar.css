@@ -1,0 +1,20 @@
+.items-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    height: 40px;
+    width: 100vw;
+    position: fixed;
+    align-items: center;
+    padding-bottom: 5px;
+    background-color: var(--grey-background);
+}
+
+.items-bar-divider {
+    width: 1px;
+    height: 30px;
+    background-color: var(--grey-dark);
+    margin-left: 5px;
+    padding: 0px;
+}

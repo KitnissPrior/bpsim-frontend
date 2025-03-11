@@ -1,0 +1,78 @@
+span,
+p,
+h1,
+h2,
+h3 {
+  white-space: pre-wrap;
+}
+
+.text--white {
+  color: var(--white);
+}
+
+.text--black {
+  color: var(--black);
+}
+
+.text--blue {
+  color: var(--blue-dark);
+  cursor: pointer;
+}
+
+.text--error {
+  color: var(--error);
+}
+
+.text-600 {
+  font-weight: 600;
+}
+
+.text--heading1 {
+  cursor: pointer;
+  font-size: 40px;
+  line-height: 40px;
+  white-space: normal;
+}
+
+.text--heading2 {
+  font-size: 24px;
+  line-height: 29.26px;
+  cursor: pointer;
+}
+
+.text--heading3 {
+  font-size: 20px;
+  line-height: 24.38px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.text--heading4 {
+  font-size: 16px;
+  line-height: 16px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+
+.text--body-m {
+  font-size: 20px;
+  line-height: 24.38px;
+  cursor: pointer;
+}
+
+
+.text--body-s {
+  font-size: 16px;
+  line-height: 19.5px;
+  cursor: pointer;
+}
+
+.text--body-xs {
+  font-size: 14px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.text--center {
+  text-align: center;
+}

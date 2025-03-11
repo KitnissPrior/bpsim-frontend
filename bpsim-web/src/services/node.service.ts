@@ -6,7 +6,7 @@ export const createNode = async (node: Node): Promise<AxiosResponse | AxiosError
     try {
         const response = await publicApi.post('/node/', node);
 
-        console.log('Node creation status:', response);
+        //console.log('Node creation status:', response);
 
         return response;
     }
@@ -16,11 +16,11 @@ export const createNode = async (node: Node): Promise<AxiosResponse | AxiosError
     }
 };
 
-export const getNodes = async (): Promise<AxiosResponse | AxiosError> => {
+export const getNodes = async (model_id: number): Promise<AxiosResponse | AxiosError> => {
     try {
-        const response = await publicApi.get('/nodes/');
+        const response = await publicApi.get(`/nodes/${model_id}/`);
 
-        console.log('Get nodes status:', response);
+        //console.log('Get nodes status:', response);
 
         return response;
     }
@@ -34,7 +34,8 @@ export const updateNode = async (node: Node): Promise<AxiosResponse | AxiosError
     try {
         const response = await publicApi.put(`/node/${node.id}/`, node);
 
-        console.log('Node update status:', response);
+        //console.log('Node update status:', response);
+        //toast.success('Узел успешно изменен');
 
         return response;
     }
