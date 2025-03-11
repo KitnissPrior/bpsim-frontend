@@ -128,7 +128,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
           }
         />}
       {propsVisible &&
-        <NodePropsModal isOpen={propsVisible} name={data.label} onClose={onPropsClose} />}
+        <NodePropsModal isOpen={propsVisible} name={data.label} onClose={onPropsClose} node_id={Number(id)} />}
     </>
   );
 };

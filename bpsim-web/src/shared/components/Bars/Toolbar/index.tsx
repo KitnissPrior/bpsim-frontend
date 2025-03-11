@@ -9,7 +9,7 @@ interface IProps {
     onSaveClick?: () => void
 }
 
-const Toolbar = (props: IProps) => {
+export const Toolbar = (props: IProps) => {
     const toolbarItems: ToolBarItem[] = [
         { name: "Общие", onClick: () => console.log("Общие") },
         { name: "Справочники", onClick: () => console.log("Справочники") },
@@ -27,5 +27,3 @@ const Toolbar = (props: IProps) => {
         </>
     )
 }
-
-export default Toolbar

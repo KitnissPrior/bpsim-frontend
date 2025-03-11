@@ -1,11 +1,12 @@
-import Toolbar from "../../shared/components/Bars/Toolbar"
+import { Toolbar } from "../../shared/components/Bars/Toolbar"
 import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
+
 import "./workField.css"
 import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useEffect, useState, MouseEvent } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
 import { BpsimNode } from "../../shared/components/BpsimNode"
@@ -22,8 +23,7 @@ import { Model } from "../../types/model"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
 import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
-import { ModelContextMenu } from "../../shared/components/Model/ModelContextMenu"
-import ModelAddForm from "../../shared/components/Modals/ModelAdd"
+import { SideBar } from "../../shared/components/Bars/SideBar"
 
 interface INode {
     key: string | number;
@@ -52,16 +52,9 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
-
-    const [modelAddContextVisible, setModelAddContextVisible] = useState(false);
-    const [modelFormVisible, setModelFormVisible] = useState(false);
-
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
-    //const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
 
-    //const [models, setModels] = useState<Model[]>([]);
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
     const mathNodes = useSelector((state: any) => state.node.bpsimItems);
@@ -166,9 +159,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
                 }
             })
-
-
-
         }
 
     }, [nodesCount, localStorage.getItem('subjectAreaId'), isCreateSubAreaModal, isOpenSubAreaModal]);
@@ -214,36 +204,12 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         setShowNewSubAreaModal(true);
     }
 
-    const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
-        evt.preventDefault();
-        setModelAddContextVisible(true);
-    }
-
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
             <ItemsBar onNodeAddClick={onNodeAddClick} onCreateSubAreaModal={onCreateSubAreaModal} onOpenSubAreaModal={onOpenSubAreaModal} />
             <div className="work-field-main">
-                <div className="sidebar">
-                    <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
-                    {currentSubjectArea &&
-                        <div className="text-600" style={{ paddingLeft: '10px' }}
-                            onContextMenu={onModelsRightClick}>Модели</div>
-                    }
-                    {modelAddContextVisible &&
-                        <ModelContextMenu
-                            onModelAdd={() => {
-                                setModelFormVisible(true)
-                                setModelAddContextVisible(false)
-                            }} />}
-                    {models.map((model: any) => {
-                        const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
-                        return (
-                            <div style={{ paddingLeft: '20px' }} key={model.id} onClick={() => onModelChoose(model)}
-                            >{name}</div>
-                        )
-                    })}
-                </div>
+                <SideBar onModelChoose={onModelChoose} />
                 <div className="vertical-line"></div>
                 <div className="work-field-content">
                     <ReactFlow nodes={nodes} edges={edges}
@@ -259,11 +225,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 </div>
                 <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />
                 <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />
-                <ModelAddForm isOpen={modelFormVisible}
-                    onClose={() => {
-                        setModelFormVisible(false)
-                        setModelAddContextVisible(false);
-                    }} />
             </div>
         </div>
     )

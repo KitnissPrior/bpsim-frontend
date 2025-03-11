@@ -56,12 +56,16 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                     required: "Введите название модели",
                                     maxLength: { value: 20, message: "Максимальная длина 20 символов" }
                                 })
-                            }} error={errors.title} />
+                            }} error={errors.name} />
                     </div>
                     <div>
                         <div className="text--heading3 text-600">Описание модели</div>
                         <TextInput placeholder="Описание" type="text" id="description"
-                            register={{ ...register('description', { maxLength: { value: 255, message: "Максимальная длина 255 символов" } }) }} error={errors.title} />
+                            register={{
+                                ...register('description',
+                                    { maxLength: { value: 255, message: "Максимальная длина 255 символов" } })
+                            }}
+                            error={errors.description} />
                     </div>
                     <div className="">
                         <BaseButton text={'Отмена'} onClick={onClose}
