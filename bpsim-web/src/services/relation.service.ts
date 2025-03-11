@@ -4,7 +4,7 @@ import { Relation } from "../types/relation";
 
 export const getRelations = async (model_id: number): Promise<AxiosResponse | AxiosError> => {
     try {
-        const response = await publicApi.get(`/relations/${model_id}`);
+        const response = await publicApi.get(`/relations/${model_id}/`);
 
         console.log('Get relations status:', response);
 
