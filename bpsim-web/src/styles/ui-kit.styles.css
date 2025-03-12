@@ -40,6 +40,10 @@
     margin: 0 0 5px 0;
 }
 
+.input--error {
+    color: var(--error)
+}
+
 .sidebar {
     display: flex;
     flex-direction: column;

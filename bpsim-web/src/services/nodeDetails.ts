@@ -15,6 +15,7 @@ export const getNodeDetails = async (nodeId: number): Promise<AxiosResponse | Ax
 
 export const updateNodeDetails = async (nodeDetails: NodeDetails, id: number) => {
     try {
+        nodeDetails.cost = Number(nodeDetails.cost)
         const response = await publicApi.put(`/nodeDetails/${id}/`, nodeDetails);
         return response;
     }

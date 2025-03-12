@@ -1,5 +1,5 @@
 import FormModal from "../Form";
-import TextInput from "../../Inputs/TextInput";
+import TextInput from "../../Inputs/Text";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";
 import { BaseButton } from "../../Buttons/BaseButton";
