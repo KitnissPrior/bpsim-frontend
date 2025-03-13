@@ -20,14 +20,6 @@
     margin: 0 auto;
 }
 
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px 0px;
-    cursor: pointer;
-}
-
 .work-field-content {
     margin-top: 10px;
     font-size: 20px;

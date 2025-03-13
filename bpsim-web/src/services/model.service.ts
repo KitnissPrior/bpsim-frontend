@@ -5,9 +5,6 @@ import { Model } from "../types/model";
 export const getModels = async (subjectAreaId: number): Promise<AxiosResponse | AxiosError> => {
     try {
         const response = await publicApi.get(`/models/${subjectAreaId}/`);
-
-        //console.log('Get models status:', response)
-
         return response;
     }
     catch (error: any) {
@@ -20,8 +17,6 @@ export const createModel = async (model: Model, subjectAreaId: number): Promise<
     try {
         model.sub_area_id = subjectAreaId;
         const response = await publicApi.post('/model/', model);
-        console.log('Model creation status:', response);
-
         return response;
     }
     catch (error: any) {

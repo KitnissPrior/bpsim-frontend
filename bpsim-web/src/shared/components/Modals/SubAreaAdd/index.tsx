@@ -1,5 +1,5 @@
 import FormModal from "../Form";
-import TextInput from "../../Inputs/TextInput";
+import TextInput from "../../Inputs/Text";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";
 import { BaseButton } from "../../Buttons/BaseButton";
@@ -41,18 +41,23 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
         <FormModal isOpen={props.isOpen} title={"Создать предметную область"}
             content={
                 <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)}>
-                    <div className="">
+                    <div>
                         <div className="text--heading3 text-600">Наименование ПО</div>
                         <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
-                            register={{ ...register('name', { required: "Введите название ПО" }) }} error={errors.title} />
+                            register={{ ...register('name', { required: "Введите название ПО" }) }}
+                            error={errors.name} />
 
                     </div>
                     <div>
                         <div className="text--heading3 text-600">Описание ПО</div>
                         <TextInput placeholder="Описание" type="text" id="description"
-                            register={{ ...register('description', { maxLength: { value: 255, message: "Максимальная длина 255 символов" } }) }} error={errors.title} />
+                            register={{
+                                ...register('description',
+                                    { maxLength: { value: 255, message: "Максимальная длина 255 символов" } })
+                            }}
+                            error={errors.description} />
                     </div>
-                    <div className="">
+                    <div>
                         <BaseButton text={'Отмена'} onClick={onClose}
                             className="subject-cancel-btn" />
                         <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
