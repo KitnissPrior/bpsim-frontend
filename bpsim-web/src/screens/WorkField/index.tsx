@@ -57,7 +57,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
-    const mathNodes = useSelector((state: any) => state.node.bpsimItems);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -78,7 +77,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             });
             return updatedNodes;
         });
-        //dispatch(setBpsimItems(bpsimNodes))
     }, []);
 
     const onEdgesChange = useCallback(
@@ -93,6 +91,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const onModelChoose = (model: Model) => {
         dispatch(setCurrentModel(model));
+        if (!model.id) return;
+        localStorage.setItem('modelId', model.id.toString());
 
         const modelId = Number(model.id)
         getNodes(modelId).then((response: any) => {
@@ -110,7 +110,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     key: node.id.toString(),
                     id: node.id.toString(),
                     position: { x: node.posX, y: node.posY },
-                    data: { label: node.name },
+                    data: { label: node.name, updateStateNodes: setBpsimNodes },
                     sourcePosition: "right",
                     targetPosition: "left",
                     type: 'textNode'
@@ -147,7 +147,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                                     key: node.id.toString(),
                                     id: node.id.toString(),
                                     position: { x: node.posX, y: node.posY },
-                                    data: { label: node.name },
+                                    data: { label: node.name, updateStateNodes: setBpsimNodes },
                                     sourcePosition: "right",
                                     targetPosition: "left",
                                     type: 'textNode'

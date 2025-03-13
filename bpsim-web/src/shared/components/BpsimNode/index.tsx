@@ -3,7 +3,7 @@ import { useCallback, useState, MouseEvent } from 'react';
 import './bpsimNode.css';
 import { updateNode } from '../../../services/node.service';
 import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { deleteNode } from '../../../services/node.service';
 import NodeContextMenu from './components/ContextMenu';
 import ConfirmModal from '../Modals/Confirm';
@@ -11,12 +11,12 @@ import ContextMenu from '../ContextMenu';
 import { NodePropsModal } from './components/PropsModal';
 import { getNodeDetails } from '../../../services/nodeDetails';
 import { AxiosError } from 'axios';
-import { setNodeDetails, setNodeName } from '../../../store/reducers/nodeDetailsReducer';
 
 interface IProps {
   id: string;
   data: {
     label: string;
+    updateStateNodes: (nodes: any) => void
   };
   position?: Position;
   model_id?: number;
@@ -38,7 +38,8 @@ export const BpsimNode = ({ id, data }: IProps) => {
   };
 
   const onBlur = useCallback((evt: any) => {
-    if (data.label === evt.target.value) return;
+    console.log(data.label, evt.target.value);
+    if (data.label == evt.target.value) return;
     updateNode({
       id: id,
       name: evt.target.value,
@@ -46,6 +47,10 @@ export const BpsimNode = ({ id, data }: IProps) => {
     }).then((response: any) => {
       if (response.status === 200) {
         setLabel(evt.target.value);
+
+        data.updateStateNodes(((prevNodes: any[]) => prevNodes.map((node: any) => node.id == id ?
+          { ...node, name: evt.target.value } : node)));
+
         toast.success('Имя узла успешно изменено');
       } else {
         toast.error('Имя сохранить не удалось');
@@ -97,44 +102,43 @@ export const BpsimNode = ({ id, data }: IProps) => {
   }
 
   return (
-    <>
-      <div className="text-updater-node" onContextMenu={onRightClick} hidden={deleted}>
-        <Handle
-          type="source"
-          position={Position.Right}
-          id="b"
-          isConnectable={true}
+    <div className="text-updater-node" onContextMenu={onRightClick} hidden={deleted}>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="b"
+        isConnectable={true}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id={id.toString() + "target"}
+        isConnectable={true}
+      />
+      <div className='node-text-container'>
+        <input
+          id="text"
+          name="text"
+          onChange={onChange}
+          className="text--body-xs node-text-field"
+          defaultValue={label}
+          onBlur={onBlur}
         />
-        <Handle
-          type="target"
-          position={Position.Left}
-          id={id.toString() + "target"}
-          isConnectable={true}
-        />
-        <div className='node-text-container'>
-          <input
-            id="text"
-            name="text"
-            onChange={onChange}
-            className="text--body-xs node-text-field"
-            defaultValue={label}
-            onBlur={onBlur}
-          />
-        </div>
-
-        {deleteConfirmVisible &&
-          <ConfirmModal
-            isOpen={deleteConfirmVisible}
-            onCancel={() => {
-              setDeleteConfirmVisible(false);
-              setContextMenuVisible(false)
-            }}
-            onOk={onDelete}
-            content={"Вы уверены что хотите удалить узел?"}
-            okText="Удалить" />}
       </div>
+
+      {deleteConfirmVisible &&
+        <ConfirmModal
+          isOpen={deleteConfirmVisible}
+          onCancel={() => {
+            setDeleteConfirmVisible(false);
+            setContextMenuVisible(false)
+          }}
+          onOk={onDelete}
+          content={"Вы уверены что хотите удалить узел?"}
+          okText="Удалить" />}
       {contextMenuVisible &&
         <ContextMenu
+          onClose={onHideContextMenu}
           children={
             <NodeContextMenu
               onDelete={onDeleteConfirmOpen}
@@ -145,6 +149,6 @@ export const BpsimNode = ({ id, data }: IProps) => {
       {propsVisible &&
         <NodePropsModal isOpen={propsVisible} onClose={onPropsClose} details={details}
           node_id={Number(id)} />}
-    </>
+    </div>
   );
 };

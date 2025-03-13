@@ -26,7 +26,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
         dispatch(setDefaultModel());
         dispatch(clearModelItems());
         dispatch(setDefaultArea());
-        localStorage.clear();
+        //localStorage.clear();
         getSubjectAreas()
             .then((res: any) => {
                 if (res instanceof AxiosError) {
@@ -40,7 +40,6 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
     }, []);
 
     const onChoiseClick = (item: SubjectArea) => {
-        //dispatch(setDefaultModel());
         dispatch(setCurrentArea(item))
     }
 
