@@ -16,6 +16,7 @@ interface IProps {
   id: string;
   data: {
     label: string;
+    updateStateNodes: (nodes: any) => void
   };
   position?: Position;
   model_id?: number;
@@ -37,7 +38,8 @@ export const BpsimNode = ({ id, data }: IProps) => {
   };
 
   const onBlur = useCallback((evt: any) => {
-    if (data.label === evt.target.value) return;
+    console.log(data.label, evt.target.value);
+    if (data.label == evt.target.value) return;
     updateNode({
       id: id,
       name: evt.target.value,
@@ -45,6 +47,10 @@ export const BpsimNode = ({ id, data }: IProps) => {
     }).then((response: any) => {
       if (response.status === 200) {
         setLabel(evt.target.value);
+
+        data.updateStateNodes(((prevNodes: any[]) => prevNodes.map((node: any) => node.id == id ?
+          { ...node, name: evt.target.value } : node)));
+
         toast.success('Имя узла успешно изменено');
       } else {
         toast.error('Имя сохранить не удалось');

@@ -110,7 +110,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     key: node.id.toString(),
                     id: node.id.toString(),
                     position: { x: node.posX, y: node.posY },
-                    data: { label: node.name },
+                    data: { label: node.name, updateStateNodes: setBpsimNodes },
                     sourcePosition: "right",
                     targetPosition: "left",
                     type: 'textNode'
@@ -147,7 +147,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                                     key: node.id.toString(),
                                     id: node.id.toString(),
                                     position: { x: node.posX, y: node.posY },
-                                    data: { label: node.name },
+                                    data: { label: node.name, updateStateNodes: setBpsimNodes },
                                     sourcePosition: "right",
                                     targetPosition: "left",
                                     type: 'textNode'
