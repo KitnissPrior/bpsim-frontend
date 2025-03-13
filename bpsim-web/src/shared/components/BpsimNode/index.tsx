@@ -132,6 +132,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
           okText="Удалить" />}
       {contextMenuVisible &&
         <ContextMenu
+          onClose={onHideContextMenu}
           children={
             <NodeContextMenu
               onDelete={onDeleteConfirmOpen}
