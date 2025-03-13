@@ -6,7 +6,7 @@ export const getRelations = async (model_id: number): Promise<AxiosResponse | Ax
     try {
         const response = await publicApi.get(`/relations/${model_id}/`);
 
-        console.log('Get relations status:', response);
+        //console.log('Get relations status:', response);
 
         return response;
     }
@@ -20,7 +20,7 @@ export const createRelation = async (relation: Relation): Promise<AxiosResponse 
     try {
         const response = await publicApi.post('/relation/', relation);
 
-        console.log('Relation creation status:', response);
+        //console.log('Relation creation status:', response);
 
         return response;
     }

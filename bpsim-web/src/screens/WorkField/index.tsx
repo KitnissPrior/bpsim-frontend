@@ -1,6 +1,5 @@
 import { Toolbar } from "../../shared/components/Bars/Toolbar"
 import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
-
 import "./workField.css"
 import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
@@ -24,6 +23,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
 import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
 import { SideBar } from "../../shared/components/Bars/SideBar"
+import { Relation } from "../../types/relation"
+import { createRelation, getRelations } from "../../services/relation.service"
+import { get } from "react-hook-form"
 
 interface INode {
     key: string | number;
@@ -48,6 +50,8 @@ interface IProps {
 const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = false }: IProps) => {
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
+    const [relations, setRelations] = useState<Relation[]>([]);
+
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
     const navigate = useNavigate();
 
@@ -80,12 +84,36 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     }, []);
 
     const onEdgesChange = useCallback(
-        (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+        (changes: any) => {
+            setEdges((eds) => applyEdgeChanges(changes, eds))
+            const newRelations = edges.map(edge => {
+                return {
+                    source_id: Number(edge.source),
+                    target_id: Number(edge.target),
+                    model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
+                }
+            })
+            setRelations(newRelations)
+        },
         [],
     );
 
-    const onConnect = useCallback(
-        (params: any) => setEdges((eds) => addEdge({ ...params, type: 'step' }, eds)),
+    const onConnect = useCallback((params: any) => {
+        setEdges((eds) => addEdge({ ...params, type: 'step' }, eds))
+        createRelation(
+            {
+                source_id: Number(params.source),
+                target_id: Number(params.target),
+                model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
+            }).then((response: any) => {
+                if (response.status === 200) {
+                    setRelations(prevRelations => [...prevRelations, response.data]);
+                }
+                else {
+                    toast.error('Связь создать не удалось');
+                }
+            })
+    },
         [],
     );
 
@@ -154,6 +182,23 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                                 });
                             });
                             setNodes(newNodes);
+                        })
+
+                        getRelations(currentModel.id).then((response: any) => {
+                            if (response instanceof AxiosError) {
+                                toast.error('Связи не загрузились');
+                            }
+                            else {
+                                setRelations(response.data);
+                                setEdges(response.data.map((relation: any) => {
+                                    return {
+                                        type: 'step',
+                                        id: `${relation.source_id}-${relation.target_id}`,
+                                        source: relation.source_id.toString(),
+                                        target: relation.target_id.toString()
+                                    }
+                                }))
+                            }
                         })
                     }
 

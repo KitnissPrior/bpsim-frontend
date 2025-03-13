@@ -38,7 +38,6 @@ export const BpsimNode = ({ id, data }: IProps) => {
   };
 
   const onBlur = useCallback((evt: any) => {
-    console.log(data.label, evt.target.value);
     if (data.label == evt.target.value) return;
     updateNode({
       id: id,
