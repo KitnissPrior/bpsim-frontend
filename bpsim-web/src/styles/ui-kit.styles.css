@@ -66,12 +66,12 @@
 .context-menu-item {
     cursor: pointer;
     opacity: var(--hover-opasity);
-    margin: 0px;
+    margin: 5px 0px;
     padding: 0px;
 }
 
 .context-menu-hr {
-    margin: 10px 0px;
+    margin: 10px 0px 10px;
     padding: 0px;
     width: 100%;
 }

@@ -34,6 +34,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
         if (!(response instanceof AxiosError)) {
             //onSubjectAdd(response.data.length);
             onClose();
+            localStorage.setItem('modelId', response.data.id.toString());
             toast.success('Модель успешно добавлена');
             setLoading(false);
             dispatch(setCurrentModel(response.data));
