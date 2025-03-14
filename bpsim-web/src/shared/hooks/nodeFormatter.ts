@@ -13,22 +13,13 @@ export const formatBpsimToGraphicNode = (node: any) => {
 export const formatGraphicToBpsimNode = (node: any) => {
     return {
         ...node,
-        type: node.type,
+        id: Number(node.id),
+        name: node.data.label,
+        posX: node.position.x,
+        posY: node.position.y
     }
 }
 
-export const formatBpsimToGraphicNodes = (nodes: any) => {
-    const newNodes: any = [];
-    nodes.forEach((node: any) => {
-        newNodes.push(formatBpsimToGraphicNode(node))
-    });
-    return newNodes;
-}
+export const formatBpsimToGraphicNodes = (BPnodes: any) => BPnodes.map((node: any) => formatBpsimToGraphicNode(node))
 
-export const formatGraphicToBpsimNodes = (nodes: any) => {
-    const newNodes: any = [];
-    nodes.forEach((node: any) => {
-        newNodes.push(formatGraphicToBpsimNode(node))
-    });
-    return newNodes;
-}
+export const formatGraphicToBpsimNodes = (nodes: any) => nodes.map((node: any) => formatGraphicToBpsimNode(node))

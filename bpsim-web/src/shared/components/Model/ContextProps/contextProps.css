@@ -1,0 +1,6 @@
+.context-menu-props {
+    /* top: 0; */
+    position: fixed;
+    top: 40%;
+    left: 80px;
+}

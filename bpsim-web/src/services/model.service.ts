@@ -24,3 +24,14 @@ export const createModel = async (model: Model, subjectAreaId: number): Promise<
         return error as AxiosError;
     }
 };
+
+export const deleteModel = async (id: number): Promise<AxiosResponse | AxiosError> => {
+    try {
+        const response = await publicApi.delete(`/model/${id}/`);
+        return response;
+    }
+    catch (error: any) {
+        console.error('Model deletion error:', error);
+        return error as AxiosError;
+    }
+}

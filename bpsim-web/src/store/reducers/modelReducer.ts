@@ -2,6 +2,7 @@ const actions = {
     SET_CURRENT_MODEL: 'SET_CURRENT_MODEL',
     SET_MODEL_ITEMS: 'SET_MODEL_ITEMS',
     ADD_MODEL: 'ADD_MODEL',
+    DELETE_MODEL: 'DELETE_MODEL',
 }
 
 const defaultState = {
@@ -19,6 +20,8 @@ export const modelReducer = (state = defaultState, action: any) => {
             return { ...state, items: action.payload }
         case actions.ADD_MODEL:
             return { ...state, items: [...state.items, action.payload] }
+        case actions.DELETE_MODEL:
+            return { ...state, items: state.items.filter((item: any) => item.id !== action.payload) }
         default:
             return state;
     }
@@ -31,5 +34,7 @@ export const setModelItems = (items: any) => ({ type: actions.SET_MODEL_ITEMS, p
 export const setDefaultModel = () => ({ type: actions.SET_CURRENT_MODEL, payload: null })
 
 export const addModel = (model: any) => ({ type: actions.ADD_MODEL, payload: model })
+
+export const deleteModel = (id: number) => ({ type: actions.DELETE_MODEL, payload: id })
 
 export const clearModelItems = () => ({ type: actions.SET_MODEL_ITEMS, payload: [] })
