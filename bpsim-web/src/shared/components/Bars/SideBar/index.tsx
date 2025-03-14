@@ -5,8 +5,9 @@ import ModelAddForm from "../../Modals/ModelAdd";
 import { ModelContextMenu } from "../../Model/ContextAdd";
 import { ModelProps } from "../../Model/ContextProps";
 import { deleteModel } from "../../../../services/model.service";
-import { deleteModel as deleteStoreModel } from "../../../../store/reducers/modelReducer";
+import { deleteModel as deleteStoreModel, setCurrentModel } from "../../../../store/reducers/modelReducer";
 import ConfirmModal from "../../Modals/Confirm";
+import { toast } from "react-toastify";
 
 interface IProps {
     onModelChoose: (model: Model) => void
@@ -34,11 +35,20 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     }
 
     const onModelDelete = () => {
-        // deleteModel(currentModel.id).then((response: any) => {
+        //const id = Number(localStorage.getItem('modelId'));
+        const id = currentModel.id;
+        deleteModel(currentModel.id).then((response: any) => {
+            if (response.status == 200) {
+                dispatch(deleteStoreModel(id));
+                localStorage.removeItem('modelId');
+                setDeleteConfirmVisible(false)
+                toast.success('Модель успешно удалена')
+            }
+            else {
+                toast.error(`${response.message}`)
+            }
+        })
 
-        // })
-        dispatch(deleteStoreModel(currentModel.id));
-        localStorage.removeItem('modelId');
     }
 
     return (
@@ -56,29 +66,36 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                             setModelContextVisible(false)
                         }} />}
                 {models.map((model: any) => {
-                    const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
-                    return (
-                        <>
-                            <div style={{ paddingLeft: '20px' }} key={model.id}
-                                onClick={() => onModelChoose(model)}
-                                onContextMenu={onShowModelProps}
-                            >{name}</div>
-                            {propsVisible && <ModelProps onDelete={
-                                () => {
-                                    setDeleteConfirmVisible(true)
-                                    setPropsVisible(false)
-                                }
-                            } />}
-                        </>
-                    )
+                    return (<div style={{ zIndex: '1', }}>
+                        <div style={{ paddingLeft: '20px' }} key={model.id}
+                            onClick={() => onModelChoose(model)}
+                            onContextMenu={(evt) => {
+                                dispatch(setCurrentModel(model))
+                                //localStorage.setItem('')
+                                onShowModelProps(evt)
+                            }}>
+                            {`${model.name}` + (model.id == currentModel?.id ? '*' : '')}
+                        </div>
+                    </div>)
                 })}
-            </div>
+                {
+                    propsVisible && <ModelProps
+                        onClose={() => setPropsVisible(false)}
+                        onDelete={
+                            () => {
+                                setDeleteConfirmVisible(true)
+                                setPropsVisible(false)
+                            }
+                        } />
+                }
+            </div >
             <ModelAddForm isOpen={modelFormVisible}
                 onClose={() => {
                     setModelFormVisible(false)
                     setModelContextVisible(false);
                 }} />
-            {deleteConfirmVisible &&
+            {
+                deleteConfirmVisible &&
                 <ConfirmModal
                     isOpen={deleteConfirmVisible}
                     onCancel={() => {
@@ -87,7 +104,8 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                     }}
                     onOk={onModelDelete}
                     content={"Вы уверены что хотите удалить модель?"}
-                    okText="Удалить" />}
+                    okText="Удалить" />
+            }
         </>
     )
 }

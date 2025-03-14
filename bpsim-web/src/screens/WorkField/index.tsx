@@ -148,6 +148,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     useEffect(() => {
 
         if (localStorage.getItem('subjectAreaId') && !isCreateSubAreaModal && !isOpenSubAreaModal) {
+            context.showLoading(true);
             getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
                 dispatch(setCurrentArea(response.data));
             });
@@ -158,8 +159,9 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 }
                 else {
                     dispatch(setModelItems(response.data));
-                    context.showLoading(true);
-                    if (models.length > 0) {
+                    if (currentModel == null)
+                        context.showLoading(false);
+                    else if (models.length > 0) {
                         getNodes(currentModel.id).then((response: any) => {
                             setNodesCount(response.data.length);
 
