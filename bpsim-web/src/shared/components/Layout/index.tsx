@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import './layout.css'
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import { ToastContainer } from 'react-toastify';
@@ -10,6 +10,7 @@ interface ILayoutProps {
 }
 
 const Layout = ({ children }: ILayoutProps = {}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
@@ -20,8 +21,13 @@ const Layout = ({ children }: ILayoutProps = {}) => {
         <div className="page-content">
           <Suspense fallback={<div>Загрузка...</div>}>
             <ToastContainer aria-label={'alert'} autoClose={1500} />
-            <Outlet context={children} />
+            <Outlet context={{ children, showLoading: setIsLoading }} />
           </Suspense>
+          {isLoading && (
+            <div className="loading-overlay">
+              <div className="loading-spinner" />
+            </div>
+          )}
         </div>
         <div className="footer">
           <Footer />

@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 interface IProps {
     onClose?: () => void
     children?: React.ReactNode
+    className?: string
 }
 
 const ContextMenu = (props: IProps) => {
@@ -36,7 +37,7 @@ const ContextMenu = (props: IProps) => {
     }, [props.onClose]);
 
     return (
-        <div className="context-menu" ref={menuRef} tabIndex={0}>
+        <div className={"context-menu" + ` ${props.className ? props.className : ""}`} ref={menuRef} tabIndex={0}>
             {props.children}
         </div>
     )

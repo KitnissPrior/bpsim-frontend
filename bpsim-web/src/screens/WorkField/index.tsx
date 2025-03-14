@@ -21,11 +21,12 @@ import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
-import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
 import { SideBar } from "../../shared/components/Bars/SideBar"
 import { Relation } from "../../types/relation"
 import { createRelation, getRelations } from "../../services/relation.service"
-import { get } from "react-hook-form"
+import { formatBpsimToGraphicNodes } from "../../shared/hooks/nodeFormatter"
+import { useOutletContext } from 'react-router-dom';
+import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges, formatRelationToEdge } from "../../shared/hooks/edgeFormatter"
 
 interface INode {
     key: string | number;
@@ -51,6 +52,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
     const [relations, setRelations] = useState<Relation[]>([]);
+    const context = useOutletContext<{ showLoading: (show: boolean) => void }>();
 
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
     const navigate = useNavigate();
@@ -86,31 +88,28 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const onEdgesChange = useCallback(
         (changes: any) => {
             setEdges((eds) => applyEdgeChanges(changes, eds))
-            const newRelations = edges.map(edge => {
-                return {
-                    source_id: Number(edge.source),
-                    target_id: Number(edge.target),
-                    model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
-                }
-            })
-            setRelations(newRelations)
+            // const newRelations = edges.map(edge => {
+            //     return {
+            //         source_id: Number(edge.source),
+            //         target_id: Number(edge.target),
+            //         model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
+            //     }
+            // })
+            // setRelations(newRelations)
+            setRelations(formatEdgesToRelations(edges))
         },
         [],
     );
 
     const onConnect = useCallback((params: any) => {
         setEdges((eds) => addEdge({ ...params, type: 'step' }, eds))
-        createRelation(
-            {
-                source_id: Number(params.source),
-                target_id: Number(params.target),
-                model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
-            }).then((response: any) => {
+        createRelation(formatEdgeToRelation(params))
+            .then((response: any) => {
                 if (response.status === 200) {
                     setRelations(prevRelations => [...prevRelations, response.data]);
                 }
                 else {
-                    toast.error('Связь создать не удалось');
+                    toast.error('Сохранить связь не удалось');
                 }
             })
     },
@@ -118,33 +117,30 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     );
 
     const onModelChoose = (model: Model) => {
+        context.showLoading(true);
+
         dispatch(setCurrentModel(model));
         if (!model.id) return;
         localStorage.setItem('modelId', model.id.toString());
 
         const modelId = Number(model.id)
+
         getNodes(modelId).then((response: any) => {
             const data = response.data;
             setNodesCount(data.length);
 
             setBpsimNodes(data);
-            dispatch(setBpsimItems(data))
-            dispatch(setGraphicItems(data))
+            //dispatch(setBpsimItems(data))
+            //dispatch(setGraphicItems(data))
 
+            setNodes(formatBpsimToGraphicNodes(data));
 
-            const newNodes: any = [];
-            data.forEach((node: any) => {
-                newNodes.push({
-                    key: node.id.toString(),
-                    id: node.id.toString(),
-                    position: { x: node.posX, y: node.posY },
-                    data: { label: node.name, updateStateNodes: setBpsimNodes },
-                    sourcePosition: "right",
-                    targetPosition: "left",
-                    type: 'textNode'
-                });
-            });
-            setNodes(newNodes);
+            getRelations(modelId).then((response: any) => {
+                const data = response.data;
+                setRelations(data);
+                setEdges(formatRelationsToEdges(data))
+                context.showLoading(false);
+            })
         })
     }
 
@@ -162,26 +158,14 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 }
                 else {
                     dispatch(setModelItems(response.data));
-
+                    context.showLoading(true);
                     if (models.length > 0) {
                         getNodes(currentModel.id).then((response: any) => {
                             setNodesCount(response.data.length);
 
                             const nodes = response.data;
                             setBpsimNodes(nodes);
-                            const newNodes: any = [];
-                            nodes.forEach((node: any) => {
-                                newNodes.push({
-                                    key: node.id.toString(),
-                                    id: node.id.toString(),
-                                    position: { x: node.posX, y: node.posY },
-                                    data: { label: node.name, updateStateNodes: setBpsimNodes },
-                                    sourcePosition: "right",
-                                    targetPosition: "left",
-                                    type: 'textNode'
-                                });
-                            });
-                            setNodes(newNodes);
+                            setNodes(formatBpsimToGraphicNodes(nodes));
                         })
 
                         getRelations(currentModel.id).then((response: any) => {
@@ -190,18 +174,11 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                             }
                             else {
                                 setRelations(response.data);
-                                setEdges(response.data.map((relation: any) => {
-                                    return {
-                                        type: 'step',
-                                        id: `${relation.source_id}-${relation.target_id}`,
-                                        source: relation.source_id.toString(),
-                                        target: relation.target_id.toString()
-                                    }
-                                }))
+                                setEdges(formatRelationsToEdges(response.data))
                             }
                         })
                     }
-
+                    context.showLoading(false);
                 }
             })
         }
