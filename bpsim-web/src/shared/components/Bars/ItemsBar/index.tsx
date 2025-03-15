@@ -37,7 +37,7 @@ export const ItemsBar = (props: IProps) => {
             <IconButton iconPath={Agent} iconClassName="icon" placeholder="Агент" />
             <IconButton iconPath={Checkbox} iconClassName="icon" placeholder="Чекбокс" />
             <IconButton iconPath={Radio} iconClassName="icon" placeholder="Радиогруппа" />
-            <IconButton iconPath={Slider} iconClassName="icon" placeholder="бегунок" />
+            <IconButton iconPath={Slider} iconClassName="icon" placeholder="Бегунок" />
             <IconButton iconPath={Diagram} iconClassName="icon" placeholder="Диаграмма" />
             <IconButton iconPath={Text} iconClassName="icon" placeholder="Текст" />
         </div>
