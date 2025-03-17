@@ -26,13 +26,15 @@ import { Relation } from "../../types/relation"
 import { createRelation, getRelations } from "../../services/relation.service"
 import { formatBpsimToGraphicNodes } from "../../shared/hooks/nodeFormatter"
 import { useOutletContext } from 'react-router-dom';
-import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges, formatRelationToEdge } from "../../shared/hooks/edgeFormatter"
+import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges } from "../../shared/hooks/edgeFormatter"
+import { startSimulation } from "../../services/simulation"
 
 interface INode {
     key: string | number;
     id: string;
     data: {
         label: string;
+
     }
     position: {
         x: number;
@@ -102,10 +104,10 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     );
 
     const onConnect = useCallback((params: any) => {
-        setEdges((eds) => addEdge({ ...params, type: 'step' }, eds))
         createRelation(formatEdgeToRelation(params))
             .then((response: any) => {
                 if (response.status === 200) {
+                    setEdges((eds) => addEdge({ ...params, type: 'step' }, eds))
                     setRelations(prevRelations => [...prevRelations, response.data]);
                 }
                 else {
@@ -133,7 +135,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             //dispatch(setBpsimItems(data))
             //dispatch(setGraphicItems(data))
 
-            setNodes(formatBpsimToGraphicNodes(data));
+            setNodes(formatBpsimToGraphicNodes(data, setBpsimNodes));
 
             getRelations(modelId).then((response: any) => {
                 const data = response.data;
@@ -167,7 +169,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
                             const nodes = response.data;
                             setBpsimNodes(nodes);
-                            setNodes(formatBpsimToGraphicNodes(nodes));
+                            setNodes(formatBpsimToGraphicNodes(nodes, setBpsimNodes));
                         })
 
                         getRelations(currentModel.id).then((response: any) => {
@@ -207,6 +209,17 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         })
         errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
     }
+    const onStartClick = () => {
+
+        startSimulation(currentModel.id).then((response: any) => {
+            if (response.status == 200) {
+                toast.success('Симуляция прошла успешно!');
+            }
+            else {
+                toast.error('Симуляцию запустить не удалось');
+            }
+        })
+    }
 
     const onSubAreaModalCreateClose = () => {
         setShowNewSubAreaModal(false);
@@ -231,7 +244,11 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
-            <ItemsBar onNodeAddClick={onNodeAddClick} onCreateSubAreaModal={onCreateSubAreaModal} onOpenSubAreaModal={onOpenSubAreaModal} />
+            <ItemsBar
+                onStart={onStartClick}
+                onCreateSubAreaModal={onCreateSubAreaModal}
+                onOpenSubAreaModal={onOpenSubAreaModal}
+                onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <SideBar onModelChoose={onModelChoose} />
                 <div className="vertical-line"></div>
