@@ -53,7 +53,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
 
     return (
         <>
-            <div className="sidebar">
+            <div className="sidebar" key="sidebar">
                 <div key="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
                 {currentSubjectArea &&
                     <div className="text-600" style={{ paddingLeft: '10px' }}
@@ -66,7 +66,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                             setModelContextVisible(false)
                         }} />}
                 {models.map((model: any) => {
-                    return (<div style={{ zIndex: '1', }}>
+                    return (
                         <div style={{ paddingLeft: '20px' }} key={model.id}
                             onClick={() => onModelChoose(model)}
                             onContextMenu={(evt) => {
@@ -76,7 +76,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                             }}>
                             {`${model.name}` + (model.id == currentModel?.id ? '*' : '')}
                         </div>
-                    </div>)
+                    )
                 })}
                 {
                     propsVisible && <ModelProps
