@@ -1,20 +1,40 @@
+.items-bar-background {
+    position: relative;
+    padding: 2px 50px 5px 50px;
+    height: 40px;
+    width: 100%;
+    background-color: var(--grey-background);
+    align-items: center;
+}
+
+.items-horizontal-line {
+    position: relative;
+    background-color: var(--grey-medium);
+    height: 1px;
+    border: 1px;
+    width: 100%;
+    z-index: 1;
+}
+
 .items-bar {
+    /* position: fixed; */
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     gap: 10px;
-    height: 40px;
-    width: 100vw;
-    position: fixed;
     align-items: center;
-    padding-bottom: 5px;
+    padding-bottom: 7px;
     background-color: var(--grey-background);
+    width: 100%;
 }
 
 .items-bar-divider {
     width: 1px;
     height: 30px;
     background-color: var(--grey-dark);
+    border: 1px;
     margin-left: 5px;
+    margin-top: 2px;
     padding: 0px;
 }

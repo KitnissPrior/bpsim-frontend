@@ -28,6 +28,7 @@ import { formatBpsimToGraphicNodes } from "../../shared/hooks/nodeFormatter"
 import { useOutletContext } from 'react-router-dom';
 import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges } from "../../shared/hooks/edgeFormatter"
 import { startSimulation } from "../../services/simulation"
+import { Console } from "./Console"
 
 interface INode {
     key: string | number;
@@ -55,6 +56,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
     const [relations, setRelations] = useState<Relation[]>([]);
     const context = useOutletContext<{ showLoading: (show: boolean) => void }>();
+
+    const [logs, setLogs] = useState<string[]>([]);
 
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
     const navigate = useNavigate();
@@ -90,14 +93,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const onEdgesChange = useCallback(
         (changes: any) => {
             setEdges((eds) => applyEdgeChanges(changes, eds))
-            // const newRelations = edges.map(edge => {
-            //     return {
-            //         source_id: Number(edge.source),
-            //         target_id: Number(edge.target),
-            //         model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
-            //     }
-            // })
-            // setRelations(newRelations)
             setRelations(formatEdgesToRelations(edges))
         },
         [],
@@ -132,9 +127,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             setNodesCount(data.length);
 
             setBpsimNodes(data);
-            //dispatch(setBpsimItems(data))
-            //dispatch(setGraphicItems(data))
-
             setNodes(formatBpsimToGraphicNodes(data, setBpsimNodes));
 
             getRelations(modelId).then((response: any) => {
@@ -213,6 +205,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
         startSimulation(currentModel.id).then((response: any) => {
             if (response.status == 200) {
+                setLogs(response.data);
                 toast.success('Симуляция прошла успешно!');
             }
             else {
@@ -251,22 +244,24 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
                 <SideBar onModelChoose={onModelChoose} />
-                <div className="vertical-line"></div>
                 <div className="work-field-content">
-                    <ReactFlow nodes={nodes} edges={edges}
-                        onNodesChange={memoizedOnNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onConnect={onConnect}
-                        nodeTypes={nodeTypes}
-                        proOptions={{ hideAttribution: true }}
-                    >
-                        <Background />
-                        <Controls />
-                    </ReactFlow>
+                    <div className="flow-content">
+                        <ReactFlow nodes={nodes} edges={edges}
+                            onNodesChange={memoizedOnNodesChange}
+                            onEdgesChange={onEdgesChange}
+                            onConnect={onConnect}
+                            nodeTypes={nodeTypes}
+                            proOptions={{ hideAttribution: true }}
+                        >
+                            <Background color="#f0f0f0" />
+                            <Controls />
+                        </ReactFlow>
+                    </div>
+                    <Console data={logs} />
                 </div>
-                <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />
-                <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />
             </div>
+            {showNewSubAreaModal && <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />}
+            {showOpenSubAreaModal && <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />}
         </div>
     )
 }
