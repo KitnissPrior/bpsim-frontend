@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
-import { BaseButton } from "../../shared/components/Buttons/BaseButton"
+import { BaseButton } from "../../shared/components/Buttons/Base"
 import "./start.css"
 
 const StartScreen = () => {

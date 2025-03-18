@@ -1,8 +1,8 @@
-import FormModal from "../Form";
+import FormModal from "../../Modals/Form";
 import TextInput from "../../Inputs/Text";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";
-import { BaseButton } from "../../Buttons/BaseButton";
+import { BaseButton } from "../../Buttons/Base";
 import { createSubjectArea } from "../../../../services/subjectArea.service";
 import { AxiosError } from "axios";
 import { useState } from "react";
