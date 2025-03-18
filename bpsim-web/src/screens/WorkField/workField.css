@@ -2,43 +2,36 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    min-height: 600px;
+    min-height: 550px;
     max-height: 700px;
-    margin-left: 50px;
+    /* /margin-left: 50px; */
+    margin: 0px;
+    /* padding-left: 50px; */
 }
 
 .work-field-main {
     display: grid;
     grid-template-columns: 300px 1fr;
-    gap: 10px;
-    padding: 0px;
     font-weight: bold;
-    min-height: 600px;
+    min-height: 550px;
     max-height: 700px;
-    /* margin-left: 50px; */
-}
-
-.vertical-line {
-    position: relative;
-    padding-top: 20px;
-    height: auto;
-    width: 1px;
-    background-color: black;
-    margin: 0 auto;
+    padding-left: 10px;
 }
 
 .work-field-content {
-    margin-top: 10px;
+    padding-top: 10px;
     font-size: 20px;
     align-items: center;
-    /* width: 1100px; */
     width: calc(100% - 10px);
-    height: 100%;
+    height: calc(100% - 10px);
+    gap: 10px;
 }
 
 .flow-content {
+    position: relative;
     height: 400px;
     background-color: white;
     border-radius: var(--border-radius);
-    padding-bottom: 20px;
+    margin-bottom: 10px;
+    z-index: 2;
 }

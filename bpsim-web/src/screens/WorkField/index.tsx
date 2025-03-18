@@ -256,8 +256,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                             <Background color="#f0f0f0" />
                             <Controls />
                         </ReactFlow>
-                        <Console data={logs} />
                     </div>
+                    <Console data={logs} />
                 </div>
             </div>
             {showNewSubAreaModal && <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />}

@@ -13,12 +13,21 @@ interface IProps {
 }
 
 export const BaseButton = ({ text, onClick, className, ...props }: IProps) => {
-    const [iconPath, setIconPath] = useState(props.iconPath)
+    const [iconPath] = useState(props.iconPath)
 
-    const Icon = () => props.iconPath ? 
-    <img src={iconPath} alt="icon" className={props.iconClassName} /> 
-    : <div style={{marginLeft: '-5px'}}/>
+    const Icon = () => props.iconPath ?
+        <img src={iconPath} alt="icon" className={"btn-icon " + props.iconClassName} />
+        : <div style={{ marginLeft: '-5px' }} />
+
+    const IconPlusText = () =>
+        <>
+            <Icon />
+            {text}
+        </>
+
     return (
-        <button className={`base-button ${className}`} onClick={onClick} type={props.type ? props.type : 'button'}>{text}</button>
+        <button className={`base-button ${className}`} onClick={onClick} type={props.type ? props.type : 'button'}>
+            {iconPath ? <IconPlusText /> : text}
+        </button>
     )
 }

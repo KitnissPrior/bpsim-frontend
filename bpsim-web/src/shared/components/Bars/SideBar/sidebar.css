@@ -1,8 +1,10 @@
 .sidebar {
+    margin-top: 10px;
     border: 1px solid var(--grey-medium);
     width: 285px;
     border-radius: var(--border-radius);
-    height: 100%;
+    height: 94%;
+    padding-left: 40px;
     /* overflow-x: scroll; */
 }
 

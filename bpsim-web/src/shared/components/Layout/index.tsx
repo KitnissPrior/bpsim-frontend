@@ -14,12 +14,12 @@ const Layout = ({ children }: ILayoutProps = {}) => {
   return (
     <>
       <div className="main">
+        <ToastContainer aria-label={'alert'} autoClose={1000} />
         <div className="header">
           <Header />
         </div>
         <div className="page-content">
           <Suspense fallback={<div>Загрузка...</div>}>
-            <ToastContainer aria-label={'alert'} autoClose={1500} />
             <Outlet context={{ children, showLoading: setIsLoading }} />
           </Suspense>
           {isLoading && (
