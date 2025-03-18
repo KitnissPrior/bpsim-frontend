@@ -1,6 +1,7 @@
 :root {
   --black: #000000;
   --blue-dark: rgba(3, 37, 77, 1);
+  --blue: rgba(0, 61, 131, 1);
   --error: red;
   --white: rgba(255, 255, 255, 1);
   --pink-pale: rgb(255, 242, 249);
@@ -11,7 +12,7 @@
 
   /*bpsim color*/
   --grey-dark: rgba(87, 87, 87, 1);
-
+  --grey-medium: rgba(100, 100, 100, 1);
 
   --toastify-color-success: var(--green-grass);
 

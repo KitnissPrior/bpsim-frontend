@@ -2,7 +2,7 @@ import FormModal from "../Form";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { getSubjectAreas } from "../../../../services/subjectArea.service";
 import { useEffect, useState } from "react";
-import { BaseButton } from "../../Buttons/BaseButton";
+import { BaseButton } from "../../Buttons/Base";
 import { AxiosError } from "axios";
 import TextError from "../../Errors/TextError";
 import "./subAreaChoice.css"

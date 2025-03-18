@@ -1,0 +1,15 @@
+.sidebar-second-slice {
+    padding: 0px 0px 0px 10px;
+}
+
+.sidebar-third-slice {
+    padding-left: 33px;
+}
+
+.sidebar-items-slice {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+}

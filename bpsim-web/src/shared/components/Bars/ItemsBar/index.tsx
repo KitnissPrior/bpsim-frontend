@@ -1,4 +1,4 @@
-import { IconButton } from "../../Buttons/IconButton"
+import { IconButton } from "../../Buttons/Icon"
 import "./itemsBar.css"
 import SubAreaCreate from "../../../../assets/icons/sub_area_create.svg"
 import SubAreaOpen from "../../../../assets/icons/sub_area_open.svg"

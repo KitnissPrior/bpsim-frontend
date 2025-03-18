@@ -78,3 +78,9 @@
     padding: 0px;
     width: 100%;
 }
+
+.row-block {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}

@@ -18,7 +18,7 @@ const ContextMenu = (props: IProps) => {
         };
 
         const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+            if (menuRef.current && !menuRef.current.contains(event.relatedTarget as Node)) {
                 props.onClose?.();
             }
         };
@@ -37,7 +37,7 @@ const ContextMenu = (props: IProps) => {
     }, [props.onClose]);
 
     return (
-        <div className={"context-menu" + ` ${props.className ? props.className : ""}`} ref={menuRef} tabIndex={0}>
+        <div className={"context-menu" + ` ${props.className ? props.className : ""}`} ref={menuRef} tabIndex={10}>
             {props.children}
         </div>
     )

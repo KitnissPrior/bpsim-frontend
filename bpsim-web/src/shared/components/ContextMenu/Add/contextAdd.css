@@ -1,4 +1,4 @@
-.model-context-menu {
+.context-menu-add {
     background-color: #555;
     color: #fff;
     text-align: center;
@@ -9,6 +9,6 @@
     transform: translate(50%, 100%);
 }
 
-.model-context-menu:hover {
+.context-menu-add:hover {
     opacity: var(--hover-opasity);
 }

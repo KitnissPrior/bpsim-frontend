@@ -2,12 +2,16 @@ import { useState, MouseEvent } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Model } from "../../../../types/model";
 import ModelAddForm from "../../Modals/ModelAdd";
-import { ModelContextMenu } from "../../Model/ContextAdd";
+import "./sidebar.css"
+import { ContextAdd } from "../../ContextMenu/Add";
 import { ModelProps } from "../../Model/ContextProps";
 import { deleteModel } from "../../../../services/model.service";
 import { deleteModel as deleteStoreModel, setCurrentModel } from "../../../../store/reducers/modelReducer";
 import ConfirmModal from "../../Modals/Confirm";
 import { toast } from "react-toastify";
+import { Resources } from "./Resources";
+import ResourceForm from "../../Resources/Form";
+import { ShowMoreButton } from "../../Buttons/ShowMore";
 
 interface IProps {
     onModelChoose: (model: Model) => void
@@ -18,6 +22,10 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     const [modelFormVisible, setModelFormVisible] = useState(false);
     const [propsVisible, setPropsVisible] = useState(false);
     const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+    const [modelsVisible, setModelsVisible] = useState(false);
+
+    const [resourceContextVisible, setResourceContextVisible] = useState(false);
+    const [resourceFormVisible, setResourceFormVisible] = useState(false);
     const dispatch = useDispatch()
 
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
@@ -51,33 +59,53 @@ export const SideBar = ({ onModelChoose }: IProps) => {
 
     }
 
+    const onResoursesRightClick = (evt: MouseEvent<HTMLDivElement>) => {
+        evt.preventDefault();
+        setResourceContextVisible((prev) => !prev);
+    }
+
+    const onShowResourceForm = () => {
+        setResourceContextVisible(false);
+        setResourceFormVisible(true);
+    }
+
     return (
         <>
             <div className="sidebar" key="sidebar">
-                <div key="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
+                <div className="sidebar-items-slice">
+                    <ShowMoreButton disabled={true} theme="primary" />
+                    <div key="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
+                </div>
                 {currentSubjectArea &&
-                    <div className="text-600" style={{ paddingLeft: '10px' }}
-                        onContextMenu={onModelsRightClick}>Модели</div>
+                    <div className="sidebar-items-slice sidebar-second-slice">
+                        <ShowMoreButton onClick={() => setModelsVisible((prev) => !prev)} theme="secondary" />
+                        <div onContextMenu={onModelsRightClick}>Модели</div>
+                    </div>
                 }
                 {modelContextVisible &&
-                    <ModelContextMenu
-                        onModelAdd={() => {
+                    <ContextAdd
+                        text="+ Добавить модель"
+                        onAdd={() => {
                             setModelFormVisible(true)
                             setModelContextVisible(false)
                         }} />}
-                {models.map((model: any) => {
+                {modelsVisible && models.map((model: any) => {
                     return (
-                        <div style={{ paddingLeft: '20px' }} key={model.id}
+                        <div className="sidebar-third-slice" key={model.id}
                             onClick={() => onModelChoose(model)}
                             onContextMenu={(evt) => {
                                 dispatch(setCurrentModel(model))
-                                //localStorage.setItem('')
                                 onShowModelProps(evt)
                             }}>
                             {`${model.name}` + (model.id == currentModel?.id ? '*' : '')}
                         </div>
                     )
                 })}
+                <Resources onContextMenu={onResoursesRightClick} data={[]} />
+                {resourceContextVisible &&
+                    <ContextAdd
+                        text="+ Добавить ресурс"
+                        onAdd={onShowResourceForm} />}
                 {
                     propsVisible && <ModelProps
                         onClose={() => setPropsVisible(false)}
@@ -94,6 +122,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                     setModelFormVisible(false)
                     setModelContextVisible(false);
                 }} />
+            <ResourceForm isOpen={resourceFormVisible} onClose={() => setResourceFormVisible(false)} />
             {
                 deleteConfirmVisible &&
                 <ConfirmModal

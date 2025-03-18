@@ -1,0 +1,18 @@
+.show-more-button {
+    width: 10px;
+    height: 10px;
+    border-radius: 6px;
+    border: none;
+}
+
+.show-more-button[data-theme="primary"] {
+    background-color: var(--blue);
+}
+
+.show-more-button[data-theme="secondary"] {
+    background-color: var(--grey-medium);
+}
+
+.show-more-button:hover {
+    opacity: var(--hover-opasity);
+}
