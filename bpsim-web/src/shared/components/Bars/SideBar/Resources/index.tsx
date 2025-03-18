@@ -10,21 +10,37 @@ interface IProps {
 export const Resources = ({ onContextMenu, }: IProps) => {
     const [dataVisible, setDataVisible] = useState(false);
 
+    const onShowResources = () => {
+        setDataVisible((prev) => !prev);
+    }
+
     return (
         <>
 
-            <div className="sidebar-items-slice sidebar-second-slice">
-                <ShowMoreButton onClick={() => setDataVisible((prev) => !prev)} theme="secondary" />
-                <div className="text-600" onContextMenu={onContextMenu}>
+            <div className="sidebar-items-slice sidebar-second-slice hoverable">
+                <ShowMoreButton onClick={onShowResources} theme="secondary" />
+                <div className="hoverable" onContextMenu={onContextMenu} onClick={onShowResources}>
                     Ресурсы
                 </div>
             </div>
             {dataVisible &&
                 <>
-                    <div className="sidebar-third-slice">Информационный</div>
-                    <div className="sidebar-third-slice">Материальный</div>
-                    <div className="sidebar-third-slice">Трудовой</div>
-                    <div className="sidebar-third-slice">Финансовый</div>
+                    <div className="sidebar-items-slice sidebar-third-slice">
+                        <ShowMoreButton disabled={true} theme="white" />
+                        <div>Информационный</div>
+                    </div>
+                    <div className="sidebar-items-slice sidebar-third-slice">
+                        <ShowMoreButton disabled={true} theme="white" />
+                        <div>Материальный</div>
+                    </div>
+                    <div className="sidebar-items-slice sidebar-third-slice">
+                        <ShowMoreButton disabled={true} theme="white" />
+                        <div>Трудовой</div>
+                    </div>
+                    <div className="sidebar-items-slice sidebar-third-slice">
+                        <ShowMoreButton disabled={true} theme="white" />
+                        <div>Финансовый</div>
+                    </div>
                 </>}
         </>
     )

@@ -1,7 +1,7 @@
 .show-more-button {
-    width: 10px;
-    height: 10px;
-    border-radius: 6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
     border: none;
 }
 
@@ -13,6 +13,11 @@
     background-color: var(--grey-medium);
 }
 
-.show-more-button:hover {
+.show-more-button[data-theme="secondary"]:hover {
     opacity: var(--hover-opasity);
+}
+
+.show-more-button[data-theme="white"] {
+    background-color: var(--white);
+    border: 1px solid black;
 }

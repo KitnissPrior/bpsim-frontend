@@ -1,8 +1,9 @@
-import "./openButton.css"
+import "./showMoreBtn.css"
 interface IProps {
     theme:
     | 'primary'
     | 'secondary'
+    | 'white'
     onClick?: () => void
     disabled?: boolean
 }

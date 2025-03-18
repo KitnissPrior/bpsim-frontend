@@ -1,7 +1,7 @@
 import { useState, MouseEvent } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Model } from "../../../../types/model";
-import ModelAddForm from "../../Modals/ModelAdd";
+import ModelAddForm from "../../Model/Add";
 import "./sidebar.css"
 import { ContextAdd } from "../../ContextMenu/Add";
 import { ModelProps } from "../../Model/ContextProps";
@@ -69,6 +69,10 @@ export const SideBar = ({ onModelChoose }: IProps) => {
         setResourceFormVisible(true);
     }
 
+    const onShowModels = () => {
+        setModelsVisible((prev) => !prev);
+    }
+
     return (
         <>
             <div className="sidebar" key="sidebar">
@@ -77,9 +81,11 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                     <div key="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
                 </div>
                 {currentSubjectArea &&
-                    <div className="sidebar-items-slice sidebar-second-slice">
-                        <ShowMoreButton onClick={() => setModelsVisible((prev) => !prev)} theme="secondary" />
-                        <div onContextMenu={onModelsRightClick}>Модели</div>
+                    <div className="sidebar-items-slice sidebar-second-slice hoverable">
+                        <ShowMoreButton onClick={onShowModels} theme="secondary" />
+                        <div className="hoverable"
+                            onClick={onShowModels}
+                            onContextMenu={onModelsRightClick}>Модели</div>
                     </div>
                 }
                 {modelContextVisible &&
@@ -91,13 +97,16 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                         }} />}
                 {modelsVisible && models.map((model: any) => {
                     return (
-                        <div className="sidebar-third-slice" key={model.id}
-                            onClick={() => onModelChoose(model)}
-                            onContextMenu={(evt) => {
-                                dispatch(setCurrentModel(model))
-                                onShowModelProps(evt)
-                            }}>
-                            {`${model.name}` + (model.id == currentModel?.id ? '*' : '')}
+                        <div className="sidebar-items-slice sidebar-third-slice">
+                            <ShowMoreButton disabled={true} theme="white" />
+                            <div key={model.id}
+                                onClick={() => onModelChoose(model)}
+                                onContextMenu={(evt) => {
+                                    dispatch(setCurrentModel(model))
+                                    onShowModelProps(evt)
+                                }}>
+                                {`${model.name}` + (model.id == currentModel?.id ? '*' : '')}
+                            </div>
                         </div>
                     )
                 })}
