@@ -1,3 +1,11 @@
+.sidebar {
+    border: 1px solid var(--grey-medium);
+    width: 285px;
+    border-radius: var(--border-radius);
+    height: 100%;
+    /* overflow-x: scroll; */
+}
+
 .sidebar-second-slice {
     padding: 0px 0px 0px 22px;
 }

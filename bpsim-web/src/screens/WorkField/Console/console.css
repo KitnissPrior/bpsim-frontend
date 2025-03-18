@@ -1,0 +1,14 @@
+.console {
+  position: relative;
+  background-color: var(--grey-background);
+  width: calc(100% - 10px);
+  display: flex;
+  max-height: 200px;
+  min-height: 100px;
+  align-items: first baseline;
+  flex-direction: column;
+  color: var(--grey-medium);
+  border: 1px solid var(--grey-medium);
+  border-radius: 10px;
+  padding: 10px 20px;
+}

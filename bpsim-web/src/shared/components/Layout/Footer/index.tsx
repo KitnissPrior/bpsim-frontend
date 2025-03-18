@@ -2,9 +2,12 @@ import "./footer.css"
 
 const Footer = () => {
     return (
-        <div className="developers-area">
-            <div>Создано при поддержке ИРИТ-РтФ УрФУ</div>
-            <div>Н. А. Жаркова Е. К. Аксенова К. А. Аксенов Т. В. Голубятников</div>
+        <div>
+            <span className="developers-area text---body-s">
+                <div>Проект разработали в 2025 году</div>
+                <div>Жаркова Н.А. Аксенова Е.К. Аксенов К.А. Голубятников Т.В.</div>
+            </span>
+            <div className="bpsim-area">BPSim.MAS | Система имитационного моделирования</div>
         </div>
     )
 }

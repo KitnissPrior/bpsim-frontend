@@ -3,14 +3,29 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 0 auto;
+    margin: 100px 0px 300px 0px;
     gap: 50px;
-    height: 400px;
-    width: 1000px;
+    width: 100%;
 }
 
 .buttons-area {
     display: flex;
     flex-direction: column;
     gap: 20px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    display: flex;
+    max-height: 343px;
+    min-height: 100px;
+    justify-content: center;
+    padding: 50px 50px 50px 50px;
+    flex-direction: column;
+    background-color: var(--blue);
+    color: var(--white);
 }

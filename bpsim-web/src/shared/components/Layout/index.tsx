@@ -2,7 +2,6 @@ import { Outlet } from 'react-router-dom'
 import './layout.css'
 import { Suspense, useState } from 'react'
 import Header from './Header'
-import Footer from './Footer'
 import { ToastContainer } from 'react-toastify';
 
 interface ILayoutProps {
@@ -28,9 +27,6 @@ const Layout = ({ children }: ILayoutProps = {}) => {
               <div className="loading-spinner" />
             </div>
           )}
-        </div>
-        <div className="footer">
-          <Footer />
         </div>
       </div>
     </>

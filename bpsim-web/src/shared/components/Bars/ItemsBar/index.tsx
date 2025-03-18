@@ -13,7 +13,6 @@ import Diagram from "../../../../assets/icons/icon_diagram.svg"
 // import Text from "../../../../assets/icons/icon_text.svg"
 
 interface IProps {
-
     onOpenSubAreaModal: () => void
     onCreateSubAreaModal: () => void
     onStart: () => void
@@ -23,24 +22,26 @@ interface IProps {
 export const ItemsBar = (props: IProps) => {
 
     return (
-        <div className="items-bar">
-            <IconButton iconPath={SubAreaOpen} iconClassName="icon"
-                onClick={props.onOpenSubAreaModal} placeholder="Открыть ПО (предметную область)" />
-            <IconButton iconPath={SubAreaCreate} iconClassName="icon"
-                onClick={props.onCreateSubAreaModal} placeholder="Создать ПО (предметную область)" />
-            <div className="items-bar-divider" />
-            <IconButton iconPath={Play} iconClassName="icon"
-                onClick={props.onStart} placeholder="Старт" />
-            <div className="items-bar-divider" />
-            <IconButton iconPath={Coursor} iconClassName="icon" placeholder="Курсор" />
-            <IconButton iconPath={NodeAdd} iconClassName="icon"
-                onClick={props.onNodeAddClick} placeholder="Узел" />
-            {/* <IconButton iconPath={Agent} iconClassName="icon" placeholder="Агент" />
+        <div className="items-bar-background">
+            <div className="items-bar">
+                <IconButton iconPath={SubAreaOpen} iconClassName="icon"
+                    onClick={props.onOpenSubAreaModal} placeholder="Открыть ПО (предметную область)" />
+                <IconButton iconPath={SubAreaCreate} iconClassName="icon"
+                    onClick={props.onCreateSubAreaModal} placeholder="Создать ПО (предметную область)" />
+                <div className="items-bar-divider" />
+                <IconButton iconPath={Play} iconClassName="icon"
+                    onClick={props.onStart} placeholder="Старт" />
+                <div className="items-bar-divider" />
+                <IconButton iconPath={Coursor} iconClassName="icon" placeholder="Курсор" />
+                <IconButton iconPath={NodeAdd} iconClassName="icon"
+                    onClick={props.onNodeAddClick} placeholder="Узел" />
+                {/* <IconButton iconPath={Agent} iconClassName="icon" placeholder="Агент" />
             <IconButton iconPath={Checkbox} iconClassName="icon" placeholder="Чекбокс" />
             <IconButton iconPath={Radio} iconClassName="icon" placeholder="Радиогруппа" />
             <IconButton iconPath={Slider} iconClassName="icon" placeholder="Бегунок" /> */}
-            <IconButton iconPath={Diagram} iconClassName="icon" placeholder="График" />
-            {/* <IconButton iconPath={Text} iconClassName="icon" placeholder="Текст" /> */}
+                <IconButton iconPath={Diagram} iconClassName="icon" placeholder="График" />
+                {/* <IconButton iconPath={Text} iconClassName="icon" placeholder="Текст" /> */}
+            </div>
         </div>
     )
 }

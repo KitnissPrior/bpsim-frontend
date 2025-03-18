@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { BaseButton } from "../../shared/components/Buttons/Base"
 import "./start.css"
+import Footer from "../../shared/components/Layout/Footer"
 
 const StartScreen = () => {
     const navigate = useNavigate()
@@ -20,6 +21,9 @@ const StartScreen = () => {
             <div className="buttons-area">
                 <BaseButton text="Открыть предметную область" onClick={onOpenSubjectArea} />
                 <BaseButton text="Создать предметную область" onClick={onCreateSubjectArea} />
+            </div>
+            <div className="footer">
+                <Footer />
             </div>
         </div>
     )

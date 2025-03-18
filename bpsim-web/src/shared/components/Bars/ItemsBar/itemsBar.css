@@ -3,12 +3,18 @@
     flex-direction: row;
     justify-content: flex-start;
     gap: 10px;
-    height: 40px;
-    width: 100vw;
     position: fixed;
     align-items: center;
     padding-bottom: 5px;
+    background-color: transparent;
+    /* margin: 0px 0px 0px 50px; */
+}
+
+.items-bar-background {
+    height: 40px;
+    width: 100vw;
     background-color: var(--grey-background);
+    margin: 0px;
 }
 
 .items-bar-divider {

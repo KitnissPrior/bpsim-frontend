@@ -1,8 +1,12 @@
 .top-nav {
     display: flex;
     flex-direction: row;
-    width: var(--window-width);
-    gap: 20px;
+    width: 100%;
+    gap: 10px;
+    height: 66px;
+    color: var(--white);
+    align-items: center;
+    padding: 0px 17px;
 }
 
 .bpsim {
@@ -22,4 +26,13 @@
 .bpsim:hover,
 .system:hover {
     opacity: 0.8;
+}
+
+.bpsim-divider {
+    width: 2px;
+    height: 32px;
+    background-color: white;
+    border: 1px solid white;
+    margin: 0px;
+    padding: 0px;
 }
