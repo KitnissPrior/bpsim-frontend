@@ -40,6 +40,18 @@
     margin: 0 0 5px 0;
 }
 
+.input--error {
+    color: var(--error)
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 0px;
+    cursor: pointer;
+}
+
 .context-menu {
     top: 100%;
     float: right;
@@ -53,13 +65,27 @@
 
 .context-menu-item {
     cursor: pointer;
-    opacity: var(--hover-opasity);
-    margin: 0px;
+    margin: 5px 0px;
     padding: 0px;
 }
 
+.context-menu-item:hover {
+    opacity: var(--hover-opasity);
+}
+
 .context-menu-hr {
-    margin: 10px 0px;
+    margin: 10px 0px 10px;
     padding: 0px;
     width: 100%;
+}
+
+.row-block {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.hoverable:hover {
+    cursor: pointer;
+    opacity: var(--hover-opasity);
 }

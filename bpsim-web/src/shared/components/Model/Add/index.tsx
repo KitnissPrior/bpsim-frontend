@@ -1,11 +1,11 @@
-import FormModal from "../Form";
-import TextInput from "../../Inputs/TextInput";
+import FormModal from "../../Modals/Form";
+import TextInput from "../../Inputs/Text";
 import { useForm } from "react-hook-form";
-import { BaseButton } from "../../Buttons/BaseButton";
+import { BaseButton } from "../../Buttons/Base";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { addModel, setCurrentModel, } from "../../../../store/reducers/modelReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createModel } from "../../../../services/model.service"
 import { Model } from "../../../../types/model";
 import { toast } from "react-toastify";
@@ -34,6 +34,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
         if (!(response instanceof AxiosError)) {
             //onSubjectAdd(response.data.length);
             onClose();
+            localStorage.setItem('modelId', response.data.id.toString());
             toast.success('Модель успешно добавлена');
             setLoading(false);
             dispatch(setCurrentModel(response.data));
@@ -56,12 +57,16 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                     required: "Введите название модели",
                                     maxLength: { value: 20, message: "Максимальная длина 20 символов" }
                                 })
-                            }} error={errors.title} />
+                            }} error={errors.name} />
                     </div>
                     <div>
                         <div className="text--heading3 text-600">Описание модели</div>
                         <TextInput placeholder="Описание" type="text" id="description"
-                            register={{ ...register('description', { maxLength: { value: 255, message: "Максимальная длина 255 символов" } }) }} error={errors.title} />
+                            register={{
+                                ...register('description',
+                                    { maxLength: { value: 255, message: "Максимальная длина 255 символов" } })
+                            }}
+                            error={errors.description} />
                     </div>
                     <div className="">
                         <BaseButton text={'Отмена'} onClick={onClose}

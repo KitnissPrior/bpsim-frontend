@@ -1,8 +1,8 @@
-import FormModal from "../Form";
+import FormModal from "../../Modals/Form";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { getSubjectAreas } from "../../../../services/subjectArea.service";
 import { useEffect, useState } from "react";
-import { BaseButton } from "../../Buttons/BaseButton";
+import { BaseButton } from "../../Buttons/Base";
 import { AxiosError } from "axios";
 import TextError from "../../Errors/TextError";
 import "./subAreaChoice.css"
@@ -26,7 +26,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
         dispatch(setDefaultModel());
         dispatch(clearModelItems());
         dispatch(setDefaultArea());
-        localStorage.clear();
+        //localStorage.clear();
         getSubjectAreas()
             .then((res: any) => {
                 if (res instanceof AxiosError) {
@@ -40,7 +40,6 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
     }, []);
 
     const onChoiseClick = (item: SubjectArea) => {
-        //dispatch(setDefaultModel());
         dispatch(setCurrentArea(item))
     }
 

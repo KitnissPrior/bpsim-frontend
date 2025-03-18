@@ -1,0 +1,23 @@
+.show-more-button {
+    width: 12px;
+    height: 12px;
+    border-radius: 10px;
+    border: none;
+}
+
+.show-more-button[data-theme="primary"] {
+    background-color: var(--blue);
+}
+
+.show-more-button[data-theme="secondary"] {
+    background-color: var(--grey-medium);
+}
+
+.show-more-button[data-theme="secondary"]:hover {
+    opacity: var(--hover-opasity);
+}
+
+.show-more-button[data-theme="white"] {
+    background-color: var(--white);
+    border: 1px solid black;
+}

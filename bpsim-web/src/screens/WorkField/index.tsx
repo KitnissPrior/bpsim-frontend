@@ -1,35 +1,41 @@
-import Toolbar from "../../shared/components/Bars/Toolbar"
+import { Toolbar } from "../../shared/components/Bars/Toolbar"
 import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
 import "./workField.css"
 import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, useEffect, useState, MouseEvent } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
 import { BpsimNode } from "../../shared/components/BpsimNode"
 import { toast } from "react-toastify"
 import { AxiosError } from "axios"
-import SubjectAreaAddModal from "../../shared/components/Modals/SubAreaAdd"
+import SubjectAreaAddModal from "../../shared/components/SubjectArea/Add"
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { getSubjectArea } from "../../services/subjectArea.service"
 import { setCurrentArea } from "../../store/reducers/subjectAreaReducer"
-import SubjectAreaChoiceModal from "../../shared/components/Modals/SubAreaChoice"
+import SubjectAreaChoiceModal from "../../shared/components/SubjectArea/Choice"
 import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
 import { useDispatch, useSelector } from "react-redux"
 import { setCurrentModel, setModelItems } from "../../store/reducers/modelReducer"
-import { setBpsimItems, setGraphicItems } from "../../store/reducers/nodeReducer"
-import { ModelContextMenu } from "../../shared/components/Model/ModelContextMenu"
-import ModelAddForm from "../../shared/components/Modals/ModelAdd"
+import { SideBar } from "../../shared/components/Bars/SideBar"
+import { Relation } from "../../types/relation"
+import { createRelation, getRelations } from "../../services/relation.service"
+import { formatBpsimToGraphicNodes } from "../../shared/hooks/nodeFormatter"
+import { useOutletContext } from 'react-router-dom';
+import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges } from "../../shared/hooks/edgeFormatter"
+import { startSimulation } from "../../services/simulation"
+import { Console } from "./Console"
 
 interface INode {
     key: string | number;
     id: string;
     data: {
         label: string;
+
     }
     position: {
         x: number;
@@ -48,23 +54,20 @@ interface IProps {
 const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = false }: IProps) => {
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
+    const [relations, setRelations] = useState<Relation[]>([]);
+    const context = useOutletContext<{ showLoading: (show: boolean) => void }>();
+
+    const [logs, setLogs] = useState<string[]>([]);
+
     const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
-
-    const [modelAddContextVisible, setModelAddContextVisible] = useState(false);
-    const [modelFormVisible, setModelFormVisible] = useState(false);
-
     const [nodes, setNodes] = useState<INode[]>([]);
     const [edges, setEdges] = useState(initialEdges);
-    //const [subjectArea, setSubjectArea] = useState<SubjectArea>({} as SubjectArea);
 
-    //const [models, setModels] = useState<Model[]>([]);
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
-    const mathNodes = useSelector((state: any) => state.node.bpsimItems);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -85,45 +88,53 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             });
             return updatedNodes;
         });
-        //dispatch(setBpsimItems(bpsimNodes))
     }, []);
 
     const onEdgesChange = useCallback(
-        (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+        (changes: any) => {
+            setEdges((eds) => applyEdgeChanges(changes, eds))
+            setRelations(formatEdgesToRelations(edges))
+        },
         [],
     );
 
-    const onConnect = useCallback(
-        (params: any) => setEdges((eds) => addEdge({ ...params, type: 'step' }, eds)),
+    const onConnect = useCallback((params: any) => {
+        createRelation(formatEdgeToRelation(params))
+            .then((response: any) => {
+                if (response.status === 200) {
+                    setEdges((eds) => addEdge({ ...params, type: 'step' }, eds))
+                    setRelations(prevRelations => [...prevRelations, response.data]);
+                }
+                else {
+                    toast.error('Сохранить связь не удалось');
+                }
+            })
+    },
         [],
     );
 
     const onModelChoose = (model: Model) => {
+        context.showLoading(true);
+
         dispatch(setCurrentModel(model));
+        if (!model.id) return;
+        localStorage.setItem('modelId', model.id.toString());
 
         const modelId = Number(model.id)
+
         getNodes(modelId).then((response: any) => {
             const data = response.data;
             setNodesCount(data.length);
 
             setBpsimNodes(data);
-            dispatch(setBpsimItems(data))
-            dispatch(setGraphicItems(data))
+            setNodes(formatBpsimToGraphicNodes(data, setBpsimNodes));
 
-
-            const newNodes: any = [];
-            data.forEach((node: any) => {
-                newNodes.push({
-                    key: node.id.toString(),
-                    id: node.id.toString(),
-                    position: { x: node.posX, y: node.posY },
-                    data: { label: node.name },
-                    sourcePosition: "right",
-                    targetPosition: "left",
-                    type: 'textNode'
-                });
-            });
-            setNodes(newNodes);
+            getRelations(modelId).then((response: any) => {
+                const data = response.data;
+                setRelations(data);
+                setEdges(formatRelationsToEdges(data))
+                context.showLoading(false);
+            })
         })
     }
 
@@ -131,6 +142,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     useEffect(() => {
 
         if (localStorage.getItem('subjectAreaId') && !isCreateSubAreaModal && !isOpenSubAreaModal) {
+            context.showLoading(true);
             getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
                 dispatch(setCurrentArea(response.data));
             });
@@ -141,34 +153,30 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 }
                 else {
                     dispatch(setModelItems(response.data));
-
-                    if (models.length > 0) {
+                    if (currentModel == null)
+                        context.showLoading(false);
+                    else if (models.length > 0) {
                         getNodes(currentModel.id).then((response: any) => {
                             setNodesCount(response.data.length);
 
                             const nodes = response.data;
                             setBpsimNodes(nodes);
-                            const newNodes: any = [];
-                            nodes.forEach((node: any) => {
-                                newNodes.push({
-                                    key: node.id.toString(),
-                                    id: node.id.toString(),
-                                    position: { x: node.posX, y: node.posY },
-                                    data: { label: node.name },
-                                    sourcePosition: "right",
-                                    targetPosition: "left",
-                                    type: 'textNode'
-                                });
-                            });
-                            setNodes(newNodes);
+                            setNodes(formatBpsimToGraphicNodes(nodes, setBpsimNodes));
+                        })
+
+                        getRelations(currentModel.id).then((response: any) => {
+                            if (response instanceof AxiosError) {
+                                toast.error('Связи не загрузились');
+                            }
+                            else {
+                                setRelations(response.data);
+                                setEdges(formatRelationsToEdges(response.data))
+                            }
                         })
                     }
-
+                    context.showLoading(false);
                 }
             })
-
-
-
         }
 
     }, [nodesCount, localStorage.getItem('subjectAreaId'), isCreateSubAreaModal, isOpenSubAreaModal]);
@@ -193,6 +201,18 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         })
         errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
     }
+    const onStartClick = () => {
+
+        startSimulation(currentModel.id).then((response: any) => {
+            if (response.status == 200) {
+                setLogs(response.data);
+                toast.success('Симуляция прошла успешно!');
+            }
+            else {
+                toast.error('Симуляцию запустить не удалось');
+            }
+        })
+    }
 
     const onSubAreaModalCreateClose = () => {
         setShowNewSubAreaModal(false);
@@ -214,57 +234,34 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         setShowNewSubAreaModal(true);
     }
 
-    const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
-        evt.preventDefault();
-        setModelAddContextVisible(true);
-    }
-
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
-            <ItemsBar onNodeAddClick={onNodeAddClick} onCreateSubAreaModal={onCreateSubAreaModal} onOpenSubAreaModal={onOpenSubAreaModal} />
+            <ItemsBar
+                onStart={onStartClick}
+                onCreateSubAreaModal={onCreateSubAreaModal}
+                onOpenSubAreaModal={onOpenSubAreaModal}
+                onNodeAddClick={onNodeAddClick} />
             <div className="work-field-main">
-                <div className="sidebar">
-                    <div> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
-                    {currentSubjectArea &&
-                        <div className="text-600" style={{ paddingLeft: '10px' }}
-                            onContextMenu={onModelsRightClick}>Модели</div>
-                    }
-                    {modelAddContextVisible &&
-                        <ModelContextMenu
-                            onModelAdd={() => {
-                                setModelFormVisible(true)
-                                setModelAddContextVisible(false)
-                            }} />}
-                    {models.map((model: any) => {
-                        const name = `${model.name}` + (model.id == currentModel?.id ? '*' : '');
-                        return (
-                            <div style={{ paddingLeft: '20px' }} key={model.id} onClick={() => onModelChoose(model)}
-                            >{name}</div>
-                        )
-                    })}
-                </div>
-                <div className="vertical-line"></div>
+                <SideBar onModelChoose={onModelChoose} />
                 <div className="work-field-content">
-                    <ReactFlow nodes={nodes} edges={edges}
-                        onNodesChange={memoizedOnNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onConnect={onConnect}
-                        nodeTypes={nodeTypes}
-                        proOptions={{ hideAttribution: true }}
-                    >
-                        <Background />
-                        <Controls />
-                    </ReactFlow>
+                    <div className="flow-content">
+                        <ReactFlow nodes={nodes} edges={edges}
+                            onNodesChange={memoizedOnNodesChange}
+                            onEdgesChange={onEdgesChange}
+                            onConnect={onConnect}
+                            nodeTypes={nodeTypes}
+                            proOptions={{ hideAttribution: true }}
+                        >
+                            <Background color="#f0f0f0" />
+                            <Controls />
+                        </ReactFlow>
+                    </div>
+                    <Console data={logs} />
                 </div>
-                <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />
-                <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />
-                <ModelAddForm isOpen={modelFormVisible}
-                    onClose={() => {
-                        setModelFormVisible(false)
-                        setModelAddContextVisible(false);
-                    }} />
             </div>
+            {showNewSubAreaModal && <SubjectAreaAddModal isOpen={showNewSubAreaModal} onClose={onSubAreaModalCreateClose} />}
+            {showOpenSubAreaModal && <SubjectAreaChoiceModal isOpen={showOpenSubAreaModal} onClose={onSubAreaModalChoiceClose} />}
         </div>
     )
 }

@@ -9,11 +9,14 @@ import NodeContextMenu from './components/ContextMenu';
 import ConfirmModal from '../Modals/Confirm';
 import ContextMenu from '../ContextMenu';
 import { NodePropsModal } from './components/PropsModal';
+import { getNodeDetails } from '../../../services/nodeDetails';
+import { AxiosError } from 'axios';
 
 interface IProps {
   id: string;
   data: {
     label: string;
+    updateStateNodes: (nodes: any) => void
   };
   position?: Position;
   model_id?: number;
@@ -21,7 +24,10 @@ interface IProps {
 
 export const BpsimNode = ({ id, data }: IProps) => {
   const [label, setLabel] = useState(data.label);
+
   const modelId = useSelector((state: any) => state.model.current.id);
+  const [details, setDetails] = useState({})
+
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
@@ -32,7 +38,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
   };
 
   const onBlur = useCallback((evt: any) => {
-    if (data.label === evt.target.value) return;
+    if (data.label == evt.target.value) return;
     updateNode({
       id: id,
       name: evt.target.value,
@@ -40,6 +46,10 @@ export const BpsimNode = ({ id, data }: IProps) => {
     }).then((response: any) => {
       if (response.status === 200) {
         setLabel(evt.target.value);
+
+        data.updateStateNodes(((prevNodes: any[]) => prevNodes.map((node: any) => node.id == id ?
+          { ...node, name: evt.target.value } : node)));
+
         toast.success('Имя узла успешно изменено');
       } else {
         toast.error('Имя сохранить не удалось');
@@ -73,8 +83,17 @@ export const BpsimNode = ({ id, data }: IProps) => {
   }
 
   const onPropsOpen = () => {
-    setContextMenuVisible(false);
-    setPropsVisible(true);
+    getNodeDetails(Number(id)).then((response: any) => {
+      if (response instanceof AxiosError) {
+        toast.error("Свойства узла не загрузились")
+        return;
+      }
+      setDetails(() => response.data)
+      setDetails((prev) => ({ ...prev, name: data.label }))
+      setContextMenuVisible(false);
+      setPropsVisible(true);
+    })
+
   }
 
   const onPropsClose = () => {
@@ -82,44 +101,43 @@ export const BpsimNode = ({ id, data }: IProps) => {
   }
 
   return (
-    <>
-      <div className="text-updater-node" onContextMenu={onRightClick} hidden={deleted}>
-        <Handle
-          type="source"
-          position={Position.Right}
-          id="b"
-          isConnectable={true}
+    <div className="text-updater-node" onContextMenu={onRightClick} hidden={deleted}>
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="b"
+        isConnectable={true}
+      />
+      <Handle
+        type="target"
+        position={Position.Left}
+        id={id.toString() + "target"}
+        isConnectable={true}
+      />
+      <div className='node-text-container'>
+        <input
+          id="text"
+          name="text"
+          onChange={onChange}
+          className="text--body-xs node-text-field"
+          defaultValue={label}
+          onBlur={onBlur}
         />
-        <Handle
-          type="target"
-          position={Position.Left}
-          id={id.toString() + "target"}
-          isConnectable={true}
-        />
-        <div className='node-text-container'>
-          <input
-            id="text"
-            name="text"
-            onChange={onChange}
-            className="text--body-xs node-text-field"
-            defaultValue={label}
-            onBlur={onBlur}
-          />
-        </div>
-
-        {deleteConfirmVisible &&
-          <ConfirmModal
-            isOpen={deleteConfirmVisible}
-            onCancel={() => {
-              setDeleteConfirmVisible(false);
-              setContextMenuVisible(false)
-            }}
-            onOk={onDelete}
-            content={"Вы уверены что хотите удалить узел?"}
-            okText="Удалить" />}
       </div>
+
+      {deleteConfirmVisible &&
+        <ConfirmModal
+          isOpen={deleteConfirmVisible}
+          onCancel={() => {
+            setDeleteConfirmVisible(false);
+            setContextMenuVisible(false)
+          }}
+          onOk={onDelete}
+          content={"Вы уверены что хотите удалить узел?"}
+          okText="Удалить" />}
       {contextMenuVisible &&
         <ContextMenu
+          onClose={onHideContextMenu}
           children={
             <NodeContextMenu
               onDelete={onDeleteConfirmOpen}
@@ -128,7 +146,8 @@ export const BpsimNode = ({ id, data }: IProps) => {
           }
         />}
       {propsVisible &&
-        <NodePropsModal isOpen={propsVisible} name={data.label} onClose={onPropsClose} />}
-    </>
+        <NodePropsModal isOpen={propsVisible} onClose={onPropsClose} details={details}
+          node_id={Number(id)} />}
+    </div>
   );
 };

@@ -9,7 +9,8 @@ const Header = () => {
         <>
             <div className="top-nav" onClick={() => navigate(urls.start)}>
                 <div className="bpsim">BPsim.MAS</div>
-                <div className="system">Система имитационного моделирования</div>
+                <div className="bpsim-divider"></div>
+                <div className="system text--body-xs">Система имитационного моделирования</div>
                 <div></div>
             </div>
         </>

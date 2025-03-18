@@ -1,0 +1,26 @@
+.sidebar {
+    margin-top: 10px;
+    border: 1px solid var(--grey-medium);
+    width: 285px;
+    border-radius: var(--border-radius);
+    height: 94%;
+    padding-left: 40px;
+    /* overflow-x: scroll; */
+}
+
+.sidebar-second-slice {
+    padding: 0px 0px 0px 22px;
+}
+
+.sidebar-third-slice {
+    padding-left: 45px;
+}
+
+.sidebar-items-slice {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    gap: 10px;
+    height: 20px;
+}

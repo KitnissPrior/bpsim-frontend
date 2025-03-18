@@ -1,7 +1,7 @@
 import "./accept-modal.css"
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { BaseButton } from "../../Buttons/BaseButton";
+import { BaseButton } from "../../Buttons/Base";
 
 interface ModalProps {
     id?: string;
