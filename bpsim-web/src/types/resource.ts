@@ -1,14 +1,17 @@
 export type Resource = {
-    id: number;
+    id: number | null;
     name: string;
-    type_id: number;
+    sys_name: string;
     current_value: number;
     min_value: number;
     max_value: number;
-    
+    type_id: number;
+    sub_area_id: number;
+    measure_id?: number;
 }
 
 export type ResourceType = {
     id: number;
     name: string;
+    prefix: string;
 }
