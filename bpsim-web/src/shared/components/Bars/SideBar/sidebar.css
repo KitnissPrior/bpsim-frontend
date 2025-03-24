@@ -3,7 +3,7 @@
     border: 1px solid var(--grey-medium);
     width: 285px;
     border-radius: var(--border-radius);
-    height: 94%;
+    height: 100%;
     padding-left: 40px;
     /* overflow-x: scroll; */
 }

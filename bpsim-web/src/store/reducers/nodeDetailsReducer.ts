@@ -1,4 +1,4 @@
-import { NodeDetails } from "../../types/nodeDetails"
+import { NodeDetails } from "../../types/node";
 
 const actions = {
     SET_DATA: 'SET_DATA',
