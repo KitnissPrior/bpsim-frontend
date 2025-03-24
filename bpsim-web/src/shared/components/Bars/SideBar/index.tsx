@@ -110,7 +110,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                         </div>
                     )
                 })}
-                <Resources onContextMenu={onResoursesRightClick} data={[]} />
+                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} data={[]} />}
                 {resourceContextVisible &&
                     <ContextAdd
                         text="+ Добавить ресурс"

@@ -102,18 +102,54 @@ export const BpsimNode = ({ id, data }: IProps) => {
 
   return (
     <div className="text-updater-node" onContextMenu={onRightClick} hidden={deleted}>
+      {/* <Handle
+        type="source"
+        position={Position.Top}
+        id="source-top"
+        isConnectable={true}
+      /> */}
+      {/* <Handle
+        type="target" 
+        position={Position.Top}
+        id="target-top"
+        isConnectable={true}
+      /> */}
       <Handle
         type="source"
         position={Position.Right}
-        id="b"
+        id="source-right"
         isConnectable={true}
       />
+      {/* <Handle
+        type="target"
+        position={Position.Right}
+        id="target-right"
+        isConnectable={true}
+      /> */}
+      {/* <Handle
+        type="source"
+        position={Position.Bottom}
+        id="source-bottom"
+        isConnectable={true}
+      /> */}
+      {/* <Handle
+        type="target"
+        position={Position.Bottom}
+        id="target-bottom"
+        isConnectable={true}
+      /> */}
       <Handle
         type="target"
         position={Position.Left}
-        id={id.toString() + "target"}
+        id={id.toString() + "target-left"}
         isConnectable={true}
       />
+      {/* <Handle
+        type="source"
+        position={Position.Left}
+        id={id.toString() + "source-left"}
+        isConnectable={true}
+      /> */}
       <div className='node-text-container'>
         <input
           id="text"
