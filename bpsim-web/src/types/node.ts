@@ -22,3 +22,12 @@ export type NodeDetails = {
     duration: string;
     cost: number;
 }
+
+export type NodeRes = {
+    id: number | null;
+    value: string;
+    res_in_out: number; // 0 - in, 1 - out
+    node_id: number;
+    res_id: number;
+    model_id: number;
+}
