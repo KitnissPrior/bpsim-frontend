@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, Key } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Model } from "../../../../types/model";
 import ModelAddForm from "../../Model/Add";
@@ -95,9 +95,9 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                             setModelFormVisible(true)
                             setModelContextVisible(false)
                         }} />}
-                {modelsVisible && models.map((model: any) => {
+                {modelsVisible && models.map((model: any, index: Key) => {
                     return (
-                        <div className="sidebar-items-slice sidebar-third-slice">
+                        <div className="sidebar-items-slice sidebar-third-slice" key={index}>
                             <ShowMoreButton disabled={true} theme="white" />
                             <div key={model.id}
                                 onClick={() => onModelChoose(model)}

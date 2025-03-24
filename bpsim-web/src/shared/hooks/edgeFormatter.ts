@@ -3,7 +3,7 @@ import { useSelector } from "react-redux"
 export const formatRelationToEdge = (relation: any) => {
     return {
         id: `${relation.id}`,
-        type: 'step',
+        type: 'smoothstep',
         source: relation.source_id.toString(),
         target: relation.target_id.toString(),
     }
