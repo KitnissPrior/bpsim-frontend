@@ -10,11 +10,10 @@ export const formatRelationToEdge = (relation: any) => {
 }
 
 export const formatEdgeToRelation = (edge: any) => {
-    const currentModel = useSelector((state: any) => state.model.currentModel)
     return {
         source_id: Number(edge.source),
         target_id: Number(edge.target),
-        model_id: localStorage.getItem('modelId') ? Number(localStorage.getItem('modelId')) : currentModel.id
+        model_id: Number(localStorage.getItem('modelId'))
     }
 }
 
