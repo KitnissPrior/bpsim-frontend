@@ -3,7 +3,7 @@ import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
 import "./workField.css"
 import { createNode, getNodes } from "../../services/node.service"
 import { defaultNode } from "../../types/node"
-import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
+import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
@@ -59,7 +59,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const [logs, setLogs] = useState<string[]>([]);
 
-    const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "step" }];
+    const initialEdges = [{ id: '1-2', source: '1', target: '2', type: "smoothstep" }];
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
@@ -102,7 +102,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         createRelation(formatEdgeToRelation(params))
             .then((response: any) => {
                 if (response.status === 200) {
-                    setEdges((eds) => addEdge({ ...params, type: 'step' }, eds))
+                    setEdges((eds) => addEdge({ ...params, type: 'smoothstep' }, eds))
                     setRelations(prevRelations => [...prevRelations, response.data]);
                 }
                 else {
@@ -253,7 +253,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                             nodeTypes={nodeTypes}
                             proOptions={{ hideAttribution: true }}
                         >
-                            <Background color="#f0f0f0" />
+                            <Background variant={BackgroundVariant.Dots} gap={20} />
                             <Controls />
                         </ReactFlow>
                     </div>
