@@ -1,13 +1,27 @@
+interface ResIds {
+    id: number;
+}
 const actions = {
     SET_TYPES: 'SET_TYPES',
     SET_RESOURCES: 'SET_RESOURCES',
     SET_CURRENT_TYPE_ID: 'SET_CURRENT_TYPE_ID',
     SET_CURRENT_RESOURCE: 'SET_CURRENT_RESOURCE',
+    ADD_VISIBLE_RESOURCE: 'ADD_VISIBLE_RESOURCE',
+    DELETE_VISIBLE_RESOURCE: 'DELETE_VISIBLE_RESOURCE',
     DELETE_RESOURCE: 'DELETE_RESOURCE',
 }
 
-const defaultState = {
-    types:[],
+type ResState = {
+    types: any[],
+    visibleTypeIds: ResIds[],
+    resources: any[],
+    currentTypeId: number,
+    currentResource: any
+}
+
+const defaultState: ResState = {
+    types: [],
+    visibleTypeIds: [],
     resources: [],
     currentTypeId: 0,
     currentResource: null
@@ -23,8 +37,12 @@ export const resourceReducer = (state = defaultState, action: any) => {
             return { ...state, currentTypeId: action.payload }
         case actions.SET_CURRENT_RESOURCE:
             return { ...state, currentResource: action.payload }
+        case actions.ADD_VISIBLE_RESOURCE:
+            return { ...state, visibleTypeIds: [...state.visibleTypeIds, action.payload] }
+        case actions.DELETE_VISIBLE_RESOURCE:
+            return { ...state, visibleTypeIds: state.visibleTypeIds.filter((id) => id !== action.payload) }
         case actions.DELETE_RESOURCE:
-            return { ...state, resources: state.resources.filter((item: any) => item.id !== action.payload) }
+            return { ...state, resources: state.resources.filter((id: number) => id !== action.payload) }
         default:
             return state;
     }
@@ -34,6 +52,9 @@ export const setResTypes = (items: any) => ({ type: actions.SET_TYPES, payload: 
 export const setCurrentResTypeId = (id: any) => ({ type: actions.SET_CURRENT_TYPE_ID, payload: id })
 
 export const setResources = (items: any) => ({ type: actions.SET_RESOURCES, payload: items })
-export const setCurrentResource = (resource: any) => ({ type: actions.SET_CURRENT_RESOURCE, payload: resource })
+export const setCurrentResource = (res: any) => ({ type: actions.SET_CURRENT_RESOURCE, payload: res })
 
-export const deleteResource = async (id: number) => ({type: actions.DELETE_RESOURCE, payload: id})
+export const addVisibleResId = (id: number) => ({ type: actions.ADD_VISIBLE_RESOURCE, payload: id })
+export const deleteVisibleResId = (id: number) => ({ type: actions.DELETE_VISIBLE_RESOURCE, payload: id })
+
+export const deleteResource = async (id: number) => ({ type: actions.DELETE_RESOURCE, payload: id })

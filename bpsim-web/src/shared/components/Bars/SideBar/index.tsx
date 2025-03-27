@@ -71,24 +71,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
 
     const onShowResourceForm = () => {
         setResourceFormVisible(true);
-        // if (!resTypes.length) {
-        //     getResourceTypes()
-        //         .then((response: any) => {
-        //             if (response.status == 200) {
-        //                 setResTypes(response.data);
-
-        //                 if (!measures.length) {
-        //                     getMeasures().then((response: any) => {
-        //                         if (response.status == 200) {
-        //                             setMeasures(response.data);
-        //                             setResourceContextVisible(false);
-        //                             setResourceFormVisible(true);
-        //                         }
-        //                     })
-        //                 }
-        //             }
-        //         })
-        // }
     }
 
     const onShowModels = () => {
@@ -132,7 +114,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                         </div>
                     )
                 })}
-                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} data={resTypes} />}
+                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} types={resTypes} />}
                 {resourceContextVisible &&
                     <ContextAdd
                         text="+ Добавить ресурс"

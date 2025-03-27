@@ -29,9 +29,9 @@ import { useOutletContext } from 'react-router-dom';
 import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges } from "../../shared/hooks/edgeFormatter"
 import { startSimulation } from "../../services/simulation"
 import { Console } from "./Console"
-import { getResourceTypes } from "../../services/resource.service"
+import { getResources, getResourceTypes } from "../../services/resource.service"
 import { getMeasures } from "../../services/measure.service"
-import { setResTypes } from "../../store/reducers/resourceRedicer"
+import { setResources, setResTypes } from "../../store/reducers/resourceRedicer"
 import { setMeasures } from "../../store/reducers/measureReducer"
 
 interface INode {
@@ -152,15 +152,19 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             });
 
             getResourceTypes().then((response: any) => {
-                console.log(response.data)
                 if (response.status == 200) {
                     dispatch(setResTypes(response.data));
                 }
                 else toast.error('Ресурсы не загрузились');
             })
 
+            getResources(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
+                if (response.status == 200) {
+                    dispatch(setResources(response.data));
+                }
+            })
+
             getMeasures().then((response: any) => {
-                console.log(response.data)
                 if (response.status == 200) {
                     dispatch(setMeasures(response.data));
                 }

@@ -1,54 +1,58 @@
 import { MouseEvent, useState } from "react";
 import { ShowMoreButton } from "../../../Buttons/ShowMore";
 import "../sidebar.css"
+import { useSelector } from "react-redux";
 
 interface IProps {
     onContextMenu: (evt: MouseEvent<HTMLDivElement>) => void
-    data: any[]
+    types: any[]
 }
 
-export const Resources = ({ onContextMenu, data }: IProps) => {
-    const [dataVisible, setDataVisible] = useState(false);
+export const Resources = ({ onContextMenu, types }: IProps) => {
+    const [resTypesVisible, setResTypesVisible] = useState(false);
+    const customResources = useSelector((state: any) => state.resource.resources);
 
-    const onShowResources = () => {
-        setDataVisible((prev) => !prev);
+
+    const onShowResTypes = () => {
+        setResTypesVisible((prev) => !prev);
+    }
+
+    const onShowCustomResources = () => {
+
     }
 
     return (
         <>
-
             <div className="sidebar-items-slice sidebar-second-slice hoverable">
-                <ShowMoreButton onClick={onShowResources} theme="secondary" />
-                <div className="hoverable" onContextMenu={onContextMenu} onClick={onShowResources}>
+                <ShowMoreButton onClick={onShowResTypes} theme="secondary" />
+                <div className="hoverable" onContextMenu={onContextMenu} onClick={onShowResTypes}>
                     Ресурсы
                 </div>
             </div>
-            {dataVisible &&
+            {resTypesVisible &&
                 <>
-                    {data.map((res, index) => (
-                        <div className="sidebar-items-slice sidebar-third-slice" key={index}>
-                            <ShowMoreButton disabled={true} theme="white" />
-                            <div className="hoverable" onContextMenu={onContextMenu} onClick={onShowResources}>
-                                {res.name}
+                    {types.map((type, index) => (
+                        <div key={index + type.name}>
+                            <div className="sidebar-items-slice sidebar-third-slice hoverable" key={index}>
+                                <ShowMoreButton onClick={onShowCustomResources} theme="white" />
+                                <div className="hoverable" onContextMenu={onContextMenu} onClick={() => { }}>
+                                    {type.name}
+                                </div>
                             </div>
+                            {customResources.map((res: any, index: number) => {
+                                if (res.type_id !== type.id) return null
+                                return (
+                                    <div className="sidebar-items-slice sidebar-fourth-slice hoverable" key={index}>
+                                        <ShowMoreButton disabled={true} theme="black" />
+                                        <div className="hoverable" onContextMenu={onContextMenu} onClick={() => { }}
+                                        >
+                                            {res.name}
+                                        </div>
+                                    </div>
+                                )
+                            })}
                         </div>
                     ))}
-                    {/* <div className="sidebar-items-slice sidebar-third-slice">
-                        <ShowMoreButton disabled={true} theme="white" />
-                        <div>Информационный</div>
-                    </div>
-                    <div className="sidebar-items-slice sidebar-third-slice">
-                        <ShowMoreButton disabled={true} theme="white" />
-                        <div>Материальный</div>
-                    </div>
-                    <div className="sidebar-items-slice sidebar-third-slice">
-                        <ShowMoreButton disabled={true} theme="white" />
-                        <div>Трудовой</div>
-                    </div>
-                    <div className="sidebar-items-slice sidebar-third-slice">
-                        <ShowMoreButton disabled={true} theme="white" />
-                        <div>Финансовый</div>
-                    </div> */}
                 </>}
         </>
     )
