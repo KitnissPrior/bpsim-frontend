@@ -5,6 +5,10 @@
     border: none;
 }
 
+.show-more-button:hover {
+    opacity: var(--hover-opasity);
+}
+
 .show-more-button[data-theme="primary"] {
     background-color: var(--blue);
 }
@@ -13,11 +17,11 @@
     background-color: var(--grey-medium);
 }
 
-.show-more-button[data-theme="secondary"]:hover {
-    opacity: var(--hover-opasity);
-}
-
 .show-more-button[data-theme="white"] {
     background-color: var(--white);
     border: 1px solid black;
+}
+
+.show-more-button[data-theme="black"] {
+    background-color: black;
 }

@@ -28,7 +28,6 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
         const response = await createSubjectArea(data);
 
         if (!(response instanceof AxiosError)) {
-            //onSubjectAdd(response.data.length);
             dispatch(setDefaultModel());
             onClose();
             localStorage.setItem('subjectAreaId', response.data.id.toString());
@@ -41,15 +40,15 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
         <FormModal isOpen={props.isOpen} title={"Создать предметную область"}
             content={
                 <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)}>
-                    <div>
-                        <div className="text--heading3 text-600">Наименование ПО</div>
+                    <div className="row-block">
+                        <div className="text--body-s">Наименование ПО</div>
                         <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
                             register={{ ...register('name', { required: "Введите название ПО" }) }}
                             error={errors.name} />
 
                     </div>
-                    <div>
-                        <div className="text--heading3 text-600">Описание ПО</div>
+                    <div className="row-block">
+                        <div className="text--body-s">Описание ПО</div>
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
                                 ...register('description',

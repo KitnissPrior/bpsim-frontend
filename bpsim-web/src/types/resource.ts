@@ -1,7 +1,7 @@
 export type Resource = {
-    id: number | null;
+    id?: number | null;
     name: string;
-    sys_name: string;
+    sys_name?: string | null;
     current_value: number;
     min_value: number;
     max_value: number;

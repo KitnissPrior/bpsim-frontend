@@ -4,6 +4,7 @@ interface IProps {
     | 'primary'
     | 'secondary'
     | 'white'
+    | 'black'
     onClick?: () => void
     disabled?: boolean
 }

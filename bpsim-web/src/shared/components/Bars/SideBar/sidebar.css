@@ -16,6 +16,11 @@
     padding-left: 45px;
 }
 
+.sidebar-fourth-slice {
+    padding-left: 70px;
+    margin: 10px 0px 0px 0px;
+}
+
 .sidebar-items-slice {
     display: flex;
     flex-direction: row;

@@ -1,5 +1,3 @@
-import { useSelector } from "react-redux"
-
 export const formatRelationToEdge = (relation: any) => {
     return {
         id: `${relation.id}`,

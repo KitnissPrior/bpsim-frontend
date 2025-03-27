@@ -3,68 +3,126 @@ import TextInput from "../../Inputs/Text";
 import { SubjectArea } from "../../../../types/subjectArea";
 import { useForm } from "react-hook-form";
 import { BaseButton } from "../../Buttons/Base";
-import { useState } from "react";
-import { Resource } from "../../../../types/resource";
+import { useEffect, useState } from "react";
+import { Resource, ResourceType } from "../../../../types/resource";
 import NumberInput from "../../Inputs/Number";
-
+import { AxiosError } from "axios";
+import { toast } from "react-toastify";
+import { createResource } from "../../../../services/resource.service";
+import { Select } from "../../Inputs/Select";
+import { useDispatch, useSelector } from "react-redux";
+import { addResource, setCurrentResTypeId } from "../../../../store/reducers/resourceRedicer";
+import { setCurrentMeasureId } from "../../../../store/reducers/measureReducer";
+import { resourceSchema } from "../../../hooks/validation/resAddForm";
+import { yupResolver } from '@hookform/resolvers/yup';
 
 interface IProps {
     isOpen: boolean
     onClose: () => void
     onResourceSave?: (number: number) => void
+    types: any[];
+    measures: any[];
 }
 
 
 const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
-
-    const { register, handleSubmit, formState: { errors } } = useForm<SubjectArea | any>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<Resource | any>({
+        resolver: yupResolver(resourceSchema)
+    });
     const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+    const typeId = useSelector((state: any) => state.resource.currentTypeId);
+    const measureId = useSelector((state: any) => state.measure.currentId);
+
+    const [selectTypeError, setSelectTypeError] = useState("");
+    const [selectMeasureError, setSelectMeasureError] = useState("");
 
     const onResourceSubmit = async (data: Resource) => {
         setLoading(true);
+        if (!typeId) {
+            setSelectTypeError("Выберите тип ресурса");
+            setLoading(false);
+            return;
+        }
+        if (!measureId) {
+            setSelectMeasureError("Выберите единицу измерения");
+            setLoading(false);
+            return;
+        }
+        data.type_id = typeId;
+        data.measure_id = measureId;
+        data.sub_area_id = Number(localStorage.getItem('subjectAreaId'));
 
+        const response = await createResource(data);
+
+        if (!(response instanceof AxiosError)) {
+            toast.success('Ресурс успешно добавлен');
+            setLoading(false);
+            dispatch(addResource(response.data));
+            reset();
+            onClose();
+        }
+        else {
+            toast.error('При добавлении ресурса произошла ошибка');
+            setLoading(false);
+        }
+
+    }
+
+    const onTypeSelect = (typeId: string) => {
+        dispatch(setCurrentResTypeId(Number(typeId)));
+    }
+
+    const onMeasureSelect = (measureId: any) => {
+        dispatch(setCurrentMeasureId(Number(measureId)));
     }
 
     return (
         <FormModal isOpen={props.isOpen} title={"Создание ресурса"}
             content={
-                <form className="px-4 py-3 creation-resource-form" onSubmit={handleSubmit(onResourceSubmit)}>
+                <form className="px-4 py-3 creation-resource-form" onSubmit={handleSubmit(onResourceSubmit)}
+                >
                     <div className="row-block">
-                        <div className="text--heading3 text-600">Тип</div>
-                        <TextInput placeholder={"Добавьте тип"} type="text" id={"type_id"}
-                            register={{ ...register('type_id', { required: "Введите тип" }) }}
-                            error={errors.type} />
+                        <div className="text--body-s">Тип</div>
+                        <Select title="Тип" data={props.types} onSelect={onTypeSelect}
+                            error={selectTypeError}
+                        />
                     </div>
                     <div className="row-block">
-                        <div className="text--heading3 text-600">Наименование</div>
+                        <div className="text--body-s">Наименование</div>
                         <TextInput placeholder={"Ресурс1"} type="text" id={"name"}
-                            register={{ ...register('name', { required: "Введите наименование ресурса" }) }}
+                            register={{ ...register('name', { value: "Ресурс1" }) }}
                             error={errors.name} />
 
                     </div>
                     <div className="row-block">
-                        <div className="text--heading3 text-600">Текущее значение</div>
-                        <NumberInput placeholder="0,00" id="current_value"
+                        <div className="text--body-s">Текущее значение</div>
+                        <NumberInput placeholder="0,000" id="current_value"
                             register={{
-                                ...register('current_value',)
+                                ...register('current_value', { value: 0.000 })
                             }}
-                            error={errors.description} />
+                            error={errors.current_value} />
                     </div>
                     <div className="row-block">
-                        <div className="text--heading3 text-600">Минимальное значение</div>
-                        <NumberInput placeholder="0,00" id="min_value"
+                        <div className="text--body-s">Максимальное значение</div>
+                        <NumberInput placeholder="0,000" id="max_value"
                             register={{
-                                ...register('min_value',)
+                                ...register('max_value', { value: 0.000 })
                             }}
-                            error={errors.description} />
+                            error={errors.max_value} />
                     </div>
                     <div className="row-block">
-                        <div className="text--heading3 text-600">Максимальное значение</div>
-                        <NumberInput placeholder="0,00" id="max_value"
+                        <div className="text--body-s">Минимальное значение</div>
+                        <NumberInput placeholder="0,000" id="min_value"
                             register={{
-                                ...register('max_value',)
+                                ...register('min_value', { value: 0.000 })
                             }}
-                            error={errors.description} />
+                            error={errors.min_value} />
+                    </div>
+                    <div className="row-block">
+                        <div className="text--body-s">Ед. измерения</div>
+                        <Select data={props.measures} title="Единица измерения" onSelect={onMeasureSelect}
+                            error={selectMeasureError} />
                     </div>
                     <div className="row-block">
                         <BaseButton text={'Отмена'} onClick={onClose}
@@ -73,7 +131,7 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
                         />
                     </div>
                 </form>
-            } className="subarea-add-modal" />)
+            } className="resource-add-modal" />)
 }
 
 export default ResourceForm
