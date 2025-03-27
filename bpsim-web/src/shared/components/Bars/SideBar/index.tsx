@@ -65,7 +65,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
             <div className="sidebar" key="sidebar">
                 <div className="sidebar-items-slice">
                     <ShowMoreButton disabled={true} theme="primary" />
-                    <div key="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
+                    <div className="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
                 </div>
                 {currentSubjectArea &&
                     <div className="sidebar-items-slice sidebar-second-slice hoverable">
