@@ -1,4 +1,4 @@
-import { useState, MouseEvent, Key, useEffect } from "react";
+import { useState, MouseEvent, Key } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Model } from "../../../../types/model";
 import ModelAddForm from "../../Model/Add";
@@ -10,13 +10,10 @@ import { deleteModel as deleteStoreModel, setCurrentModel } from "../../../../st
 import ConfirmModal from "../../Modals/Confirm";
 import { toast } from "react-toastify";
 import { Resources } from "./Resources";
-import ResourceForm from "../../Resources/Form";
 import { ShowMoreButton } from "../../Buttons/ShowMore";
 
 interface IProps {
     onModelChoose: (model: Model) => void
-    // resTypes: ResourceType[]
-    // measures: Measure[]
 }
 
 export const SideBar = ({ onModelChoose }: IProps) => {
@@ -25,9 +22,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     const [propsVisible, setPropsVisible] = useState(false);
     const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
     const [modelsVisible, setModelsVisible] = useState(false);
-
-    const [resourceContextVisible, setResourceContextVisible] = useState(false);
-    const [resourceFormVisible, setResourceFormVisible] = useState(false);
     const dispatch = useDispatch()
 
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
@@ -60,15 +54,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
             setDeleteConfirmVisible(false)
         })
 
-    }
-
-    const onResoursesRightClick = (evt: MouseEvent<HTMLDivElement>) => {
-        evt.preventDefault();
-        setResourceContextVisible((prev) => !prev);
-    }
-
-    const onShowResourceForm = () => {
-        setResourceFormVisible(true);
     }
 
     const onShowModels = () => {
@@ -112,11 +97,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                         </div>
                     )
                 })}
-                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} types={resTypes} />}
-                {resourceContextVisible &&
-                    <ContextAdd
-                        text="+ Добавить ресурс"
-                        onAdd={onShowResourceForm} />}
+                {currentSubjectArea && <Resources types={resTypes} measures={measures} />}
                 {
                     propsVisible && <ModelProps
                         onClose={() => setPropsVisible(false)}
@@ -133,9 +114,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                     setModelFormVisible(false)
                     setModelContextVisible(false);
                 }} />
-            <ResourceForm isOpen={resourceFormVisible}
-                onClose={() => setResourceFormVisible(false)}
-                types={resTypes} measures={measures} />
             {
                 deleteConfirmVisible &&
                 <ConfirmModal

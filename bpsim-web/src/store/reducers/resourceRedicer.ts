@@ -50,7 +50,7 @@ export const resourceReducer = (state = defaultState, action: any) => {
         case actions.ADD_RESOURCE:
             return { ...state, resources: [...state.resources, action.payload] }
         case actions.DELETE_RESOURCE:
-            return { ...state, resources: state.resources.filter((id: number) => id !== action.payload) }
+            return { ...state, resources: state.resources.filter((res) => res.id !== action.payload) }
         case actions.ADD_VISIBLE_RESOURCE:
             return { ...state, visibleTypeIds: [...state.visibleTypeIds, action.payload] }
         case actions.DELETE_VISIBLE_RESOURCE:
@@ -67,7 +67,7 @@ export const setResources = (items: any) => ({ type: actions.SET_RESOURCES, payl
 export const setCurrentResource = (res: any) => ({ type: actions.SET_CURRENT_RESOURCE, payload: res })
 
 export const addResource = (res: any) => ({ type: actions.ADD_RESOURCE, payload: res })
-export const deleteResource = async (id: number) => ({ type: actions.DELETE_RESOURCE, payload: id })
+export const deleteResource = (id: any) => ({ type: actions.DELETE_RESOURCE, payload: id })
 
 export const addVisibleResId = (id: number) => ({ type: actions.ADD_VISIBLE_RESOURCE, payload: id })
 export const deleteVisibleResId = (id: number) => ({ type: actions.DELETE_VISIBLE_RESOURCE, payload: id })
