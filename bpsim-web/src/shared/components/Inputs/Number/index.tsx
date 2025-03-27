@@ -23,7 +23,7 @@ const NumberInput = (props: IProps) => {
                 id={props.id}
                 placeholder={props.placeholder}
                 value={value}
-                step="any"
+                step="0.001"
                 {...props.register}
                 disabled={props.disabled}
                 onChange={onChange}

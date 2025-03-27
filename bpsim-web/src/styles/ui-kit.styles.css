@@ -85,6 +85,12 @@
     gap: 10px;
 }
 
+.column-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .hoverable:hover {
     cursor: pointer;
     opacity: var(--hover-opasity);

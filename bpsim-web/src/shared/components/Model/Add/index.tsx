@@ -32,7 +32,6 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
         const response = await createModel(data, subjectAreaId);
 
         if (!(response instanceof AxiosError)) {
-            //onSubjectAdd(response.data.length);
             reset();
             onClose();
             localStorage.setItem('modelId', response.data.id.toString());
@@ -50,8 +49,8 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
         <FormModal isOpen={props.isOpen} title={"Создание модели"}
             content={
                 <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}>
-                    <div className="">
-                        <div className="text--heading3 text-600">Наименование модели</div>
+                    <div className="row-block">
+                        <div className="text--body-s">Наименование модели</div>
                         <TextInput placeholder={"Наименование"} type="text" id={"name"}
                             register={{
                                 ...register('name', {
@@ -61,8 +60,8 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                 })
                             }} error={errors.name} />
                     </div>
-                    <div>
-                        <div className="text--heading3 text-600">Описание модели</div>
+                    <div className="row-block">
+                        <div className="text--body-s">Описание модели</div>
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
                                 ...register('description', {

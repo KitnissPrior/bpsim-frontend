@@ -26,7 +26,7 @@ export const BaseButton = ({ text, onClick, className, ...props }: IProps) => {
         </>
 
     return (
-        <button className={`base-button ${className}`} onClick={onClick} type={props.type ? props.type : 'button'}>
+        <button className={`base-button ${className} hoverable`} onClick={onClick} type={props.type ? props.type : 'button'}>
             {iconPath ? <IconPlusText /> : text}
         </button>
     )

@@ -35,8 +35,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     const currentModel = useSelector((state: any) => state.model.current);
     const measures = useSelector((state: any) => state.measure.items);
     const resTypes = useSelector((state: any) => state.resource.types);
-    //const [resTypes, setResTypes] = useState([]);
-    //const [measures, setMeasures] = useState([]);
 
     const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
         evt.preventDefault();

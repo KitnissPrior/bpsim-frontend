@@ -17,7 +17,7 @@ const StartScreen = () => {
 
     return (
         <div className="start-screen">
-            <div className="text--heading1 text--center">Начните работу прямо сейчас!</div>
+            <div className="text--heading-1 text--center">Начните работу прямо сейчас!</div>
             <div className="buttons-area">
                 <BaseButton text="Открыть предметную область" onClick={onOpenSubjectArea} />
                 <BaseButton text="Создать предметную область" onClick={onCreateSubjectArea} />

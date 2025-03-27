@@ -6,25 +6,32 @@ interface IProps {
     title: string
     onSelect: (value: any) => void
     register?: any
+    error?: string
 }
 
-export const Select = ({ data, title, onSelect, register }: IProps) => {
-    const [value, setValue] = useState(" ");
+export const Select = ({ data, title, onSelect, error }: IProps) => {
+    const [value, setValue] = useState("");
 
-    const onChange = (evt: any) => {
+    const onChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         setValue(evt.target.value);
         onSelect(evt.target.value);
-    }
+        console.log(evt.target.value);
+    };
+
     return (
-        <>
-            <select className="form-select" aria-label={title} value={value} onChange={onChange}
-                {...register}>
-                <option>{" "}</option>
+        <div className="column-block">
+            <select
+                className="form-select"
+                aria-label={title}
+                value={value}
+                onChange={onChange}
+            >
+                <option value={""} />
                 {data.map((item, index) =>
-                    <option key={index} value={item.id}>{item.name}</option>)
-                }
+                    <option key={index} value={item.id}>{item.name}</option >
+                )}
             </select>
-            <TextError text={""} />
-        </>
-    )
-}
+            {error && <TextError text={error} />}
+        </div>
+    );
+};
