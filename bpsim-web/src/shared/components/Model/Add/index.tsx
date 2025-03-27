@@ -19,7 +19,7 @@ interface IProps {
 
 const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm<Model | any>();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<Model | any>();
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const subjectAreaId = Number(localStorage.getItem('subjectAreaId'));
@@ -33,6 +33,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
 
         if (!(response instanceof AxiosError)) {
             //onSubjectAdd(response.data.length);
+            reset();
             onClose();
             localStorage.setItem('modelId', response.data.id.toString());
             toast.success('Модель успешно добавлена');
@@ -51,10 +52,11 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                 <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}>
                     <div className="">
                         <div className="text--heading3 text-600">Наименование модели</div>
-                        <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
+                        <TextInput placeholder={"Наименование"} type="text" id={"name"}
                             register={{
                                 ...register('name', {
-                                    required: "Введите название модели",
+                                    required: "Введите наименование модели",
+                                    value: " ",
                                     maxLength: { value: 20, message: "Максимальная длина 20 символов" }
                                 })
                             }} error={errors.name} />
@@ -63,8 +65,10 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                         <div className="text--heading3 text-600">Описание модели</div>
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
-                                ...register('description',
-                                    { maxLength: { value: 255, message: "Максимальная длина 255 символов" } })
+                                ...register('description', {
+                                    value: " ",
+                                    maxLength: { value: 255, message: "Максимальная длина 255 символов" }
+                                })
                             }}
                             error={errors.description} />
                     </div>

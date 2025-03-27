@@ -28,7 +28,6 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
         const response = await createSubjectArea(data);
 
         if (!(response instanceof AxiosError)) {
-            //onSubjectAdd(response.data.length);
             dispatch(setDefaultModel());
             onClose();
             localStorage.setItem('subjectAreaId', response.data.id.toString());

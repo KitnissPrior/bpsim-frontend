@@ -12,6 +12,8 @@ import { toast } from "react-toastify";
 import { Resources } from "./Resources";
 import ResourceForm from "../../Resources/Form";
 import { ShowMoreButton } from "../../Buttons/ShowMore";
+import { getResourceTypes } from "../../../../services/resource.service";
+import { getMeasures } from "../../../../services/measure.service";
 
 interface IProps {
     onModelChoose: (model: Model) => void
@@ -31,6 +33,8 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
+    const [resTypes, setResTypes] = useState([]);
+    const [measures, setMeasures] = useState([]);
 
     const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
         evt.preventDefault();
@@ -43,7 +47,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     }
 
     const onModelDelete = () => {
-        //const id = Number(localStorage.getItem('modelId'));
         const id = currentModel.id;
         deleteModel(currentModel.id).then((response: any) => {
             if (response.status == 200) {
@@ -65,8 +68,20 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     }
 
     const onShowResourceForm = () => {
-        setResourceContextVisible(false);
-        setResourceFormVisible(true);
+        getResourceTypes()
+            .then((response: any) => {
+                if (response.status == 200) {
+                    setResTypes(response.data);
+
+                    getMeasures().then((response: any) => {
+                        if (response.status == 200) {
+                            setMeasures(response.data);
+                            setResourceContextVisible(false);
+                            setResourceFormVisible(true);
+                        }
+                    })
+                }
+            })
     }
 
     const onShowModels = () => {
@@ -131,7 +146,9 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                     setModelFormVisible(false)
                     setModelContextVisible(false);
                 }} />
-            <ResourceForm isOpen={resourceFormVisible} onClose={() => setResourceFormVisible(false)} />
+            <ResourceForm isOpen={resourceFormVisible}
+                onClose={() => setResourceFormVisible(false)}
+                types={resTypes} measures={measures} />
             {
                 deleteConfirmVisible &&
                 <ConfirmModal
