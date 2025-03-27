@@ -41,10 +41,12 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
         setLoading(true);
         if (!typeId) {
             setSelectTypeError("Выберите тип ресурса");
+            setLoading(false);
             return;
         }
         if (!measureId) {
             setSelectMeasureError("Выберите единицу измерения");
+            setLoading(false);
             return;
         }
         data.type_id = typeId;
@@ -62,6 +64,7 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
         }
         else {
             toast.error('При добавлении ресурса произошла ошибка');
+            setLoading(false);
         }
 
     }
