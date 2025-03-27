@@ -8,12 +8,21 @@
     overflow-x: scroll;
 }
 
+.sub-area-name {
+    word-wrap: break-word;
+}
+
 .sidebar-second-slice {
     padding: 0px 0px 0px 22px;
 }
 
 .sidebar-third-slice {
     padding-left: 45px;
+}
+
+.sidebar-fourth-slice {
+    padding-left: 70px;
+    margin: 10px 0px 0px 0px;
 }
 
 .sidebar-items-slice {

@@ -10,7 +10,6 @@ import { deleteModel as deleteStoreModel, setCurrentModel } from "../../../../st
 import ConfirmModal from "../../Modals/Confirm";
 import { toast } from "react-toastify";
 import { Resources } from "./Resources";
-import ResourceForm from "../../Resources/Form";
 import { ShowMoreButton } from "../../Buttons/ShowMore";
 
 interface IProps {
@@ -23,14 +22,13 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     const [propsVisible, setPropsVisible] = useState(false);
     const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
     const [modelsVisible, setModelsVisible] = useState(false);
-
-    const [resourceContextVisible, setResourceContextVisible] = useState(false);
-    const [resourceFormVisible, setResourceFormVisible] = useState(false);
     const dispatch = useDispatch()
 
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
+    const measures = useSelector((state: any) => state.measure.items);
+    const resTypes = useSelector((state: any) => state.resource.types);
 
     const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
         evt.preventDefault();
@@ -43,30 +41,19 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     }
 
     const onModelDelete = () => {
-        //const id = Number(localStorage.getItem('modelId'));
         const id = currentModel.id;
         deleteModel(currentModel.id).then((response: any) => {
             if (response.status == 200) {
                 dispatch(deleteStoreModel(id));
                 localStorage.removeItem('modelId');
-                setDeleteConfirmVisible(false)
                 toast.success('Модель успешно удалена')
             }
             else {
                 toast.error(`${response.message}`)
             }
+            setDeleteConfirmVisible(false)
         })
 
-    }
-
-    const onResoursesRightClick = (evt: MouseEvent<HTMLDivElement>) => {
-        evt.preventDefault();
-        setResourceContextVisible((prev) => !prev);
-    }
-
-    const onShowResourceForm = () => {
-        setResourceContextVisible(false);
-        setResourceFormVisible(true);
     }
 
     const onShowModels = () => {
@@ -78,7 +65,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
             <div className="sidebar" key="sidebar">
                 <div className="sidebar-items-slice">
                     <ShowMoreButton disabled={true} theme="primary" />
-                    <div key="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
+                    <div className="sub-area-name"> {currentSubjectArea ? currentSubjectArea.name : "ПО не выбрана"}</div>
                 </div>
                 {currentSubjectArea &&
                     <div className="sidebar-items-slice sidebar-second-slice hoverable">
@@ -110,11 +97,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                         </div>
                     )
                 })}
-                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} data={[]} />}
-                {resourceContextVisible &&
-                    <ContextAdd
-                        text="+ Добавить ресурс"
-                        onAdd={onShowResourceForm} />}
+                {currentSubjectArea && <Resources types={resTypes} measures={measures} />}
                 {
                     propsVisible && <ModelProps
                         onClose={() => setPropsVisible(false)}
@@ -131,7 +114,6 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                     setModelFormVisible(false)
                     setModelContextVisible(false);
                 }} />
-            <ResourceForm isOpen={resourceFormVisible} onClose={() => setResourceFormVisible(false)} />
             {
                 deleteConfirmVisible &&
                 <ConfirmModal

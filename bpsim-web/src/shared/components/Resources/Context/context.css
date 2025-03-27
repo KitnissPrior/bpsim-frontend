@@ -1,0 +1,9 @@
+.context-menu-props {
+    position: fixed;
+    top: 40%;
+    left: 80px;
+}
+
+.context-res-item {
+    padding: 5px 0px;
+}
