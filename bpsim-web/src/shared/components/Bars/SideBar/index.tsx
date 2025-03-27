@@ -1,4 +1,4 @@
-import { useState, MouseEvent, Key } from "react";
+import { useState, MouseEvent, Key, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import { Model } from "../../../../types/model";
 import ModelAddForm from "../../Model/Add";
@@ -12,11 +12,11 @@ import { toast } from "react-toastify";
 import { Resources } from "./Resources";
 import ResourceForm from "../../Resources/Form";
 import { ShowMoreButton } from "../../Buttons/ShowMore";
-import { getResourceTypes } from "../../../../services/resource.service";
-import { getMeasures } from "../../../../services/measure.service";
 
 interface IProps {
     onModelChoose: (model: Model) => void
+    // resTypes: ResourceType[]
+    // measures: Measure[]
 }
 
 export const SideBar = ({ onModelChoose }: IProps) => {
@@ -33,8 +33,10 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     const currentSubjectArea = useSelector((state: any) => state.subjectArea.current);
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
-    const [resTypes, setResTypes] = useState([]);
-    const [measures, setMeasures] = useState([]);
+    const measures = useSelector((state: any) => state.measure.items);
+    const resTypes = useSelector((state: any) => state.resource.types);
+    //const [resTypes, setResTypes] = useState([]);
+    //const [measures, setMeasures] = useState([]);
 
     const onModelsRightClick = (evt: MouseEvent<HTMLDivElement>) => {
         evt.preventDefault();
@@ -52,12 +54,12 @@ export const SideBar = ({ onModelChoose }: IProps) => {
             if (response.status == 200) {
                 dispatch(deleteStoreModel(id));
                 localStorage.removeItem('modelId');
-                setDeleteConfirmVisible(false)
                 toast.success('Модель успешно удалена')
             }
             else {
                 toast.error(`${response.message}`)
             }
+            setDeleteConfirmVisible(false)
         })
 
     }
@@ -68,20 +70,25 @@ export const SideBar = ({ onModelChoose }: IProps) => {
     }
 
     const onShowResourceForm = () => {
-        getResourceTypes()
-            .then((response: any) => {
-                if (response.status == 200) {
-                    setResTypes(response.data);
+        setResourceFormVisible(true);
+        // if (!resTypes.length) {
+        //     getResourceTypes()
+        //         .then((response: any) => {
+        //             if (response.status == 200) {
+        //                 setResTypes(response.data);
 
-                    getMeasures().then((response: any) => {
-                        if (response.status == 200) {
-                            setMeasures(response.data);
-                            setResourceContextVisible(false);
-                            setResourceFormVisible(true);
-                        }
-                    })
-                }
-            })
+        //                 if (!measures.length) {
+        //                     getMeasures().then((response: any) => {
+        //                         if (response.status == 200) {
+        //                             setMeasures(response.data);
+        //                             setResourceContextVisible(false);
+        //                             setResourceFormVisible(true);
+        //                         }
+        //                     })
+        //                 }
+        //             }
+        //         })
+        // }
     }
 
     const onShowModels = () => {
@@ -125,7 +132,7 @@ export const SideBar = ({ onModelChoose }: IProps) => {
                         </div>
                     )
                 })}
-                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} data={[]} />}
+                {currentSubjectArea && <Resources onContextMenu={onResoursesRightClick} data={resTypes} />}
                 {resourceContextVisible &&
                     <ContextAdd
                         text="+ Добавить ресурс"

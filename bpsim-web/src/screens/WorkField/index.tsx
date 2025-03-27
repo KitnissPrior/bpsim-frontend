@@ -29,6 +29,10 @@ import { useOutletContext } from 'react-router-dom';
 import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges } from "../../shared/hooks/edgeFormatter"
 import { startSimulation } from "../../services/simulation"
 import { Console } from "./Console"
+import { getResourceTypes } from "../../services/resource.service"
+import { getMeasures } from "../../services/measure.service"
+import { setResTypes } from "../../store/reducers/resourceRedicer"
+import { setMeasures } from "../../store/reducers/measureReducer"
 
 interface INode {
     key: string | number;
@@ -147,9 +151,25 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 dispatch(setCurrentArea(response.data));
             });
 
+            getResourceTypes().then((response: any) => {
+                console.log(response.data)
+                if (response.status == 200) {
+                    dispatch(setResTypes(response.data));
+                }
+                else toast.error('Ресурсы не загрузились');
+            })
+
+            getMeasures().then((response: any) => {
+                console.log(response.data)
+                if (response.status == 200) {
+                    dispatch(setMeasures(response.data));
+                }
+            })
+
             getModels(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
                 if (response instanceof AxiosError) {
                     toast.error('Модели не загрузились');
+                    context.showLoading(false);
                 }
                 else {
                     dispatch(setModelItems(response.data));

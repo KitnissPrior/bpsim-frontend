@@ -7,7 +7,7 @@ interface IProps {
     data: any[]
 }
 
-export const Resources = ({ onContextMenu, }: IProps) => {
+export const Resources = ({ onContextMenu, data }: IProps) => {
     const [dataVisible, setDataVisible] = useState(false);
 
     const onShowResources = () => {
@@ -25,7 +25,15 @@ export const Resources = ({ onContextMenu, }: IProps) => {
             </div>
             {dataVisible &&
                 <>
-                    <div className="sidebar-items-slice sidebar-third-slice">
+                    {data.map((res, index) => (
+                        <div className="sidebar-items-slice sidebar-third-slice" key={index}>
+                            <ShowMoreButton disabled={true} theme="white" />
+                            <div className="hoverable" onContextMenu={onContextMenu} onClick={onShowResources}>
+                                {res.name}
+                            </div>
+                        </div>
+                    ))}
+                    {/* <div className="sidebar-items-slice sidebar-third-slice">
                         <ShowMoreButton disabled={true} theme="white" />
                         <div>Информационный</div>
                     </div>
@@ -40,7 +48,7 @@ export const Resources = ({ onContextMenu, }: IProps) => {
                     <div className="sidebar-items-slice sidebar-third-slice">
                         <ShowMoreButton disabled={true} theme="white" />
                         <div>Финансовый</div>
-                    </div>
+                    </div> */}
                 </>}
         </>
     )

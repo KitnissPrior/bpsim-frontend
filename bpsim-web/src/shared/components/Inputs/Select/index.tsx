@@ -5,9 +5,10 @@ interface IProps {
     data: any[];
     title: string
     onSelect: (value: any) => void
+    register?: any
 }
 
-export const Select = ({ data, title, onSelect }: IProps) => {
+export const Select = ({ data, title, onSelect, register }: IProps) => {
     const [value, setValue] = useState(" ");
 
     const onChange = (evt: any) => {
@@ -16,7 +17,8 @@ export const Select = ({ data, title, onSelect }: IProps) => {
     }
     return (
         <>
-            <select className="form-select" aria-label={title} value={value} onChange={onChange}>
+            <select className="form-select" aria-label={title} value={value} onChange={onChange}
+                {...register}>
                 <option>{" "}</option>
                 {data.map((item, index) =>
                     <option key={index} value={item.id}>{item.name}</option>)
