@@ -8,6 +8,10 @@
     overflow-x: scroll;
 }
 
+.sub-area-name {
+    word-wrap: break-word;
+}
+
 .sidebar-second-slice {
     padding: 0px 0px 0px 22px;
 }

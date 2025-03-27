@@ -44,11 +44,15 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
             setLoading(false);
             return;
         }
+        else
+            setSelectTypeError("");
         if (!measureId) {
             setSelectMeasureError("Выберите единицу измерения");
             setLoading(false);
             return;
         }
+        else
+            setSelectMeasureError("");
         data.type_id = typeId;
         data.measure_id = measureId;
         data.sub_area_id = Number(localStorage.getItem('subjectAreaId'));
@@ -59,6 +63,10 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
             toast.success('Ресурс успешно добавлен');
             setLoading(false);
             dispatch(addResource(response.data));
+            dispatch(setCurrentResTypeId(undefined));
+            dispatch(setCurrentMeasureId(undefined));
+            setSelectTypeError("");
+            setSelectMeasureError("");
             reset();
             onClose();
         }
