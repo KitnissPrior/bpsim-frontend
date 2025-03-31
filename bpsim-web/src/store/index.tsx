@@ -5,6 +5,7 @@ import { nodeReducer } from "./reducers/nodeReducer";
 import { nodeDetailsReducer } from "./reducers/nodeDetailsReducer";
 import { resourceReducer } from "./reducers/resourceRedicer";
 import { measureReducer } from "./reducers/measureReducer";
+import { nodeResReducer } from "./reducers/nodeResReducer";
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         nodeDetails: nodeDetailsReducer,
         resource: resourceReducer,
         measure: measureReducer,
+        nodeRes: nodeResReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     devTools: true,

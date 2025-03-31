@@ -2,13 +2,17 @@ import { insertNull } from "../../../shared/hooks/numbersFormatter";
 import "./table.css"
 
 interface IProps {
+    selectable?: boolean
     headers: string[];
     data: any[];
+    onItemClick?: (item: any) => void
+    onDoubleClick?: () => void
+    onAdd?: () => void
 }
 
-export const Table = ({ data, headers }: IProps) => {
+export const Table = ({ data, headers, onItemClick, selectable, onAdd }: IProps) => {
     return (
-        <table className="table table-bordered table-container">
+        <table className={`table table-bordered table-container ${selectable ? "table-hover" : ""}`}>
             <thead>
                 <tr >
                     <th scope="col"></th>
@@ -20,9 +24,9 @@ export const Table = ({ data, headers }: IProps) => {
             <tbody>
                 {data.map((item, index) => {
                     return (
-                        <tr >
+                        <tr onClick={() => onItemClick && onItemClick(item)} key={"row" + index}>
                             <th scope="row" className="table-data">{insertNull(index)}</th>
-                            {item.map((value: any, index: any) => {
+                            {Object.values(item).map((value: any, index: any) => {
                                 return (
                                     <td className="table-data" key={index}>{value}</td>
                                 )
@@ -33,7 +37,7 @@ export const Table = ({ data, headers }: IProps) => {
                 <tr>
                     <th scope="row" className="table-data">{insertNull(data.length)}</th>
                     <td></td>
-                    <td onClick={() => { }} className="table-add-cell table-data">+</td>
+                    <td onClick={onAdd} className="table-add-cell table-data">+</td>
                 </tr>
             </tbody>
         </table>

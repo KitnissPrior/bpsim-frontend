@@ -6,6 +6,7 @@ import { NodeDetails } from "../../../../../../types/node";
 import { BaseButton } from "../../../../Buttons/Base";
 import NumberInput from "../../../../Inputs/Number";
 import TextInput from "../../../../Inputs/Text";
+import "./mainPage.css"
 
 interface IProps {
     details: any,
@@ -29,7 +30,7 @@ export const MainPage = ({ details, node_id, onClose }: IProps) => {
         })
     }
     return (
-        <form className="px-4 py-3 update-node-details-form" onSubmit={handleSubmit(onDetailsUpdate)}>
+        <form className="update-node-details-form" onSubmit={handleSubmit(onDetailsUpdate)}>
             <div className="props-modal-block">
                 <div>Наименование</div>
                 <TextInput placeholder={"Добавьте наименование"}

@@ -46,7 +46,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
     }
 
     return (
-        <FormModal isOpen={props.isOpen} title={"Создание модели"}
+        <FormModal isOpen={props.isOpen} title={"Создание модели"} onClose={onClose}
             content={
                 <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}>
                     <div className="row-block">

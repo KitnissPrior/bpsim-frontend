@@ -1,14 +1,4 @@
-interface ResIds {
-    id: number;
-}
-
-interface ResType {
-    id: number;
-    name: string;
-    prefix: string;
-
-    visible?: boolean
-}
+import { ResState } from "../../types/resource"
 
 const actions = {
     SET_TYPES: 'SET_TYPES',
@@ -19,14 +9,6 @@ const actions = {
     ADD_VISIBLE_RESOURCE: 'ADD_VISIBLE_RESOURCE',
     DELETE_VISIBLE_RESOURCE: 'DELETE_VISIBLE_RESOURCE',
     DELETE_RESOURCE: 'DELETE_RESOURCE',
-}
-
-type ResState = {
-    types: ResType[],
-    resources: any[],
-    visibleTypeIds: number[],
-    currentTypeId: number,
-    currentResource: any
 }
 
 const defaultState: ResState = {

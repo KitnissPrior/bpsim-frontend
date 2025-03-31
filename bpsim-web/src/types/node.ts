@@ -1,3 +1,5 @@
+import { Resource } from "./resource";
+
 export type Node = {
     key?: string | null;
     id?: string | null;
@@ -30,4 +32,10 @@ export type NodeRes = {
     node_id: number;
     res_id: number;
     model_id: number;
+}
+
+export type NodeResState = {
+    selectedResource: Resource | null;
+    selectedResValue: string;
+    resources: NodeRes[]
 }

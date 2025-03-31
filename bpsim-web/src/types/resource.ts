@@ -15,3 +15,18 @@ export type ResourceType = {
     name: string;
     prefix: string;
 }
+
+type ResourceTypeState = {
+    id: number;
+    name: string;
+    prefix: string;
+    visible?: boolean
+}
+
+export type ResState = {
+    types: ResourceTypeState[],
+    resources: any[],
+    visibleTypeIds: number[],
+    currentTypeId: number,
+    currentResource: any
+}
