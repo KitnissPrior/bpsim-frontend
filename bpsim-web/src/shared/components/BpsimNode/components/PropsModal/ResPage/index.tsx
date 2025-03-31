@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form"
 import { NodeRes } from "../../../../../../types/node"
 import { BaseButton } from "../../../../Buttons/Base"
+import { Table } from "../../../../Table"
 import "./resPage.css"
 
 interface IProps {
@@ -19,6 +20,8 @@ export const ResPage = ({ node_id, onClose }: IProps) => {
             <div className="node-res-props-grid">
                 <div className="text--body-xs node-res-title">Условия запуска / ресурсы на входе</div>
                 <div className="text--body-xs node-res-title">Ресурсы на выходе</div>
+                <Table data={[]} headers={["Ресурс", "Формула"]} />
+                <Table data={[]} headers={["Ресурс", "Формула"]} />
             </div>
             <BaseButton onClick={onClose} text="Сохранить" />
         </form>

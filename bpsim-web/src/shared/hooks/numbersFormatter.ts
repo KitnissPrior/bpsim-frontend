@@ -1,0 +1,1 @@
+export const insertNull = (num: number) => `${num}`.padStart(2, '0');
