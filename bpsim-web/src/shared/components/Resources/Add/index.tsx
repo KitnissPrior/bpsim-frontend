@@ -25,7 +25,7 @@ interface IProps {
 }
 
 
-const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
+const ResourceAddForm = ({ onClose, onResourceSave, ...props }: IProps) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<Resource | any>({
         resolver: yupResolver(resourceSchema)
     });
@@ -86,7 +86,7 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
     }
 
     return (
-        <FormModal isOpen={props.isOpen} title={"Создание ресурса"}
+        <FormModal isOpen={props.isOpen} title={"Создание ресурса"} onClose={onClose}
             content={
                 <form className="px-4 py-3 creation-resource-form" onSubmit={handleSubmit(onResourceSubmit)}
                 >
@@ -132,14 +132,10 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
                         <Select data={props.measures} title="Единица измерения" onSelect={onMeasureSelect}
                             error={selectMeasureError} />
                     </div>
-                    <div className="row-block">
-                        <BaseButton text={'Отмена'} onClick={onClose}
-                            className="subject-cancel-btn" />
-                        <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
-                        />
-                    </div>
+                    <BaseButton type='submit' className="modal-save-btn"
+                        text={loading ? 'Добавление...' : 'Добавить'} />
                 </form>
             } className="resource-add-modal" />)
 }
 
-export default ResourceForm
+export default ResourceAddForm

@@ -1,76 +1,51 @@
 import { Modal } from "react-bootstrap"
-import TextInput from "../../../Inputs/Text"
-import NumberInput from "../../../Inputs/Number"
 import "./propsModal.css"
 import { useEffect, useRef } from "react"
-import { BaseButton } from "../../../Buttons/Base"
-import { NodeDetails } from "../../../../../types/nodeDetails"
-import { useForm } from "react-hook-form"
-import { toast } from "react-toastify"
-import { updateNodeDetails } from "../../../../../services/nodeDetails"
-import { AxiosError } from "axios"
+import { MainPage } from "./MainPage"
+import { ResPage } from "./ResPage"
+import NavigationTab from "../../../NavigationTab"
+import { NodePropsTab } from "../../../../../enums/nodeProps.enum"
+import { useDispatch, useSelector } from "react-redux"
+import { setActiveNodeTab } from "../../../../../store/reducers/nodeDetailsReducer"
 
 interface IProps {
-    className?: string
     isOpen: boolean
     node_id: number
     details: any
     onClose: () => void
 }
 
-export const NodePropsModal = ({ isOpen, node_id, className, details, onClose }: IProps) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<NodeDetails | any>();
-    useEffect(() => { })
+export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) => {
     const modalRef = useRef(null);
+    const activeTab = useSelector((state: any) => state.nodeDetails.activeTab);
+    const dispatch = useDispatch();
 
-    const onDetailsUpdate = (data: NodeDetails) => {
-        data.node_id = node_id;
-        updateNodeDetails(data, details.id).then((response) => {
-            if (!(response instanceof AxiosError)) {
-                toast.success("Данные успешно обновлены");
-                onClose()
-            }
-            else {
-                toast.error("Данные обновить не удалось");
-            }
-        })
-    }
+    useEffect(() => {
+        dispatch(setActiveNodeTab(NodePropsTab.Main));
+    }, []);
 
     return (
-        <Modal show={isOpen} ref={modalRef} className={"props-modal " + className}
-            keyboard={false} backdrop='static' enforceFocus={false}>
-            <div className="mod-header">{`Редактирование узла "` + details.name + `"`}</div>
-            <div className="mod-content">
-                <form className="px-4 py-3 update-node-details-form" onSubmit={handleSubmit(onDetailsUpdate)}>
-                    <div className="props-modal-block">
-                        <div>Наименование</div>
-                        <TextInput placeholder={"Добавьте наименование"}
-                            register={{ ...register('name', { required: "Добавьте наименование узла" }) }}
-                            error={errors.name}
-                            type="text" id={"name"}
-                            defaultValue={details.name} disabled={true} />
+        <Modal show={isOpen} ref={modalRef} keyboard={false} backdrop='static' enforceFocus={false}
+            className="">
+            <div className="modal-content node-props-modal">
+                <div className="modal-header node-props-modal-header">
+                    <div className="modal-title node-props-title">Свойства узла</div>
+                    <button type="button" className="btn-close"
+                        data-bs-dismiss="modal" aria-label="Закрыть" onClick={onClose} />
+                </div>
+                <div className="modal-body node-props-modal-body">
+                    <div className="row-block">
+                        <NavigationTab variant={NodePropsTab.Main} label="Основное" activeTab={activeTab}
+                            handleTabChange={() => { dispatch(setActiveNodeTab(NodePropsTab.Main)) }} />
+                        <NavigationTab variant={NodePropsTab.Resources} label="Ресурсы" activeTab={activeTab}
+                            handleTabChange={() => { dispatch(setActiveNodeTab(NodePropsTab.Resources)) }} />
                     </div>
-                    <div className="props-modal-block">
-                        <div>Время операции</div>
-                        <TextInput placeholder={"Добавьте время операции"}
-                            type="text" id={"duration"} disabled={false}
-                            defaultValue={details.duration}
-                            register={{ ...register('duration', { required: "Добавьте время операции" }) }}
-                            error={errors.duration}
-                        />
-                    </div>
-                    <div className="props-modal-block">
-                        <div>Стоимость</div>
-                        <NumberInput placeholder={"Добавьте стоимость"}
-                            defaultValue={details.cost}
-                            id="cost" disabled={false}
-                            register={{ ...register('cost') }}
-                            error={errors.cost}
-                        />
-                    </div>
-                    <BaseButton text="Применить" type="submit" className="props-modal-save-btn" />
-                    <BaseButton text="Закрыть" onClick={onClose} className="props-modal-close-btn" />
-                </form>
+                    {activeTab === NodePropsTab.Main ?
+                        <MainPage node_id={node_id} details={details} onClose={onClose} />
+                        :
+                        <ResPage node_id={node_id} onClose={onClose} />
+                    }
+                </div>
             </div>
         </Modal>
     )

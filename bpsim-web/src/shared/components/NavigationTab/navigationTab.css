@@ -1,0 +1,29 @@
+.node-res-tab {
+  width: auto;
+  flex-grow: 1;
+  cursor: pointer;
+  background-color: var(--grey-light);
+  text-align: center;
+  padding: 18px 10px;
+  transition: 0.3s;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.node-res-tab-label {
+  text-wrap: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.node-res-tab:hover:not(.node-res-tab-active) {
+  opacity: var(--hover-opasity);
+}
+
+.node-res-tab-active {
+  background-color: white;
+}

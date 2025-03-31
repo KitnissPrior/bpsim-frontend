@@ -1,10 +1,22 @@
-.props-modal {
+.node-props-modal {
+    width: 700px;
+    margin: -1px 0px 0px -1px;
+}
+
+.node-props-modal-header {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px;
+    flex-direction: row;
+    background-color: var(--grey-medium);
+    color: white;
+}
+
+.node-props-title {
+    cursor: pointer;
+}
+
+.node-props-modal-body {
+    padding: 0px 2px;
+    margin-left: -1px;
 }
 
 .props-modal-block {
@@ -13,10 +25,4 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
-}
-
-.props-modal-close-btn {
-    text-align: center;
-    width: fit-content;
-    margin: auto;
 }
