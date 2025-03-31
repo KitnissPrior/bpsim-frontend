@@ -25,7 +25,7 @@ interface IProps {
 }
 
 
-const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
+const ResourceAddForm = ({ onClose, onResourceSave, ...props }: IProps) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<Resource | any>({
         resolver: yupResolver(resourceSchema)
     });
@@ -142,4 +142,4 @@ const ResourceForm = ({ onClose, onResourceSave, ...props }: IProps) => {
             } className="resource-add-modal" />)
 }
 
-export default ResourceForm
+export default ResourceAddForm

@@ -1,0 +1,10 @@
+.node-res-props-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 0px 20px;
+}
+
+.node-res-title {
+    word-wrap: no-wrap;
+}

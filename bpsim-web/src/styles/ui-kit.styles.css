@@ -79,6 +79,13 @@
     width: 100%;
 }
 
+.modal-save-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px auto;
+}
+
 .row-block {
     display: flex;
     flex-direction: row;

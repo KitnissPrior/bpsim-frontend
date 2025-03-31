@@ -1,3 +1,4 @@
+import { NodePropsTab } from "../../enums/nodeProps.enum";
 import { NodeDetails } from "../../types/node";
 
 const actions = {
@@ -5,6 +6,7 @@ const actions = {
     SET_NAME: 'SET_NAME',
     SET_COST: 'SET_COST',
     SET_DURATION: 'SET_DURATION',
+    SET_ACTIVE_TAB: 'SET_ACTIVE_TAB',
 }
 
 const defaultState = {
@@ -13,6 +15,7 @@ const defaultState = {
     node_name: "",
     duration: "",
     cost: 0,
+    activeTab: NodePropsTab.Main
 }
 
 export const nodeDetailsReducer = (state = defaultState, action: any) => {
@@ -31,6 +34,8 @@ export const nodeDetailsReducer = (state = defaultState, action: any) => {
             return { ...state, cost: action.payload }
         case actions.SET_DURATION:
             return { ...state, duration: action.payload }
+        case actions.SET_ACTIVE_TAB:
+                return { ...state, activeTab: action.payload }
         default:
             return state;
     }
@@ -42,3 +47,5 @@ export const setNodeDuration = (duration: string) => ({ type: actions.SET_DURATI
 
 export const setNodeDetails = (data: NodeDetails) => ({ type: actions.SET_DATA, payload: data })
 export const setNodeName = (name: string) => ({ type: actions.SET_NAME, payload: name })
+
+export const setActiveNodeTab = (tab: NodePropsTab) => ({ type: actions.SET_ACTIVE_TAB, payload: tab })

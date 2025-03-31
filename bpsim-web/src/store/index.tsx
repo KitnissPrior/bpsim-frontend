@@ -13,7 +13,7 @@ export const store = configureStore({
         node: nodeReducer,
         nodeDetails: nodeDetailsReducer,
         resource: resourceReducer,
-        measure: measureReducer
+        measure: measureReducer,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
     devTools: true,
