@@ -1,3 +1,7 @@
+.res-settings-container {
+    padding: 20px;
+}
+
 .node-res-props-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -6,5 +10,6 @@
 }
 
 .node-res-title {
+    justify-self: center;
     word-wrap: no-wrap;
 }

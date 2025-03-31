@@ -16,14 +16,14 @@ export const ResPage = ({ node_id, onClose }: IProps) => {
 
     }
     return (
-        <form onSubmit={handleSubmit(onResourcesSave)}>
+        <form onSubmit={handleSubmit(onResourcesSave)} className="res-settings-container">
             <div className="node-res-props-grid">
                 <div className="text--body-xs node-res-title">Условия запуска / ресурсы на входе</div>
                 <div className="text--body-xs node-res-title">Ресурсы на выходе</div>
                 <Table data={[]} headers={["Ресурс", "Формула"]} />
                 <Table data={[]} headers={["Ресурс", "Формула"]} />
             </div>
-            <BaseButton onClick={onClose} text="Сохранить" />
+            <BaseButton onClick={onClose} text="Сохранить" className="modal-save-btn" />
         </form>
     )
 }
