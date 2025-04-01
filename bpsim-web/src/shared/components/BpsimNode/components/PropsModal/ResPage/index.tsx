@@ -8,6 +8,7 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getResources } from "../../../../../../services/resource.service"
 import { setResources } from "../../../../../../store/reducers/resourceRedicer"
+import { ResFormulaModal } from "../FormulaModal"
 
 interface IProps {
     node_id: number
@@ -17,6 +18,7 @@ interface IProps {
 export const ResPage = ({ node_id, onClose }: IProps) => {
     const { register, handleSubmit, formState: { errors } } = useForm<NodeRes[] | any>();
     const [resSelectVisible, setResSelectVisible] = useState(false);
+    const [resFormulaVisible, setResFormulaVisible] = useState(false);
     const dispatch = useDispatch();
 
     const resources = useSelector((state: any) => state.resource.resources);
@@ -36,6 +38,13 @@ export const ResPage = ({ node_id, onClose }: IProps) => {
         setResSelectVisible(true);
     }
 
+    const onFormulaModalOpen = () => {
+        setResFormulaVisible(true);
+    }
+    const onFormulaModalClose = () => {
+        setResFormulaVisible(false);
+    }
+
     return (
         <>
             <form onSubmit={handleSubmit(onResourcesSave)} className="res-settings-container">
@@ -48,7 +57,8 @@ export const ResPage = ({ node_id, onClose }: IProps) => {
                 <BaseButton onClick={onClose} text="Сохранить" className="modal-save-btn" />
             </form>
             <ResourceSelectModal onClose={() => setResSelectVisible(false)} isOpen={resSelectVisible}
-                data={resources} />
+                data={resources} onSave={onFormulaModalOpen} />
+            <ResFormulaModal isOpen={resFormulaVisible} onClose={onFormulaModalClose} data={resources}/>
         </>
     )
 }

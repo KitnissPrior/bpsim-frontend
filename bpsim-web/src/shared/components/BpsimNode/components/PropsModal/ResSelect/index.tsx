@@ -9,16 +9,17 @@ import { useEffect, useState } from "react";
 
 interface IProps {
     isOpen: boolean
-    onClose: () => void
     data: Resource[];
+    onClose: () => void
+    onSave: () => void
 }
 
-interface ITableRes {
+export interface ITableRes {
     sys_name: string
     name: string
 }
 
-export const ResourceSelectModal = ({ isOpen, onClose, data }: IProps) => {
+export const ResourceSelectModal = ({ isOpen, onClose, data, onSave }: IProps) => {
     const [error, setError] = useState('');
     const [resources, setResources] = useState<ITableRes[]>([]);
     const dispatch = useDispatch();
@@ -41,6 +42,7 @@ export const ResourceSelectModal = ({ isOpen, onClose, data }: IProps) => {
         }
         console.log("Сохранен ресурс ", selectedRes.name);
         onClose();
+        onSave();
     }
     return (
         <FormModal onClose={onClose} isOpen={isOpen}

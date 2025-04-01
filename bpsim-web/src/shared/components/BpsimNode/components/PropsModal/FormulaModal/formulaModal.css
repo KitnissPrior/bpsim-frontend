@@ -1,0 +1,7 @@
+.formula-res-modal-body {
+    display: grid;
+    grid-template-columns: 300px 400px;
+    grid-template-rows: 300px;
+    gap: 10px;
+    height: fit-content;
+}
