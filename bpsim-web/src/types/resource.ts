@@ -25,7 +25,7 @@ type ResourceTypeState = {
 
 export type ResState = {
     types: ResourceTypeState[],
-    resources: any[],
+    resources: Resource[],
     visibleTypeIds: number[],
     currentTypeId: number,
     currentResource: any

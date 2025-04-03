@@ -1,20 +1,29 @@
-import { NodeResState } from "../../types/node";
+import { TableHTMLAttributes } from "react";
+import { NodeRes, NodeResState } from "../../types/node";
 import { NodeResType } from "../../types/resource";
+import { TableNodeRes } from "../../types/table";
 
 const actions = {
     SELECT_RESOURCE: 'SELECT_RESOURCE',
     SET_VALUE: 'SET_VALUE',
     ADD_READY_RESOURCE: 'ADD_READY_RESOURCE',
     SET_NODE_ID: 'SET_NODE_ID',
-    SET_IN_OUT: 'SET_IN_OUT'
+    SET_IN_OUT: 'SET_IN_OUT',
+    SET_NODE_RESOURCES: 'SET_NODE_RESOURCES',
+    SET_RESOURCES_IN: 'SET_RESOURCES_IN',
+    SET_RESOURCES_OUT: 'SET_RESOURCES_OUT',
+    ADD_RES_IN: 'ADD_RES_IN',
+    ADD_RES_OUT: 'ADD_RES_OUT'
 }
 
 const defaultState: NodeResState = {
     selectedResource: null,
     selectedResValue: '',
-    resources: [],
-    res_in_out: NodeResType.IN,
-    node_id: 0
+    nodeResources: [],
+    resInOut: NodeResType.IN,
+    tableResourcesIn: [],
+    tableResourcesOut: [],
+    nodeId: 0
 }
 
 export const nodeResReducer = (state = defaultState, action: any) => {
@@ -24,22 +33,36 @@ export const nodeResReducer = (state = defaultState, action: any) => {
         case actions.SET_VALUE:
             return { ...state, selectedResValue: action.payload }
         case actions.SET_IN_OUT:
-            return { ...state, res_in_out: action.payload }
+            return { ...state, resInOut: action.payload }
         case actions.SET_NODE_ID:
-            return { ...state, node_id: action.payload }
+            return { ...state, nodeId: action.payload }
         case actions.ADD_READY_RESOURCE:
-            return { ...state, resources: [...state.resources, action.payload] }
+            return { ...state, nodeResources: [...state.nodeResources, action.payload] }
+        case actions.SET_NODE_RESOURCES:
+            return { ...state, nodeResources: action.payload }
+        case actions.SET_RESOURCES_IN:
+            return { ...state, tableResourcesIn: action.payload }
+        case actions.SET_RESOURCES_OUT:
+            return { ...state, tableResourcesOut: action.payload }
+        case actions.ADD_RES_IN:
+            return { ...state, tableResourcesIn: [...state.tableResourcesIn, action.payload] }
+        case actions.ADD_RES_OUT:
+            return { ...state, tableResourcesOut: [...state.tableResourcesOut, action.payload] }
         default:
             return state;
     }
 }
 
 export const selectResource = (res: any) => ({ type: actions.SELECT_RESOURCE, payload: res })
-
 export const setValue = (value: string) => ({ type: actions.SET_VALUE, payload: value })
-
 export const setResInOut = (value: number) => ({ type: actions.SET_IN_OUT, payload: value })
-
 export const setNodeId = (value: number) => ({ type: actions.SET_NODE_ID, payload: value })
 
 export const addReadyResource = (res: any) => ({ type: actions.ADD_READY_RESOURCE, payload: res })
+export const setNodeResources = (items: NodeRes) => ({ type: actions.SET_NODE_RESOURCES, payload: items })
+
+export const setTableResourcesIn = (items: any) => ({ type: actions.SET_RESOURCES_IN, payload: items })
+export const setTableResourcesOut = (items: any) => ({ type: actions.SET_RESOURCES_OUT, payload: items })
+
+export const addResIn = (res: TableNodeRes) => ({ type: actions.ADD_RES_IN, payload: res })
+export const addResOut = (res: TableNodeRes) => ({ type: actions.ADD_RES_OUT, payload: res })

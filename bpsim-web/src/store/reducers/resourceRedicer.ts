@@ -1,4 +1,4 @@
-import { ResState } from "../../types/resource"
+import { Resource, ResState } from "../../types/resource"
 
 const actions = {
     SET_TYPES: 'SET_TYPES',
@@ -45,7 +45,7 @@ export const resourceReducer = (state = defaultState, action: any) => {
 export const setResTypes = (items: any) => ({ type: actions.SET_TYPES, payload: items })
 export const setCurrentResTypeId = (id: any) => ({ type: actions.SET_CURRENT_TYPE_ID, payload: id })
 
-export const setResources = (items: any) => ({ type: actions.SET_RESOURCES, payload: items })
+export const setResources = (items: Resource) => ({ type: actions.SET_RESOURCES, payload: items })
 export const setCurrentResource = (res: any) => ({ type: actions.SET_CURRENT_RESOURCE, payload: res })
 
 export const addResource = (res: any) => ({ type: actions.ADD_RESOURCE, payload: res })

@@ -4,10 +4,8 @@ import { BaseButton } from "../../../../Buttons/Base"
 import { Table } from "../../../../Table"
 import "./resPage.css"
 import { ResourceSelectModal } from "../ResSelect"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { getResources } from "../../../../../../services/resource.service"
-import { setResources } from "../../../../../../store/reducers/resourceRedicer"
 import { ResFormulaModal } from "../FormulaModal"
 import { TableType } from "../../../../../../enums/tableType.enum"
 import { setResInOut } from "../../../../../../store/reducers/nodeResReducer"
@@ -21,34 +19,17 @@ export const ResPage = ({ onClose }: IProps) => {
     const { register, handleSubmit, formState: { errors } } = useForm<NodeRes[] | any>();
     const [resSelectVisible, setResSelectVisible] = useState(false);
     const [resFormulaVisible, setResFormulaVisible] = useState(false);
-    const [resourcesOut, setResourcesOut] = useState([]);
-    const [resourcesIn, setResourcesIn] = useState([]);
     const dispatch = useDispatch();
 
     const resources = useSelector((state: any) => state.resource.resources);
-    const nodeResources = useSelector((state: any) => state.nodeRes.resources);
-
-    useEffect(() => {
-        if (nodeResources.length > 0) {
-            setResourcesIn(nodeResources.filter((res: NodeRes) => res.res_in_out === NodeResType.IN));
-            setResourcesOut(nodeResources.filter((res: NodeRes) => res.res_in_out === NodeResType.OUT));
-        }
-    }, [])
+    const tableResourcesIn = useSelector((state: any) => state.nodeRes.tableResourcesIn);
+    const tableResourcesOut = useSelector((state: any) => state.nodeRes.tableResourcesOut);
 
     const onResourcesSave = (data: NodeRes[]) => {
 
     }
 
     const onSelectModalOpen = () => {
-        if (resources.length === 0)
-            getResources(Number(localStorage.getItem('subjectAreaId')))
-                .then((response: any) => {
-                    if (response.status === 200) {
-                        dispatch(setResources(response.data));
-
-                    }
-                    console.log(response.data);
-                });
         setResSelectVisible(true);
     }
 
@@ -75,15 +56,15 @@ export const ResPage = ({ onClose }: IProps) => {
                 <div className="node-res-props-grid">
                     <div className="text--body-xs node-res-title">Условия запуска / ресурсы на входе</div>
                     <div className="text--body-xs node-res-title">Ресурсы на выходе</div>
-                    <Table data={resourcesIn} headers={["Ресурс", "Формула"]} onAdd={onResInAdd}
+                    <Table data={tableResourcesIn} headers={["Ресурс", "Формула"]} onAdd={onResInAdd}
                         type={TableType.SelectAdd} />
-                    <Table data={resourcesOut} headers={["Ресурс", "Формула"]} onAdd={onResOutAdd}
+                    <Table data={tableResourcesOut} headers={["Ресурс", "Формула"]} onAdd={onResOutAdd}
                         type={TableType.SelectAdd} />
                 </div>
                 <BaseButton onClick={onClose} text="Сохранить" className="modal-save-btn" />
             </form>
             <ResourceSelectModal onClose={() => setResSelectVisible(false)} isOpen={resSelectVisible}
-                data={resources} onSave={onFormulaModalOpen} />
+                data={resources} onSelect={onFormulaModalOpen} />
             <ResFormulaModal isOpen={resFormulaVisible} onClose={onFormulaModalClose} data={resources} />
         </>
     )

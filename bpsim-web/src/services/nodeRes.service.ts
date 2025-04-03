@@ -14,7 +14,7 @@ export const createNodeRes = async (res: any): Promise<AxiosResponse | AxiosErro
 
 export const getNodeResources = async (nodeId: number): Promise<AxiosResponse | AxiosError> => {
     try {
-        const response = await publicApi.get(`/nodeRessources/${nodeId}`);
+        const response = await publicApi.get(`/nodeResources/${nodeId}/`);
         return response;
     }
     catch (error: any) {

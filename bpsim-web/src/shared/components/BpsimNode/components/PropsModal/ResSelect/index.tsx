@@ -1,7 +1,7 @@
 import { Resource } from "../../../../../../types/resource"
 import FormModal from "../../../../Modals/Form"
 import { Table } from "../../../../Table";
-import { selectResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
+import { addReadyResource, selectResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { BaseButton } from "../../../../Buttons/Base";
 import TextError from "../../../../Errors/TextError";
@@ -12,7 +12,7 @@ interface IProps {
     isOpen: boolean
     data: Resource[];
     onClose: () => void
-    onSave: () => void
+    onSelect: () => void
 }
 
 export interface ITableRes {
@@ -20,7 +20,7 @@ export interface ITableRes {
     name: string
 }
 
-export const ResourceSelectModal = ({ isOpen, onClose, data, onSave }: IProps) => {
+export const ResourceSelectModal = ({ isOpen, onClose, onSelect, data }: IProps) => {
     const [error, setError] = useState('');
     const [resources, setResources] = useState<ITableRes[]>([]);
     const dispatch = useDispatch();
@@ -39,14 +39,14 @@ export const ResourceSelectModal = ({ isOpen, onClose, data, onSave }: IProps) =
         }
     };
 
-    const onResourceSave = () => {
+    const onResourceSelect = () => {
         if (!selectedRes) {
             setError('Выберите ресурс');
             return;
         }
-        console.log("Сохранен ресурс ", selectedRes.name);
+        dispatch(addReadyResource(selectedRes));
         onClose();
-        onSave();
+        onSelect();
     }
     return (
         <FormModal onClose={onClose} isOpen={isOpen} title="Ресурсы"
@@ -55,7 +55,7 @@ export const ResourceSelectModal = ({ isOpen, onClose, data, onSave }: IProps) =
                     <Table data={resources} headers={["Систем. имя", "Наименование"]}
                         onItemClick={onResourceClick} type={TableType.Select} />
                     {error !== '' ? <TextError text={error} /> : ''}
-                    <BaseButton text="Выбрать" onClick={onResourceSave} className="modal-save-btn" />
+                    <BaseButton text="Выбрать" onClick={onResourceSelect} className="modal-save-btn" />
                 </div>
 
             } />
