@@ -7,6 +7,13 @@ import NavigationTab from "../../../NavigationTab"
 import { NodePropsTab } from "../../../../../enums/nodeProps.enum"
 import { useDispatch, useSelector } from "react-redux"
 import { setActiveNodeTab } from "../../../../../store/reducers/nodeDetailsReducer"
+import { setNodeId, setNodeResources } from "../../../../../store/reducers/nodeResReducer"
+import { getNodeResources } from "../../../../../services/nodeRes.service"
+import { NodeResType } from "../../../../../types/resource"
+import { formatNodeResourcesToTable } from "../../../../hooks/tableNodeResFormatter"
+import { setTableResourcesIn, setTableResourcesOut } from "../../../../../store/reducers/nodeResReducer"
+import { setResources } from "../../../../../store/reducers/resourceRedicer"
+import { getResources } from "../../../../../services/resource.service"
 
 interface IProps {
     isOpen: boolean
@@ -18,10 +25,33 @@ interface IProps {
 export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) => {
     const modalRef = useRef(null);
     const activeTab = useSelector((state: any) => state.nodeDetails.activeTab);
+    const resources = useSelector((state: any) => state.resource.resources);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(setActiveNodeTab(NodePropsTab.Main));
+        dispatch(setNodeId(node_id));
+
+        if (resources.length === 0) {
+            getResources(Number(localStorage.getItem('subjectAreaId')))
+                .then((response: any) => {
+                    if (response.status === 200) {
+                        dispatch(setResources(response.data));
+                    }
+                });
+        }
+        else {
+            getNodeResources(node_id).then((response: any) => {
+                if (response.status === 200 && response.data.length > 0) {
+                    dispatch(setNodeResources(response.data));
+                    dispatch(setTableResourcesIn(
+                        formatNodeResourcesToTable(response.data, resources, NodeResType.IN)));
+                    dispatch(setTableResourcesOut(
+                        formatNodeResourcesToTable(response.data, resources, NodeResType.OUT)));
+                }
+            })
+        }
     }, []);
 
     return (
@@ -43,7 +73,7 @@ export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) =>
                     {activeTab === NodePropsTab.Main ?
                         <MainPage node_id={node_id} details={details} onClose={onClose} />
                         :
-                        <ResPage node_id={node_id} onClose={onClose} />
+                        <ResPage onClose={onClose} />
                     }
                 </div>
             </div>

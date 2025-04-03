@@ -1,24 +1,26 @@
 import { Resource } from "../../../../../../types/resource"
 import FormModal from "../../../../Modals/Form"
 import { Table } from "../../../../Table";
-import { selectResource } from "../../../../../../store/reducers/nodeResReducer";
+import { addReadyResource, selectResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { BaseButton } from "../../../../Buttons/Base";
 import TextError from "../../../../Errors/TextError";
 import { useEffect, useState } from "react";
+import { TableType } from "../../../../../../enums/tableType.enum";
 
 interface IProps {
     isOpen: boolean
-    onClose: () => void
     data: Resource[];
+    onClose: () => void
+    onSelect: () => void
 }
 
-interface ITableRes {
+export interface ITableRes {
     sys_name: string
     name: string
 }
 
-export const ResourceSelectModal = ({ isOpen, onClose, data }: IProps) => {
+export const ResourceSelectModal = ({ isOpen, onClose, onSelect, data }: IProps) => {
     const [error, setError] = useState('');
     const [resources, setResources] = useState<ITableRes[]>([]);
     const dispatch = useDispatch();
@@ -31,25 +33,29 @@ export const ResourceSelectModal = ({ isOpen, onClose, data }: IProps) => {
     const onResourceClick = (tableRes: ITableRes) => {
         setError('');
         const res = data.find((item: any) => item.sys_name === tableRes.sys_name);
-        dispatch(selectResource(res));
+        if (res) {
+            dispatch(selectResource(res));
+            dispatch(setValue(res.sys_name + ":="));
+        }
     };
 
-    const onResourceSave = () => {
+    const onResourceSelect = () => {
         if (!selectedRes) {
             setError('Выберите ресурс');
             return;
         }
-        console.log("Сохранен ресурс ", selectedRes.name);
+        dispatch(addReadyResource(selectedRes));
         onClose();
+        onSelect();
     }
     return (
-        <FormModal onClose={onClose} isOpen={isOpen}
+        <FormModal onClose={onClose} isOpen={isOpen} title="Ресурсы"
             content={
                 <div>
                     <Table data={resources} headers={["Систем. имя", "Наименование"]}
-                        onItemClick={onResourceClick} selectable={true} />
+                        onItemClick={onResourceClick} type={TableType.Select} />
                     {error !== '' ? <TextError text={error} /> : ''}
-                    <BaseButton text="Выбрать" onClick={onResourceSave} className="modal-save-btn" />
+                    <BaseButton text="Выбрать" onClick={onResourceSelect} className="modal-save-btn" />
                 </div>
 
             } />

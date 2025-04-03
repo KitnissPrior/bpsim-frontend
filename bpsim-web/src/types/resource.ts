@@ -25,8 +25,13 @@ type ResourceTypeState = {
 
 export type ResState = {
     types: ResourceTypeState[],
-    resources: any[],
+    resources: Resource[],
     visibleTypeIds: number[],
     currentTypeId: number,
     currentResource: any
+}
+
+export const NodeResType = {
+    IN: 0,
+    OUT: 1
 }

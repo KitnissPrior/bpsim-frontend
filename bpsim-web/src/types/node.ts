@@ -1,4 +1,5 @@
 import { Resource } from "./resource";
+import { TableNodeRes } from "./table";
 
 export type Node = {
     key?: string | null;
@@ -26,7 +27,7 @@ export type NodeDetails = {
 }
 
 export type NodeRes = {
-    id: number | null;
+    id?: number | null;
     value: string;
     res_in_out: number; // 0 - in, 1 - out
     node_id: number;
@@ -37,5 +38,10 @@ export type NodeRes = {
 export type NodeResState = {
     selectedResource: Resource | null;
     selectedResValue: string;
-    resources: NodeRes[]
+    nodeId: number;
+    resInOut: number;
+    nodeResources: NodeRes[]
+    tableResourcesIn: TableNodeRes[];
+    tableResourcesOut: TableNodeRes[];
+    newResources: Resource[]
 }

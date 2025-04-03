@@ -1,8 +1,9 @@
+import { TableType } from "../../../enums/tableType.enum";
 import { insertNull } from "../../../shared/hooks/numbersFormatter";
 import "./table.css"
 
 interface IProps {
-    selectable?: boolean
+    type: TableType
     headers: string[];
     data: any[];
     onItemClick?: (item: any) => void
@@ -10,9 +11,9 @@ interface IProps {
     onAdd?: () => void
 }
 
-export const Table = ({ data, headers, onItemClick, selectable, onAdd }: IProps) => {
+export const Table = ({ data, headers, onItemClick, type, onAdd }: IProps) => {
     return (
-        <table className={`table table-bordered table-container ${selectable ? "table-hover" : ""}`}>
+        <table className={`table table-bordered table-container ${type == TableType.Select ? "table-hover" : ""}`}>
             <thead>
                 <tr >
                     <th scope="col"></th>
@@ -34,11 +35,11 @@ export const Table = ({ data, headers, onItemClick, selectable, onAdd }: IProps)
                         </tr>
                     )
                 })}
-                <tr>
+                {type == TableType.SelectAdd && <tr>
                     <th scope="row" className="table-data">{insertNull(data.length)}</th>
                     <td></td>
                     <td onClick={onAdd} className="table-add-cell table-data">+</td>
-                </tr>
+                </tr>}
             </tbody>
         </table>
     )
