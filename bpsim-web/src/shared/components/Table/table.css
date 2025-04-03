@@ -1,0 +1,14 @@
+.table-container {
+    border-radius: 10px !important;
+    border: 1px solid var(--grey-light);
+}
+
+.table-data {
+    margin: 0px auto;
+    padding: 0px auto;
+    text-align: center;
+}
+
+.table-add-cell {
+    cursor: pointer;
+}

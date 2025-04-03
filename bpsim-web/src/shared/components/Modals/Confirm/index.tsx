@@ -23,7 +23,7 @@ const ConfirmModal: React.FC<ModalProps> = (
         <>
             <Modal show={isOpen} onHide={onCancel} ref={bsModalRef}
                 keyboard={false} backdrop='static' enforceFocus={false} className="mod-container">
-                <div className="mod-content">
+                <div className="modal-content">
                     <div className="mod-text text--body-m text-600 text--blue">
                         {content}
                     </div>

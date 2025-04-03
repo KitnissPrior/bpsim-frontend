@@ -3,7 +3,7 @@ import { ShowMoreButton } from "../../../Buttons/ShowMore";
 import "../sidebar.css"
 import { useDispatch, useSelector } from "react-redux";
 import { addVisibleResId, deleteVisibleResId, deleteResource as deleteStoreResource } from "../../../../../store/reducers/resourceRedicer"
-import ResourceForm from "../../../Resources/Form";
+import ResourceAddForm from "../../../Resources/Add";
 import { ContextAdd } from "../../../ContextMenu/Add";
 import "./res.css"
 import ConfirmModal from "../../../Modals/Confirm";
@@ -129,7 +129,7 @@ export const Resources = ({ types, measures }: IProps) => {
                         </div>
                     ))}
                 </>}
-            <ResourceForm isOpen={resourceFormVisible}
+            <ResourceAddForm isOpen={resourceFormVisible}
                 onClose={() => setResourceFormVisible(false)}
                 types={types} measures={measures} />
             <ConfirmModal

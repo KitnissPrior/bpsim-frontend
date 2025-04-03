@@ -20,12 +20,12 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
 
     const [data, setData] = useState<SubjectArea[]>([]);
     const [error, setError] = useState('');
+    const [chosenArea, setChosenArea] = useState<SubjectArea>();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setDefaultModel());
-        dispatch(clearModelItems());
-        dispatch(setDefaultArea());
+
+        //dispatch(setDefaultArea());
         //localStorage.clear();
         getSubjectAreas()
             .then((res: any) => {
@@ -39,20 +39,29 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
 
     }, []);
 
-    const onChoiseClick = (item: SubjectArea) => {
-        dispatch(setCurrentArea(item))
+    const onSubAreaClick = (item: SubjectArea) => {
+        setChosenArea(item);
+        setError('')
+    }
+
+    const onChoiseClick = () => {
+        if (!chosenArea) {
+            setError('Выберите предметную область');
+            return;
+        }
+        dispatch(setDefaultModel());
+        dispatch(clearModelItems());
+        dispatch(setCurrentArea(chosenArea))
+        localStorage.setItem('subjectAreaId', chosenArea.id ? chosenArea.id.toString() : "")
+        onClose();
     }
 
     return (
-        <FormModal isOpen={props.isOpen} title={"Открыть предметную область"}
+        <FormModal isOpen={props.isOpen} title={"Открыть предметную область"} onClose={onClose}
             content={
                 <div>
                     {data.map((item, index) => <div key={index} className="subarea-item"
-                        onDoubleClick={() => {
-                            localStorage.setItem('subjectAreaId', item.id ? item.id.toString() : "")
-                            onChoiseClick(item);
-                            onClose();
-                        }}>
+                        onClick={() => onSubAreaClick(item)}>
                         {item.name}
                     </div>)}
                     {error !== '' ?
@@ -61,7 +70,7 @@ const SubjectAreaChoiceModal = ({ onClose, ...props }: IProps) => {
                             <hr />
                             <div>Всего ПО: {data.length}</div>
                         </>}
-                    <BaseButton text="Закрыть" onClick={onClose} />
+                    <BaseButton text="Выбрать" onClick={onChoiseClick} className="modal-save-btn" />
                 </div>
 
             } className="subarea-open-modal" />)

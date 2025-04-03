@@ -37,7 +37,7 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
     }
 
     return (
-        <FormModal isOpen={props.isOpen} title={"Создать предметную область"}
+        <FormModal isOpen={props.isOpen} title={"Создать предметную область"} onClose={onClose}
             content={
                 <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)}>
                     <div className="row-block">
@@ -56,12 +56,8 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
                             }}
                             error={errors.description} />
                     </div>
-                    <div>
-                        <BaseButton text={'Отмена'} onClick={onClose}
-                            className="subject-cancel-btn" />
-                        <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
-                        />
-                    </div>
+                    <BaseButton type='submit' className="modal-save-btn"
+                        text={loading ? 'Добавление...' : 'Добавить'} />
                 </form>
             } className="subarea-add-modal" />)
 }
