@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { formatNodeResToTable } from "../../../../../hooks/tableNodeResFormatter";
 import { NodeRes } from "../../../../../../types/node";
 import { NodeResType } from "../../../../../../types/resource";
+import { FormulaInput } from "../../../../Inputs/Formula";
 
 interface IProps {
     isOpen: boolean
@@ -93,22 +94,16 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
             res_in_out: resInOut,
         }
 
-        createNodeRes(nodeRes).then((response: any) => {
-            if (response.status === 200) {
-                toast.success("Ресурс успешно добавлен");
-                dispatch(addReadyResource(nodeRes));
 
-                const tableRes = formatNodeResToTable(nodeRes, resources);
-                if (tableRes) {
-                    if (resInOut === NodeResType.IN)
-                        dispatch(addResIn(tableRes));
-                    else
-                        dispatch(addResOut(tableRes));
-                }
-            }
+        dispatch(addReadyResource(nodeRes));
+
+        const tableRes = formatNodeResToTable(nodeRes, resources);
+        if (tableRes) {
+            if (resInOut === NodeResType.IN)
+                dispatch(addResIn(tableRes));
             else
-                toast.error("Произошла ошибка сохранения");
-        })
+                dispatch(addResOut(tableRes));
+        }
         onClose();
     }
 
@@ -122,7 +117,8 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
                         type="text"
                         data-kioskboard-type="keyboard"
                         placeholder="" />} */}
-                    <input className="formula-input" type="text" value={formula} onChange={onFormulaChange} />
+                    {/* <input className="formula-input" type="text" value={formula} onChange={onFormulaChange} /> */}
+                    <FormulaInput id="formula-input" value={formula} onChange={onFormulaChange} />
                     <Table data={tableResources} headers={["Систем. имя", "Наименование",]}
                         type={TableType.Select}
                         onItemClick={onResourceClick} />

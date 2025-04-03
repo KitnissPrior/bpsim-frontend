@@ -1,4 +1,3 @@
-import { TableHTMLAttributes } from "react";
 import { NodeRes, NodeResState } from "../../types/node";
 import { NodeResType } from "../../types/resource";
 import { TableNodeRes } from "../../types/table";
@@ -6,7 +5,7 @@ import { TableNodeRes } from "../../types/table";
 const actions = {
     SELECT_RESOURCE: 'SELECT_RESOURCE',
     SET_VALUE: 'SET_VALUE',
-    ADD_READY_RESOURCE: 'ADD_READY_RESOURCE',
+    ADD_NEW_NODE_RESOURCE: 'ADD_NEW_NODE_RESOURCE',
     SET_NODE_ID: 'SET_NODE_ID',
     SET_IN_OUT: 'SET_IN_OUT',
     SET_NODE_RESOURCES: 'SET_NODE_RESOURCES',
@@ -20,6 +19,7 @@ const defaultState: NodeResState = {
     selectedResource: null,
     selectedResValue: '',
     nodeResources: [],
+    newResources: [],
     resInOut: NodeResType.IN,
     tableResourcesIn: [],
     tableResourcesOut: [],
@@ -36,8 +36,8 @@ export const nodeResReducer = (state = defaultState, action: any) => {
             return { ...state, resInOut: action.payload }
         case actions.SET_NODE_ID:
             return { ...state, nodeId: action.payload }
-        case actions.ADD_READY_RESOURCE:
-            return { ...state, nodeResources: [...state.nodeResources, action.payload] }
+        case actions.ADD_NEW_NODE_RESOURCE:
+            return { ...state, newResources: [...state.newResources, action.payload] }
         case actions.SET_NODE_RESOURCES:
             return { ...state, nodeResources: action.payload }
         case actions.SET_RESOURCES_IN:
@@ -58,7 +58,7 @@ export const setValue = (value: string) => ({ type: actions.SET_VALUE, payload: 
 export const setResInOut = (value: number) => ({ type: actions.SET_IN_OUT, payload: value })
 export const setNodeId = (value: number) => ({ type: actions.SET_NODE_ID, payload: value })
 
-export const addReadyResource = (res: any) => ({ type: actions.ADD_READY_RESOURCE, payload: res })
+export const addReadyResource = (res: any) => ({ type: actions.ADD_NEW_NODE_RESOURCE, payload: res })
 export const setNodeResources = (items: NodeRes) => ({ type: actions.SET_NODE_RESOURCES, payload: items })
 
 export const setTableResourcesIn = (items: any) => ({ type: actions.SET_RESOURCES_IN, payload: items })

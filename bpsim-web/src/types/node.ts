@@ -43,4 +43,5 @@ export type NodeResState = {
     nodeResources: NodeRes[]
     tableResourcesIn: TableNodeRes[];
     tableResourcesOut: TableNodeRes[];
+    newResources: Resource[]
 }
