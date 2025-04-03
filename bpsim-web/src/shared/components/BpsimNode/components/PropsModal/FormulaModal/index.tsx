@@ -7,7 +7,7 @@ import "./formulaModal.css"
 import TextInput from "../../../../Inputs/Text";
 import { TableType } from "../../../../../../enums/tableType.enum";
 import { useDispatch, useSelector } from "react-redux";
-import { setValue } from "../../../../../../store/reducers/nodeResReducer";
+import { addReadyResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
 import { BaseButton } from "../../../../Buttons/Base";
 
 interface IProps {
@@ -86,7 +86,9 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
             value: formula,
             res_in_out: resInOut,
         }
-        console.log("Добавлен ресурс узла:",nodeRes)
+        console.log("Добавлен ресурс узла:", nodeRes)
+        dispatch(addReadyResource(nodeRes));
+        onClose();
     }
 
     return (
@@ -103,7 +105,7 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
                     <Table data={resources} headers={["Систем. имя", "Наименование",]}
                         type={TableType.Select}
                         onItemClick={onResourceClick} />
-                    <BaseButton text="Применить формулу" onClick={onNodeResSave} className="modal-save-btn"/>
+                    <BaseButton text="Применить формулу" onClick={onNodeResSave} className="modal-save-btn" />
                 </div>
             }
         />

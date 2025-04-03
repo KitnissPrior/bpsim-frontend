@@ -4,7 +4,7 @@ import { BaseButton } from "../../../../Buttons/Base"
 import { Table } from "../../../../Table"
 import "./resPage.css"
 import { ResourceSelectModal } from "../ResSelect"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getResources } from "../../../../../../services/resource.service"
 import { setResources } from "../../../../../../store/reducers/resourceRedicer"
@@ -14,19 +14,30 @@ import { setResInOut } from "../../../../../../store/reducers/nodeResReducer"
 import { NodeResType } from "../../../../../../types/resource"
 
 interface IProps {
-    node_id: number
     onClose: () => void
 }
 
-export const ResPage = ({ node_id, onClose }: IProps) => {
+export const ResPage = ({ onClose }: IProps) => {
     const { register, handleSubmit, formState: { errors } } = useForm<NodeRes[] | any>();
     const [resSelectVisible, setResSelectVisible] = useState(false);
     const [resFormulaVisible, setResFormulaVisible] = useState(false);
+    const [resourcesOut, setResourcesOut] = useState([]);
+    const [resourcesIn, setResourcesIn] = useState([]);
     const dispatch = useDispatch();
 
     const resources = useSelector((state: any) => state.resource.resources);
+    const nodeResources = useSelector((state: any) => state.nodeRes.resources);
 
-    const onResourcesSave = (data: NodeRes[]) => { }
+    useEffect(() => {
+        if (nodeResources.length > 0) {
+            setResourcesIn(nodeResources.filter((res: NodeRes) => res.res_in_out === NodeResType.IN));
+            setResourcesOut(nodeResources.filter((res: NodeRes) => res.res_in_out === NodeResType.OUT));
+        }
+    }, [])
+
+    const onResourcesSave = (data: NodeRes[]) => {
+
+    }
 
     const onSelectModalOpen = () => {
         if (resources.length === 0)
@@ -64,9 +75,9 @@ export const ResPage = ({ node_id, onClose }: IProps) => {
                 <div className="node-res-props-grid">
                     <div className="text--body-xs node-res-title">Условия запуска / ресурсы на входе</div>
                     <div className="text--body-xs node-res-title">Ресурсы на выходе</div>
-                    <Table data={[]} headers={["Ресурс", "Формула"]} onAdd={onResInAdd}
+                    <Table data={resourcesIn} headers={["Ресурс", "Формула"]} onAdd={onResInAdd}
                         type={TableType.SelectAdd} />
-                    <Table data={[]} headers={["Ресурс", "Формула"]} onAdd={onResOutAdd}
+                    <Table data={resourcesOut} headers={["Ресурс", "Формула"]} onAdd={onResOutAdd}
                         type={TableType.SelectAdd} />
                 </div>
                 <BaseButton onClick={onClose} text="Сохранить" className="modal-save-btn" />

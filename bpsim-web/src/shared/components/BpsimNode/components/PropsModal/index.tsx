@@ -8,6 +8,8 @@ import { NodePropsTab } from "../../../../../enums/nodeProps.enum"
 import { useDispatch, useSelector } from "react-redux"
 import { setActiveNodeTab } from "../../../../../store/reducers/nodeDetailsReducer"
 import { setNodeId } from "../../../../../store/reducers/nodeResReducer"
+import { getNodeResources } from "../../../../../services/nodeRes.service"
+import { setResources } from "../../../../../store/reducers/resourceRedicer"
 
 interface IProps {
     isOpen: boolean
@@ -19,9 +21,18 @@ interface IProps {
 export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) => {
     const modalRef = useRef(null);
     const activeTab = useSelector((state: any) => state.nodeDetails.activeTab);
+    const nodeResources = useSelector((state: any) => state.nodeRes.resources);
+
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (nodeResources.length === 0){
+            getNodeResources(node_id).then((response : any) => {
+                if (response.status === 200) {
+                    dispatch(setResources(response.data));
+                }
+            })
+        }
         dispatch(setActiveNodeTab(NodePropsTab.Main));
         dispatch(setNodeId(node_id));
     }, []);
@@ -45,7 +56,7 @@ export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) =>
                     {activeTab === NodePropsTab.Main ?
                         <MainPage node_id={node_id} details={details} onClose={onClose} />
                         :
-                        <ResPage node_id={node_id} onClose={onClose} />
+                        <ResPage onClose={onClose}/>
                     }
                 </div>
             </div>
