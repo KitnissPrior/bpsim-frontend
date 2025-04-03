@@ -1,7 +1,12 @@
+.formula-input {
+    height: 40px;
+    border-radius: 10px;
+}
+
 .formula-res-modal-body {
     display: grid;
-    grid-template-columns: 300px 400px;
-    grid-template-rows: 300px;
+    grid-template-columns: 150px 300px;
+    grid-template-rows: 400px;
     gap: 10px;
     height: fit-content;
 }

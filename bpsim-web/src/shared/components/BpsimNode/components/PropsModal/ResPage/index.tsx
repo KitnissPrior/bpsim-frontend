@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux"
 import { getResources } from "../../../../../../services/resource.service"
 import { setResources } from "../../../../../../store/reducers/resourceRedicer"
 import { ResFormulaModal } from "../FormulaModal"
+import { TableType } from "../../../../../../enums/tableType.enum"
+import { setResInOut } from "../../../../../../store/reducers/nodeResReducer"
+import { NodeResType } from "../../../../../../types/resource"
 
 interface IProps {
     node_id: number
@@ -45,20 +48,32 @@ export const ResPage = ({ node_id, onClose }: IProps) => {
         setResFormulaVisible(false);
     }
 
+    const onResInAdd = () => {
+        dispatch(setResInOut(NodeResType.IN));
+        onSelectModalOpen();
+    }
+
+    const onResOutAdd = () => {
+        dispatch(setResInOut(NodeResType.OUT));
+        onSelectModalOpen();
+    }
+
     return (
         <>
             <form onSubmit={handleSubmit(onResourcesSave)} className="res-settings-container">
                 <div className="node-res-props-grid">
                     <div className="text--body-xs node-res-title">Условия запуска / ресурсы на входе</div>
                     <div className="text--body-xs node-res-title">Ресурсы на выходе</div>
-                    <Table data={[]} headers={["Ресурс", "Формула"]} onAdd={onSelectModalOpen} />
-                    <Table data={[]} headers={["Ресурс", "Формула"]} onAdd={onSelectModalOpen} />
+                    <Table data={[]} headers={["Ресурс", "Формула"]} onAdd={onResInAdd}
+                        type={TableType.SelectAdd} />
+                    <Table data={[]} headers={["Ресурс", "Формула"]} onAdd={onResOutAdd}
+                        type={TableType.SelectAdd} />
                 </div>
                 <BaseButton onClick={onClose} text="Сохранить" className="modal-save-btn" />
             </form>
             <ResourceSelectModal onClose={() => setResSelectVisible(false)} isOpen={resSelectVisible}
                 data={resources} onSave={onFormulaModalOpen} />
-            <ResFormulaModal isOpen={resFormulaVisible} onClose={onFormulaModalClose} data={resources}/>
+            <ResFormulaModal isOpen={resFormulaVisible} onClose={onFormulaModalClose} data={resources} />
         </>
     )
 }

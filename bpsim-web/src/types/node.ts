@@ -37,5 +37,7 @@ export type NodeRes = {
 export type NodeResState = {
     selectedResource: Resource | null;
     selectedResValue: string;
+    node_id: number;
+    res_in_out: number;
     resources: NodeRes[]
 }

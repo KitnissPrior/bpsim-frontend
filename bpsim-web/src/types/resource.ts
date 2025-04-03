@@ -30,3 +30,8 @@ export type ResState = {
     currentTypeId: number,
     currentResource: any
 }
+
+export const NodeResType = {
+    IN: 0,
+    OUT: 1
+}

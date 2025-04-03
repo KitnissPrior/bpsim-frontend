@@ -1,11 +1,12 @@
 import { Resource } from "../../../../../../types/resource"
 import FormModal from "../../../../Modals/Form"
 import { Table } from "../../../../Table";
-import { selectResource } from "../../../../../../store/reducers/nodeResReducer";
+import { selectResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { BaseButton } from "../../../../Buttons/Base";
 import TextError from "../../../../Errors/TextError";
 import { useEffect, useState } from "react";
+import { TableType } from "../../../../../../enums/tableType.enum";
 
 interface IProps {
     isOpen: boolean
@@ -32,7 +33,10 @@ export const ResourceSelectModal = ({ isOpen, onClose, data, onSave }: IProps) =
     const onResourceClick = (tableRes: ITableRes) => {
         setError('');
         const res = data.find((item: any) => item.sys_name === tableRes.sys_name);
-        dispatch(selectResource(res));
+        if (res) {
+            dispatch(selectResource(res));
+            dispatch(setValue(res.sys_name + ":="));
+        }
     };
 
     const onResourceSave = () => {
@@ -45,11 +49,11 @@ export const ResourceSelectModal = ({ isOpen, onClose, data, onSave }: IProps) =
         onSave();
     }
     return (
-        <FormModal onClose={onClose} isOpen={isOpen}
+        <FormModal onClose={onClose} isOpen={isOpen} title="Ресурсы"
             content={
                 <div>
                     <Table data={resources} headers={["Систем. имя", "Наименование"]}
-                        onItemClick={onResourceClick} selectable={true} />
+                        onItemClick={onResourceClick} type={TableType.Select} />
                     {error !== '' ? <TextError text={error} /> : ''}
                     <BaseButton text="Выбрать" onClick={onResourceSave} className="modal-save-btn" />
                 </div>

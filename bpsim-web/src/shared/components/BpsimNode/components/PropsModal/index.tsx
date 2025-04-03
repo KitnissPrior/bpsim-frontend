@@ -7,6 +7,7 @@ import NavigationTab from "../../../NavigationTab"
 import { NodePropsTab } from "../../../../../enums/nodeProps.enum"
 import { useDispatch, useSelector } from "react-redux"
 import { setActiveNodeTab } from "../../../../../store/reducers/nodeDetailsReducer"
+import { setNodeId } from "../../../../../store/reducers/nodeResReducer"
 
 interface IProps {
     isOpen: boolean
@@ -22,6 +23,7 @@ export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) =>
 
     useEffect(() => {
         dispatch(setActiveNodeTab(NodePropsTab.Main));
+        dispatch(setNodeId(node_id));
     }, []);
 
     return (
