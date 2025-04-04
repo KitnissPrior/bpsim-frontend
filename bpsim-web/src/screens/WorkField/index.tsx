@@ -227,7 +227,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     }
     const onStartClick = () => {
 
-        startSimulation(currentModel.id).then((response: any) => {
+        startSimulation(Number(localStorage.getItem('subjectAreaId')), currentModel.id).then((response: any) => {
             if (response.status == 200) {
                 setLogs(response.data);
                 toast.success('Симуляция прошла успешно!');
