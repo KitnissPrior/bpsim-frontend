@@ -7,7 +7,7 @@ import NavigationTab from "../../../NavigationTab"
 import { NodePropsTab } from "../../../../../enums/nodeProps.enum"
 import { useDispatch, useSelector } from "react-redux"
 import { setActiveNodeTab } from "../../../../../store/reducers/nodeDetailsReducer"
-import { setNodeId, setNodeResources } from "../../../../../store/reducers/nodeResReducer"
+import { clearNewResources, setNodeId, setNodeResources } from "../../../../../store/reducers/nodeResReducer"
 import { getNodeResources } from "../../../../../services/nodeRes.service"
 import { NodeResType } from "../../../../../types/resource"
 import { formatNodeResourcesToTable } from "../../../../hooks/tableNodeResFormatter"
@@ -36,6 +36,9 @@ export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) =>
     useEffect(() => {
         dispatch(setActiveNodeTab(NodePropsTab.Main));
         dispatch(setNodeId(node_id));
+        dispatch(clearNewResources());
+        dispatch(setTableResourcesIn([]));
+        dispatch(setTableResourcesOut([]));
 
         if (resources.length === 0) {
             getResources(Number(localStorage.getItem('subjectAreaId')))
