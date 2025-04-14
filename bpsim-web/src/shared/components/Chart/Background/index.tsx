@@ -5,6 +5,10 @@ import { NodeContextMenu } from "../../ContextMenu/Menu";
 import ContextMenu from "../../ContextMenu";
 import ConfirmModal from "../../Modals/Confirm";
 import { ChartPropsModal } from "../PropsModal";
+import { useDispatch, useSelector } from "react-redux";
+import { setChartName, setChartObjectId, setChartObjectName } from "../../../../store/reducers/chartReducer";
+import { ResourcesModal } from "../../Modals/Resources";
+import { ModalType } from "../../../../enums/modalType.enum";
 
 interface IProps {
     id: string;
@@ -16,14 +20,21 @@ interface IProps {
     model_id?: number;
 }
 
-export const ChartBackground = ({ id, data }: IProps) => {
+export const ChartBackground = ({ data }: IProps) => {
     const [label, setLabel] = useState(data.label);
     const [propsVisible, setPropsVisible] = useState(false);
     const [contextVisible, setContextVisible] = useState(false);
     const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
+    const [resSelectVisible, setResSelectVisible] = useState(false);
+    const dispatch = useDispatch();
+
+    const resources = useSelector((state: any) => state.resource.resources);
+    const chartObjectName = useSelector((state: any) => state.chart.currentChartObjectName);
+    const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
 
     const onChange = (evt: any) => {
         setLabel(evt.target.value);
+        dispatch(setChartName(evt.target.value));
     };
 
     const onPropsOpen = () => {
@@ -50,6 +61,19 @@ export const ChartBackground = ({ id, data }: IProps) => {
         setDeleteConfirmVisible(false);
     }
 
+    const onResSelectOpen = () => {
+        setResSelectVisible(true);
+    }
+
+    const onResClick = (res: any) => {
+        dispatch(setChartObjectName(res.name));
+        dispatch(setChartObjectId(res.id));
+    }
+
+    const onResSelect = () => {
+        setResSelectVisible(false);
+        console.log(chartObjectName)
+    }
 
     return (
         <div className="chart-background-container" onContextMenu={onContextOpen}>
@@ -76,7 +100,10 @@ export const ChartBackground = ({ id, data }: IProps) => {
                 />}
             <ConfirmModal isOpen={deleteConfirmVisible} onOk={onDeleteConfirmClose}
                 onCancel={onDeleteConfirmClose} content="Удалить диаграмму?" okText="Да" cancelText="Нет" />
-            <ChartPropsModal isOpen={propsVisible} onClose={onPropsClose} name={label} />
+            <ChartPropsModal isOpen={propsVisible} onClose={onPropsClose} onResSelectOpen={onResSelectOpen} />
+            <ResourcesModal isOpen={resSelectVisible} onClose={() => setResSelectVisible(false)}
+                modalType={ModalType.Select} data={resources} onClick={onResClick} onSelect={onResSelect}
+                selectedRes={chartObjectId} />
         </div>
     )
 }

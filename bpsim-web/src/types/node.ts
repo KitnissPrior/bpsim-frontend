@@ -45,3 +45,8 @@ export type NodeResState = {
     tableResourcesOut: TableNodeRes[];
     newResources: Resource[]
 }
+
+export const NodeType = {
+    TEXT: 'textNode',
+    CHART: 'chartNode'
+}
