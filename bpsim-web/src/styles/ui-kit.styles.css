@@ -90,6 +90,9 @@
     display: flex;
     flex-direction: row;
     gap: 10px;
+    text-align: center;
+    align-items: center;
+    padding: 5px 0px;
 }
 
 .column-block {

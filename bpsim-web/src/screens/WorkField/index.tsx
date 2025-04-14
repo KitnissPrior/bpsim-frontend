@@ -28,7 +28,7 @@ import { createRelation, getRelations } from "../../services/relation.service"
 import { formatBpsimToGraphicNodes } from "../../shared/hooks/nodeFormatter"
 import { useOutletContext } from 'react-router-dom';
 import { formatEdgesToRelations, formatEdgeToRelation, formatRelationsToEdges } from "../../shared/hooks/edgeFormatter"
-import { startSimulation } from "../../services/simulation"
+import { startSimulation } from "../../services/simulation.service"
 import { Console } from "./Console"
 import { getResources, getResourceTypes } from "../../services/resource.service"
 import { getMeasures } from "../../services/measure.service"
@@ -80,8 +80,13 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const handleKeyPress = useCallback((event: KeyboardEvent) => {
         if (event.ctrlKey && event.key === 's') {
             event.preventDefault();
-            onSaveClick();
-            console.log('Ctrl+S pressed!');
+            const errors = [];
+            bpsimNodes.forEach((node: any) => {
+                updateNode(node).catch((error: AxiosError) => {
+                    errors.push(error);
+                });
+            })
+            errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
         }
     }, []);
 
@@ -234,12 +239,14 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         })
         errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
     }
+
     const onStartClick = () => {
 
         startSimulation(Number(localStorage.getItem('subjectAreaId')), currentModel.id).then((response: any) => {
             if (response.status == 200) {
-                setLogs(response.data);
+                setLogs(response.data.report);
                 toast.success('Симуляция прошла успешно!');
+                console.log(response.data.table);
             }
             else {
                 toast.error('Симуляцию запустить не удалось');
@@ -271,7 +278,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         const chartField = {
             model_id: currentModel.id,
             data: {
-                label: 'Диаграмма1',
+                label: 'Диаграмма 1',
                 updateStateNodes: (nodes: any) => {
                     setBpsimNodes(nodes);
                     setNodesCount(nodes.length);
@@ -286,7 +293,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             id: 'chartField',
         }
         setNodes((prevNodes) => [...prevNodes, chartField]);
-        console.log(nodes)
     }
 
     return (
