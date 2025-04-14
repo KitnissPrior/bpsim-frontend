@@ -12,7 +12,8 @@ const actions = {
     SET_RESOURCES_IN: 'SET_RESOURCES_IN',
     SET_RESOURCES_OUT: 'SET_RESOURCES_OUT',
     ADD_RES_IN: 'ADD_RES_IN',
-    ADD_RES_OUT: 'ADD_RES_OUT'
+    ADD_RES_OUT: 'ADD_RES_OUT',
+    CLEAR_NEW_RESOURCES: 'CLEAR_NEW_RESOURCES'
 }
 
 const defaultState: NodeResState = {
@@ -48,6 +49,8 @@ export const nodeResReducer = (state = defaultState, action: any) => {
             return { ...state, tableResourcesIn: [...state.tableResourcesIn, action.payload] }
         case actions.ADD_RES_OUT:
             return { ...state, tableResourcesOut: [...state.tableResourcesOut, action.payload] }
+        case actions.CLEAR_NEW_RESOURCES:
+            return { ...state, newResources: [] }
         default:
             return state;
     }
@@ -60,6 +63,7 @@ export const setNodeId = (value: number) => ({ type: actions.SET_NODE_ID, payloa
 
 export const addReadyResource = (res: any) => ({ type: actions.ADD_NEW_NODE_RESOURCE, payload: res })
 export const setNodeResources = (items: NodeRes) => ({ type: actions.SET_NODE_RESOURCES, payload: items })
+export const clearNewResources = () => ({ type: actions.CLEAR_NEW_RESOURCES })
 
 export const setTableResourcesIn = (items: any) => ({ type: actions.SET_RESOURCES_IN, payload: items })
 export const setTableResourcesOut = (items: any) => ({ type: actions.SET_RESOURCES_OUT, payload: items })

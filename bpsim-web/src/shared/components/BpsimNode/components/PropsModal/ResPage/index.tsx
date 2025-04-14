@@ -8,7 +8,7 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ResFormulaModal } from "../FormulaModal"
 import { TableType } from "../../../../../../enums/tableType.enum"
-import { setResInOut } from "../../../../../../store/reducers/nodeResReducer"
+import { clearNewResources, setResInOut } from "../../../../../../store/reducers/nodeResReducer"
 import { NodeResType, Resource } from "../../../../../../types/resource"
 import { toast } from "react-toastify"
 import { createNodeRes } from "../../../../../../services/nodeDetails"
@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export const ResPage = ({ onClose }: IProps) => {
-    const { register, handleSubmit, formState: { errors } } = useForm<NodeRes[] | any>();
+    const { handleSubmit } = useForm<NodeRes[] | any>();
     const [resSelectVisible, setResSelectVisible] = useState(false);
     const [resFormulaVisible, setResFormulaVisible] = useState(false);
     const dispatch = useDispatch();
@@ -43,6 +43,7 @@ export const ResPage = ({ onClose }: IProps) => {
             return;
         }
         onClose();
+        dispatch(clearNewResources());
         toast.success("Ресурсы сохранены");
     }
 

@@ -1,0 +1,27 @@
+.chart-background-container {
+    background-color: white;
+    width: 400px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 10px;
+    align-items: center;
+    text-align: center;
+}
+
+.chart-name-input {
+    text-align: center;
+    border: none;
+}
+
+.chart-name-input:hover,
+.chart-name-input:focus-within,
+.chart-name-input:active,
+.chart-name-input:focus {
+    outline: none;
+}
+
+.chart-name-hr {
+    border: 1px solid black;
+    width: 100%;
+    height: 2px;
+}

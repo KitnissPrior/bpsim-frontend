@@ -17,6 +17,7 @@ interface IProps {
     onCreateSubAreaModal: () => void
     onStart: () => void
     onNodeAddClick: () => void
+    onChartAddClick: () => void
 }
 
 export const ItemsBar = (props: IProps) => {
@@ -41,7 +42,8 @@ export const ItemsBar = (props: IProps) => {
             <IconButton iconPath={Checkbox} iconClassName="icon" placeholder="Чекбокс" />
             <IconButton iconPath={Radio} iconClassName="icon" placeholder="Радиогруппа" />
             <IconButton iconPath={Slider} iconClassName="icon" placeholder="Бегунок" /> */}
-                    <IconButton iconPath={Diagram} iconClassName="icon" placeholder="График" />
+                    <IconButton iconPath={Diagram} iconClassName="icon" placeholder="Диаграмма"
+                        onClick={props.onChartAddClick} />
                     {/* <IconButton iconPath={Text} iconClassName="icon" placeholder="Текст" /> */}
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import { Resource } from "../../../../../../types/resource"
 import FormModal from "../../../../Modals/Form"
 import { Table } from "../../../../Table";
-import { addReadyResource, selectResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
+import { selectResource, setValue } from "../../../../../../store/reducers/nodeResReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { BaseButton } from "../../../../Buttons/Base";
 import TextError from "../../../../Errors/TextError";
@@ -44,7 +44,6 @@ export const ResourceSelectModal = ({ isOpen, onClose, onSelect, data }: IProps)
             setError('Выберите ресурс');
             return;
         }
-        dispatch(addReadyResource(selectedRes));
         onClose();
         onSelect();
     }
