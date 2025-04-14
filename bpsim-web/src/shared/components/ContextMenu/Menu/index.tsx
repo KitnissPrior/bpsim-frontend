@@ -4,7 +4,7 @@ interface IProps {
     onClose: () => void
 }
 
-const NodeContextMenu = (props: IProps) => {
+export const NodeContextMenu = (props: IProps) => {
     return (
         <>
             <div className="context-menu-item text--body-xs" onClick={props.onClose}>Закрыть</div>
@@ -15,5 +15,3 @@ const NodeContextMenu = (props: IProps) => {
         </>
     )
 }
-
-export default NodeContextMenu

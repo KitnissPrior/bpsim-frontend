@@ -44,7 +44,6 @@ export const ResourceSelectModal = ({ isOpen, onClose, onSelect, data }: IProps)
             setError('Выберите ресурс');
             return;
         }
-        dispatch(addReadyResource(selectedRes));
         onClose();
         onSelect();
     }

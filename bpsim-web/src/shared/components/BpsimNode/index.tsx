@@ -3,14 +3,15 @@ import { useCallback, useState, MouseEvent } from 'react';
 import './bpsimNode.css';
 import { updateNode } from '../../../services/node.service';
 import { toast } from 'react-toastify';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteNode } from '../../../services/node.service';
-import NodeContextMenu from './components/ContextMenu';
+import { NodeContextMenu } from '../../components/ContextMenu/Menu'
 import ConfirmModal from '../Modals/Confirm';
 import ContextMenu from '../ContextMenu';
 import { NodePropsModal } from './components/PropsModal';
 import { getNodeDetails } from '../../../services/nodeDetails';
 import { AxiosError } from 'axios';
+import { clearNewResources } from '../../../store/reducers/nodeResReducer';
 
 interface IProps {
   id: string;
@@ -24,14 +25,15 @@ interface IProps {
 
 export const BpsimNode = ({ id, data }: IProps) => {
   const [label, setLabel] = useState(data.label);
-
-  const modelId = useSelector((state: any) => state.model.current.id);
   const [details, setDetails] = useState({})
+  const dispatch = useDispatch();
 
   const [contextMenuVisible, setContextMenuVisible] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [deleteConfirmVisible, setDeleteConfirmVisible] = useState(false);
   const [propsVisible, setPropsVisible] = useState(false);
+
+  const modelId = useSelector((state: any) => state.model.current.id);
 
   const onChange = (evt: any) => {
     setLabel(evt.target.value);
@@ -97,6 +99,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
   }
 
   const onPropsClose = () => {
+    dispatch(clearNewResources());
     setPropsVisible(false);
   }
 

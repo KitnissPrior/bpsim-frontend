@@ -12,5 +12,10 @@
     "react-redux": "^9.2.0",
     "react-toastify": "^11.0.5",
     "yup": "^1.6.1"
-  }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.51.1",
+    "@types/node": "^22.14.0"
+  },
+  "scripts": {}
 }
