@@ -9,6 +9,7 @@ import { useCallback, useEffect, useState } from "react"
 import { Node } from "../../types/node"
 import { updateNode } from "../../services/node.service"
 import { BpsimNode } from "../../shared/components/BpsimNode"
+import { ChartBackground } from "../../shared/components/Chart/Background"
 import { toast } from "react-toastify"
 import { AxiosError } from "axios"
 import SubjectAreaAddModal from "../../shared/components/SubjectArea/Add"
@@ -48,7 +49,7 @@ interface INode {
     type: string;
 }
 
-const nodeTypes = { textNode: BpsimNode };
+const nodeTypes = { textNode: BpsimNode, chartNode: ChartBackground };
 
 interface IProps {
     isOpenSubAreaModal?: boolean
@@ -75,6 +76,14 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
+
+    const handleKeyPress = useCallback((event: KeyboardEvent) => {
+        if (event.ctrlKey && event.key === 's') {
+            event.preventDefault();
+            onSaveClick();
+            console.log('Ctrl+S pressed!');
+        }
+    }, []);
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
         setNodes((nds) => {
@@ -144,7 +153,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
 
     useEffect(() => {
-
         if (localStorage.getItem('subjectAreaId') && !isCreateSubAreaModal && !isOpenSubAreaModal) {
             context.showLoading(true);
             getSubjectArea(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
@@ -201,10 +209,11 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     context.showLoading(false);
                 }
             })
+            document.addEventListener('keydown', handleKeyPress);
+            return () => document.removeEventListener('keydown', handleKeyPress);
         }
 
-    }, [nodesCount, localStorage.getItem('subjectAreaId'), isCreateSubAreaModal, isOpenSubAreaModal]);
-
+    }, [handleKeyPress, nodesCount, localStorage.getItem('subjectAreaId'), isCreateSubAreaModal, isOpenSubAreaModal]);
 
     const onNodeAddClick = () => {
         defaultNode.model_id = currentModel.id;
@@ -258,6 +267,28 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         setShowNewSubAreaModal(true);
     }
 
+    const onChartAddClick = () => {
+        const chartField = {
+            model_id: currentModel.id,
+            data: {
+                label: 'Диаграмма1',
+                updateStateNodes: (nodes: any) => {
+                    setBpsimNodes(nodes);
+                    setNodesCount(nodes.length);
+                },
+            },
+            position: {
+                x: 0,
+                y: 0
+            },
+            type: 'chartNode',
+            key: 'chartField',
+            id: 'chartField',
+        }
+        setNodes((prevNodes) => [...prevNodes, chartField]);
+        console.log(nodes)
+    }
+
     return (
         <div className="work-field">
             <Toolbar onSaveClick={onSaveClick} />
@@ -265,7 +296,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 onStart={onStartClick}
                 onCreateSubAreaModal={onCreateSubAreaModal}
                 onOpenSubAreaModal={onOpenSubAreaModal}
-                onNodeAddClick={onNodeAddClick} />
+                onNodeAddClick={onNodeAddClick}
+                onChartAddClick={onChartAddClick} />
             <div className="work-field-main">
                 <SideBar onModelChoose={onModelChoose} />
                 <div className="work-field-content">

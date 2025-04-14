@@ -5,7 +5,7 @@ import { updateNode } from '../../../services/node.service';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteNode } from '../../../services/node.service';
-import NodeContextMenu from './components/ContextMenu';
+import { NodeContextMenu } from '../../components/ContextMenu/Menu'
 import ConfirmModal from '../Modals/Confirm';
 import ContextMenu from '../ContextMenu';
 import { NodePropsModal } from './components/PropsModal';
