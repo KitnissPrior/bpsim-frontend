@@ -13,7 +13,7 @@ const defaultState: ChartState = {
     charts: [],
     currentChart: defaultChart,
     currentValues: [],
-    currentChartObjectId: 0,
+    currentChartObjectId: undefined,
     currentChartObjectName: '',
     currentChartName: '',
     currentXLegend: '',

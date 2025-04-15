@@ -2,7 +2,7 @@ import { Toolbar } from "../../shared/components/Bars/Toolbar"
 import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
 import "./workField.css"
 import { createNode, getNodes } from "../../services/node.service"
-import { defaultNode } from "../../types/node"
+import { defaultNode, NodeType } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useState } from "react"
@@ -34,6 +34,8 @@ import { getResources, getResourceTypes } from "../../services/resource.service"
 import { getMeasures } from "../../services/measure.service"
 import { setResources, setResTypes } from "../../store/reducers/resourceRedicer"
 import { setMeasures } from "../../store/reducers/measureReducer"
+import { setChartValues } from "../../store/reducers/chartReducer"
+import { ChartData } from "../../types/chart"
 
 interface INode {
     key: string | number;
@@ -73,6 +75,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
+    const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -246,7 +249,16 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             if (response.status == 200) {
                 setLogs(response.data.report);
                 toast.success('Симуляция прошла успешно!');
-                console.log(response.data.table);
+                if (chartObjectId && chartObjectId !== 0) {
+                    const chartValues: ChartData[] = response.data.table.map((item: any) => {
+                        if (item.id === chartObjectId)
+                            return {
+                                x: item.time,
+                                y: item.value
+                            }
+                    });
+                    dispatch(setChartValues(chartValues));
+                }
             }
             else {
                 toast.error('Симуляцию запустить не удалось');
@@ -288,7 +300,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 x: 0,
                 y: 0
             },
-            type: 'chartNode',
+            type: NodeType.CHART,
             key: 'chartField',
             id: 'chartField',
         }
