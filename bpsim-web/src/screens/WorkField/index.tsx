@@ -250,14 +250,14 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 setLogs(response.data.report);
                 toast.success('Симуляция прошла успешно!');
                 if (chartObjectId && chartObjectId !== 0) {
-                    const chartValues: ChartData[] = response.data.table.map((item: any) => {
-                        if (item.id === chartObjectId)
-                            return {
-                                x: item.time,
-                                y: item.value
-                            }
-                    });
+                    const chartValues: ChartData[] = response.data.table.reduce((acc: ChartData[], item: any) => {
+                        if (item.id === chartObjectId) {
+                            acc.push({ x: item.time, y: item.value });
+                        }
+                        return acc;
+                    }, []);
                     dispatch(setChartValues(chartValues));
+                    console.log(chartValues)
                 }
             }
             else {
@@ -297,8 +297,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 },
             },
             position: {
-                x: 0,
-                y: 0
+                x: 10,
+                y: 10
             },
             type: NodeType.CHART,
             key: 'chartField',

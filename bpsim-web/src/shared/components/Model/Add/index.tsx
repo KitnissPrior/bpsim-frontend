@@ -56,7 +56,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                 ...register('name', {
                                     required: "Введите наименование модели",
                                     value: " ",
-                                    maxLength: { value: 20, message: "Максимальная длина 20 символов" }
+                                    maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                                 })
                             }} error={errors.name} />
                     </div>

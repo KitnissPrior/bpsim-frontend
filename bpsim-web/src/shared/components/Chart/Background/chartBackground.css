@@ -1,7 +1,7 @@
 .chart-background-container {
     background-color: white;
-    width: 400px;
-    height: 300px;
+    width: fit-content;
+    height: 350px;
     border: 1px solid black;
     border-radius: 10px;
     align-items: center;

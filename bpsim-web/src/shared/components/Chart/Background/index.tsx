@@ -30,7 +30,6 @@ export const ChartBackground = ({ data }: IProps) => {
     const dispatch = useDispatch();
 
     const resources = useSelector((state: any) => state.resource.resources);
-    const chartObjectName = useSelector((state: any) => state.chart.currentChartObjectName);
     const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
     const chartValues = useSelector((state: any) => state.chart.currentValues);
 
@@ -74,12 +73,7 @@ export const ChartBackground = ({ data }: IProps) => {
 
     const onResSelect = () => {
         setResSelectVisible(false);
-        console.log(chartObjectName)
     }
-
-    useEffect(() => {
-        console.log(chartObjectId);
-    }, [chartObjectId]);
 
     return (
         <div className="chart-background-container" onContextMenu={onContextOpen}>
@@ -92,7 +86,8 @@ export const ChartBackground = ({ data }: IProps) => {
             />
             <div className='chart-name-hr' />
             <div className="chart-content">
-                {chartObjectId && <ChartContent />}
+                {/* {chartObjectId && <ChartContent />} */}
+                {chartValues && <ChartContent data={chartValues} />}
             </div>
             {contextVisible &&
                 <ContextMenu
