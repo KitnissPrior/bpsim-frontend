@@ -1,6 +1,6 @@
 import FormModal from "../../Modals/Form";
 import TextInput from "../../Inputs/Text";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { BaseButton } from "../../Buttons/Base";
 import { AxiosError } from "axios";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { createModel } from "../../../../services/model.service"
 import { Model } from "../../../../types/model";
 import { toast } from "react-toastify";
+import TextError from "../../Errors/TextError";
 
 interface IProps {
     isOpen: boolean
@@ -23,6 +24,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
     const subjectAreaId = Number(localStorage.getItem('subjectAreaId'));
+    const [error, setError] = useState('');
 
     const onModelSubmit = async (data: Model) => {
         setLoading(true);
@@ -41,14 +43,17 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
             dispatch(addModel(response.data));
         }
         else {
-            toast.error('При добавлении модели произошла ошибка');
+            setLoading(false);
+            const error = response.response as any;
+            setError(error.data.detail);
         }
     }
 
     return (
         <FormModal isOpen={props.isOpen} title={"Создание модели"} onClose={onClose}
             content={
-                <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}>
+                <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}
+                    onFocus={() => setError('')}>
                     <div className="row-block">
                         <div className="text--body-s">Наименование модели</div>
                         <TextInput placeholder={"Наименование"} type="text" id={"name"}
@@ -56,7 +61,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                 ...register('name', {
                                     required: "Введите наименование модели",
                                     value: " ",
-                                    maxLength: { value: 20, message: "Максимальная длина 20 символов" }
+                                    maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                                 })
                             }} error={errors.name} />
                     </div>
@@ -71,12 +76,9 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                             }}
                             error={errors.description} />
                     </div>
-                    <div className="">
-                        <BaseButton text={'Отмена'} onClick={onClose}
-                            className="subject-cancel-btn" />
-                        <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
-                        />
-                    </div>
+                    <TextError text={error} />
+                    <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
+                        className="modal-save-btn" />
                 </form>
             } className="model-add-form" />)
 }

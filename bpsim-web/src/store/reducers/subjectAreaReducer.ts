@@ -1,18 +1,24 @@
+import { ProjectStatus } from "../../enums/projectStatus.enum"
+
 export const actions = {
     SET_CURRENT_AREA: 'SET_CURRENT_AREA',
+    SET_PROJECT_STATUS: 'SET_PROJECT_STATUS',
 }
 
 const defaultState = {
     items: [],
     current: null,
     isLoading: true,
-    error: null
+    error: null,
+    status: ProjectStatus.NONE
 }
 
 export const subjectAreaReducer = (state = defaultState, action: any) => {
     switch (action.type) {
         case actions.SET_CURRENT_AREA:
             return { ...state, current: action.payload }
+        case actions.SET_PROJECT_STATUS:
+            return { ...state, status: action.payload }
         default:
             return state;
     }
@@ -20,4 +26,10 @@ export const subjectAreaReducer = (state = defaultState, action: any) => {
 
 export const setCurrentArea = (current: any) => ({ type: actions.SET_CURRENT_AREA, payload: current })
 
-export const setDefaultArea = () => ({ type: actions.SET_CURRENT_AREA, payload: null })
+export const setDefaultArea = () => ({ type: actions.SET_CURRENT_AREA, payload: defaultState })
+
+export const setProjectOpened = () => ({ type: actions.SET_PROJECT_STATUS, payload: ProjectStatus.OPENED })
+
+export const setProjectSaved = () => ({ type: actions.SET_PROJECT_STATUS, payload: ProjectStatus.SAVED })
+
+export const setProjectUnsaved = () => ({ type: actions.SET_PROJECT_STATUS, payload: ProjectStatus.UNSAVED })

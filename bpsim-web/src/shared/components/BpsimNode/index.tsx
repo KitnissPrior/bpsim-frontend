@@ -54,7 +54,11 @@ export const BpsimNode = ({ id, data }: IProps) => {
 
         toast.success('Имя узла успешно изменено');
       } else {
-        toast.error('Имя сохранить не удалось');
+        const error = response.response as any;
+        if (error.status === 409) {
+          toast.error(error.data.detail);
+        }
+        else toast.error('Имя сохранить не удалось');
       }
     });
   }, [id, label]);
@@ -105,54 +109,18 @@ export const BpsimNode = ({ id, data }: IProps) => {
 
   return (
     <div className="text-updater-node" onContextMenu={onRightClick} hidden={deleted}>
-      {/* <Handle
-        type="source"
-        position={Position.Top}
-        id="source-top"
-        isConnectable={true}
-      /> */}
-      {/* <Handle
-        type="target" 
-        position={Position.Top}
-        id="target-top"
-        isConnectable={true}
-      /> */}
       <Handle
         type="source"
         position={Position.Right}
         id="source-right"
         isConnectable={true}
       />
-      {/* <Handle
-        type="target"
-        position={Position.Right}
-        id="target-right"
-        isConnectable={true}
-      /> */}
-      {/* <Handle
-        type="source"
-        position={Position.Bottom}
-        id="source-bottom"
-        isConnectable={true}
-      /> */}
-      {/* <Handle
-        type="target"
-        position={Position.Bottom}
-        id="target-bottom"
-        isConnectable={true}
-      /> */}
       <Handle
         type="target"
         position={Position.Left}
         id={id.toString() + "target-left"}
         isConnectable={true}
       />
-      {/* <Handle
-        type="source"
-        position={Position.Left}
-        id={id.toString() + "source-left"}
-        isConnectable={true}
-      /> */}
       <div className='node-text-container'>
         <input
           id="text"

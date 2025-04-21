@@ -1,9 +1,14 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { BaseButton } from "../../Buttons/Base"
 import TextInput from "../../Inputs/Text"
 import FormModal from "../../Modals/Form"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import "./chartProps.css"
+import { useForm } from "react-hook-form"
+import { Chart, ChartControl } from "../../../../types/chart"
+import { addChart } from "../../../../services/chart.service"
+import { toast } from "react-toastify"
+import { addChart as addChartToState } from "../../../../store/reducers/chartReducer"
 
 interface IProps {
     isOpen: boolean
@@ -12,34 +17,85 @@ interface IProps {
 }
 
 export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
+    const { register, handleSubmit, formState: { errors } } = useForm<Chart | any>();
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+
     const chartName = useSelector((state: any) => state.chart.currentChartName);
+    const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
     const chartObjectName = useSelector((state: any) => state.chart.currentChartObjectName);
+    const chartX = useSelector((state: any) => state.chart.currentX);
+    const chartY = useSelector((state: any) => state.chart.currentY);
 
-    useEffect(() => { }, [chartObjectName]);
+    useEffect(() => { }, [chartObjectId]);
 
-    const onSubmit = () => { };
+    const onSubmit = async (chart: Chart) => {
+        const chartControl: ChartControl = {
+            ...chart,
+            object_id: chartObjectId,
+            model_id: Number(localStorage.getItem('modelId')),
+            pos_x: chartX, pos_y: chartY,
+            width: 300, height: 300
+        };
+
+        setLoading(true);
+        addChart(chartControl).then((response: any) => {
+            if (response.status == 200) {
+                toast.success('Диаграмма успешно сохранена');
+                dispatch(addChartToState(response.data));
+            }
+            else {
+                toast.error('Диаграмму сохранить не удалось');
+            }
+            setLoading(false);
+            onClose();
+        })
+    };
 
     return (
         <FormModal isOpen={isOpen} onClose={onClose} title="Свойства диаграммы" content={
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="row-block">
                     <div>Название диаграммы</div>
-                    <TextInput placeholder={""} type={"text"} id={"name"} defaultValue={chartName} />
+                    <TextInput placeholder={""} type={"text"} id={"name"} defaultValue={chartName}
+                        register={{
+                            ...register('name', {
+                                required: "Введите наименование диаграммы",
+                                value: " ",
+                                maxLength: { value: 50, message: "Максимальная длина 50 символов" }
+                            })
+                        }} error={errors.name} />
                 </div>
                 <div className="row-block">
                     <div>Привязка к объекту</div>
                     <div className="text--body-xs text-field">{chartObjectName}</div>
-                    <BaseButton text="выбрать" onClick={props.onResSelectOpen} />
+                    <BaseButton text="+Выбрать объект" onClick={props.onResSelectOpen} />
                 </div>
                 <div className="row-block">
                     <div>Подпись по оси Х</div>
-                    <TextInput placeholder={""} type={"text"} id={"axis-legend"} />
+                    <TextInput placeholder={""} type={"text"} id={"x-legend"}
+                        register={{
+                            ...register('x_legend', {
+                                required: "Введите подпись по оси Х",
+                                value: " ",
+                                minLength: { value: 3, message: "Минимальная длина 3 символа" },
+                                maxLength: { value: 50, message: "Максимальная длина 50 символов" }
+                            })
+                        }} error={errors.x_legend} />
                 </div>
                 <div className="row-block">
                     <div>Подпись по оси Y</div>
-                    <TextInput placeholder={""} type={"text"} id={"oxis-legend"} register={{}} />
+                    <TextInput placeholder={""} type={"text"} id={"y-legend"}
+                        register={{
+                            ...register('y_legend', {
+                                required: "Введите подпись по оси Y",
+                                value: " ",
+                                minLength: { value: 3, message: "Минимальная длина 3 символа" },
+                                maxLength: { value: 50, message: "Максимальная длина 50 символов" }
+                            })
+                        }} error={errors.y_legend} />
                 </div>
-                <BaseButton text="Сохранить" onClick={onClose} className="modal-save-btn" />
+                <BaseButton text={loading ? "Сохранение..." : "Сохранить"} className="modal-save-btn" type="submit" />
             </form>
         } />
     )
