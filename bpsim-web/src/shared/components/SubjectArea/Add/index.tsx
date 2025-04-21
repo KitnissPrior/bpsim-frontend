@@ -9,6 +9,7 @@ import { useState } from "react";
 import { setDefaultModel } from "../../../../store/reducers/modelReducer";
 import { useDispatch } from "react-redux";
 import { setCurrentArea } from "../../../../store/reducers/subjectAreaReducer";
+import TextError from "../../Errors/TextError";
 
 interface IProps {
     isOpen: boolean
@@ -22,9 +23,11 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
     const { register, handleSubmit, formState: { errors } } = useForm<SubjectArea | any>();
     const [loading, setLoading] = useState(false);
     const dispatch = useDispatch();
+    const [error, setError] = useState('');
 
     const onSubjectAreaSubmit = async (data: SubjectArea) => {
         setLoading(true);
+        setError('');
         const response = await createSubjectArea(data);
 
         if (!(response instanceof AxiosError)) {
@@ -34,12 +37,22 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
             setLoading(false);
             dispatch(setCurrentArea(response.data));
         }
+        else {
+            setLoading(false);
+            const error = response.response as any;
+            setError(error.data.detail);
+        }
+    }
+
+    const onFormFocus = () => {
+        setError('');
+        setLoading(false);
     }
 
     return (
         <FormModal isOpen={props.isOpen} title={"Создать предметную область"} onClose={onClose}
             content={
-                <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)}>
+                <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)} onFocus={onFormFocus}>
                     <div className="row-block">
                         <div className="text--body-s">Наименование ПО</div>
                         <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
@@ -56,6 +69,7 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
                             }}
                             error={errors.description} />
                     </div>
+                    <TextError text={error} />
                     <BaseButton type='submit' className="modal-save-btn"
                         text={loading ? 'Добавление...' : 'Добавить'} />
                 </form>

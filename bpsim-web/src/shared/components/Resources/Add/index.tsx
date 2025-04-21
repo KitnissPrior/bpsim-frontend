@@ -15,6 +15,7 @@ import { addResource, setCurrentResTypeId } from "../../../../store/reducers/res
 import { setCurrentMeasureId } from "../../../../store/reducers/measureReducer";
 import { resourceSchema } from "../../../hooks/validation/resAddForm";
 import { yupResolver } from '@hookform/resolvers/yup';
+import TextError from "../../Errors/TextError";
 
 interface IProps {
     isOpen: boolean
@@ -30,6 +31,7 @@ const ResourceAddForm = ({ onClose, onResourceSave, ...props }: IProps) => {
         resolver: yupResolver(resourceSchema)
     });
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const dispatch = useDispatch();
     const typeId = useSelector((state: any) => state.resource.currentTypeId);
     const measureId = useSelector((state: any) => state.measure.currentId);
@@ -71,8 +73,9 @@ const ResourceAddForm = ({ onClose, onResourceSave, ...props }: IProps) => {
             onClose();
         }
         else {
-            toast.error('При добавлении ресурса произошла ошибка');
             setLoading(false);
+            const error = response.response as any;
+            setError(error.data.detail);
         }
 
     }
@@ -132,6 +135,7 @@ const ResourceAddForm = ({ onClose, onResourceSave, ...props }: IProps) => {
                         <Select data={props.measures} title="Единица измерения" onSelect={onMeasureSelect}
                             error={selectMeasureError} />
                     </div>
+                    <TextError text={error} />
                     <BaseButton type='submit' className="modal-save-btn"
                         text={loading ? 'Добавление...' : 'Добавить'} />
                 </form>

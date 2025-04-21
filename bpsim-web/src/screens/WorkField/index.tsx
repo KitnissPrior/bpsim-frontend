@@ -16,7 +16,7 @@ import SubjectAreaAddModal from "../../shared/components/SubjectArea/Add"
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { getSubjectArea } from "../../services/subjectArea.service"
-import { setCurrentArea } from "../../store/reducers/subjectAreaReducer"
+import { setCurrentArea, setProjectOpened, setProjectSaved, setProjectUnsaved } from "../../store/reducers/subjectAreaReducer"
 import SubjectAreaChoiceModal from "../../shared/components/SubjectArea/Choice"
 import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
@@ -62,6 +62,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
     const [relations, setRelations] = useState<Relation[]>([]);
+    const [modelClicked, setModelClicked] = useState(false);
     const context = useOutletContext<{ showLoading: (show: boolean) => void }>();
 
     const [logs, setLogs] = useState<string[]>([]);
@@ -89,11 +90,21 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     errors.push(error);
                 });
             })
-            errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
+            if (errors.length == 0) {
+                toast.success('Данные сохранены')
+                dispatch(setProjectSaved());
+            }
+            else
+                toast.error('Данные сохранить не удалось');
         }
     }, []);
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
+        if (modelClicked)
+            dispatch(setProjectOpened())
+        else
+            dispatch(setProjectUnsaved())
+
         setNodes((nds) => {
             const updatedNodes = applyNodeChanges(changes, nds);
             setBpsimNodes(prevNodes => {
@@ -109,6 +120,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             });
             return updatedNodes;
         });
+        setModelClicked(false);
     }, []);
 
     const onEdgesChange = useCallback(
@@ -136,8 +148,9 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const onModelChoose = (model: Model) => {
         context.showLoading(true);
-
+        setModelClicked(true);
         dispatch(setCurrentModel(model));
+
         if (!model.id) return;
         localStorage.setItem('modelId', model.id.toString());
 
@@ -146,10 +159,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         getNodes(modelId).then((response: any) => {
             const data = response.data;
             setNodesCount(data.length);
-
             setBpsimNodes(data);
             setNodes(formatBpsimToGraphicNodes(data, setBpsimNodes));
-
             getRelations(modelId).then((response: any) => {
                 const data = response.data;
                 setRelations(data);
@@ -185,17 +196,15 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     dispatch(setMeasures(response.data));
                 }
             })
-
+            context.showLoading(false);
             getModels(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
+
                 if (response instanceof AxiosError) {
                     toast.error('Модели не загрузились');
-                    context.showLoading(false);
                 }
                 else {
                     dispatch(setModelItems(response.data));
-                    if (currentModel == null)
-                        context.showLoading(false);
-                    else if (models.length > 0) {
+                    if (models.length > 0) {
                         getNodes(currentModel.id).then((response: any) => {
                             setNodesCount(response.data.length);
 
@@ -214,7 +223,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                             }
                         })
                     }
-                    context.showLoading(false);
                 }
             })
             document.addEventListener('keydown', handleKeyPress);
@@ -240,7 +248,12 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 errors.push(error);
             });
         })
-        errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
+        if (errors.length == 0) {
+            toast.success('Данные сохранены')
+            dispatch(setProjectSaved());
+        }
+        else
+            toast.error('Данные сохранить не удалось');
     }
 
     const onStartClick = () => {
@@ -257,11 +270,10 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                         return acc;
                     }, []);
                     dispatch(setChartValues(chartValues));
-                    console.log(chartValues)
                 }
             }
             else {
-                toast.error('Симуляцию запустить не удалось');
+                toast.error('При запуске симуляции произошла ошибка');
             }
         })
     }
