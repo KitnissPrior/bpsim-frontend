@@ -15,6 +15,10 @@ import { formatNodeResToTable } from "../../../../../hooks/tableNodeResFormatter
 import { NodeRes } from "../../../../../../types/node";
 import { NodeResType } from "../../../../../../types/resource";
 import { FormulaInput } from "../../../../Inputs/Formula";
+import { useForm } from "react-hook-form";
+import { formulaSchema } from "../../../../../hooks/validation/formula";
+import { yupResolver } from "@hookform/resolvers/yup";
+import TextError from "../../../../Errors/TextError";
 
 interface IProps {
     isOpen: boolean
@@ -22,8 +26,15 @@ interface IProps {
     onClose: () => void
 }
 
+interface Formula {
+    value: string
+}
+
 export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
     //const keyboardRef = useRef(null);
+    const { register, handleSubmit, formState: { errors } } = useForm<Formula | any>({
+        resolver: yupResolver(formulaSchema)
+    });
     const [tableResources, setTableResources] = useState<ITableRes[]>([]);
     const dispatch = useDispatch();
 
@@ -38,7 +49,8 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
     }
 
     const onFormulaChange = (evt: any) => {
-        dispatch(setValue(evt.target.value));
+        const text_without_spaces = evt.target.value.replace(/\s+/g, '');
+        dispatch(setValue(text_without_spaces));
     }
 
     useEffect(() => {
@@ -110,7 +122,7 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
     return (
         <FormModal isOpen={isOpen} onClose={onClose} title="Формула"
             content={
-                <div className="formula-res-modal-body">
+                <form className="formula-res-modal-body" onSubmit={handleSubmit(onNodeResSave)}>
                     {/* {<input
                         className="inputFromKey"
                         ref={keyboardRef}
@@ -118,12 +130,17 @@ export const ResFormulaModal = ({ isOpen, onClose, data }: IProps) => {
                         data-kioskboard-type="keyboard"
                         placeholder="" />} */}
                     {/* <input className="formula-input" type="text" value={formula} onChange={onFormulaChange} /> */}
-                    <FormulaInput id="formula-input" value={formula} onChange={onFormulaChange} />
                     <Table data={tableResources} headers={["Систем. имя", "Наименование",]}
                         type={TableType.Select}
                         onItemClick={onResourceClick} />
-                    <BaseButton text="Применить формулу" onClick={onNodeResSave} className="modal-save-btn" />
-                </div>
+                    <div className="formula-container">
+                        <FormulaInput id="formula-input" value={formula} onChange={onFormulaChange}
+                            register={register('value')} />
+                        <TextError text={errors.value?.message?.toString() || ''} />
+                    </div>
+
+                    <BaseButton text="Применить формулу" type="submit" className="modal-save-btn" />
+                </form>
             }
         />
     )

@@ -16,7 +16,7 @@ const defaultState: ChartState = {
     currentValues: [],
     currentChartObjectId: undefined,
     currentChartObjectName: '',
-    currentChartName: '',
+    currentChartName: 'Диаграмма 1',
     currentXLegend: '',
     currentYLegend: '',
     currentX: 0,
