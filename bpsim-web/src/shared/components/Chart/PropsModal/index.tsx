@@ -61,7 +61,7 @@ export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
                         register={{
                             ...register('name', {
                                 required: "Введите наименование диаграммы",
-                                value: " ",
+                                value: chartName,
                                 maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                             })
                         }} error={errors.name} />
@@ -71,25 +71,25 @@ export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
                     <div className="text--body-xs text-field">{chartObjectName}</div>
                     <BaseButton text="+Выбрать объект" onClick={props.onResSelectOpen} />
                 </div>
-                <div className="row-block">
+                {/* <div className="row-block">
                     <div>Подпись по оси Х</div>
                     <TextInput placeholder={""} type={"text"} id={"x-legend"}
                         register={{
                             ...register('x_legend', {
                                 required: "Введите подпись по оси Х",
-                                value: " ",
+                                value: "Время",
                                 minLength: { value: 3, message: "Минимальная длина 3 символа" },
                                 maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                             })
                         }} error={errors.x_legend} />
-                </div>
+                </div> */}
                 <div className="row-block">
                     <div>Подпись по оси Y</div>
                     <TextInput placeholder={""} type={"text"} id={"y-legend"}
                         register={{
                             ...register('y_legend', {
                                 required: "Введите подпись по оси Y",
-                                value: " ",
+                                value: chartObjectName,
                                 minLength: { value: 3, message: "Минимальная длина 3 символа" },
                                 maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                             })

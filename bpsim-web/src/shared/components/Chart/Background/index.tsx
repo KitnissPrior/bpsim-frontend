@@ -32,6 +32,7 @@ export const ChartBackground = ({ data }: IProps) => {
     const resources = useSelector((state: any) => state.resource.resources);
     const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
     const chartValues = useSelector((state: any) => state.chart.currentValues);
+    const chartName = useSelector((state: any) => state.chart.currentChartName);
 
     const onChange = (evt: any) => {
         setLabel(evt.target.value);
@@ -82,11 +83,10 @@ export const ChartBackground = ({ data }: IProps) => {
                 name="text"
                 onChange={onChange}
                 className="text--body-s chart-name-input"
-                defaultValue={label}
+                defaultValue={chartName}
             />
             <div className='chart-name-hr' />
             <div className="chart-content">
-                {/* {chartObjectId && <ChartContent />} */}
                 {chartValues && <ChartContent data={chartValues} />}
             </div>
             {contextVisible &&
