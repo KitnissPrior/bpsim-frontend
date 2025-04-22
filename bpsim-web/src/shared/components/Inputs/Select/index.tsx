@@ -15,7 +15,6 @@ export const Select = ({ data, title, onSelect, error }: IProps) => {
     const onChange = (evt: React.ChangeEvent<HTMLSelectElement>) => {
         setValue(evt.target.value);
         onSelect(evt.target.value);
-        console.log(evt.target.value);
     };
 
     return (

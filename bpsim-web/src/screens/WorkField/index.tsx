@@ -2,7 +2,7 @@ import { Toolbar } from "../../shared/components/Bars/Toolbar"
 import { ItemsBar } from "../../shared/components/Bars/ItemsBar"
 import "./workField.css"
 import { createNode, getNodes } from "../../services/node.service"
-import { defaultNode } from "../../types/node"
+import { defaultNode, NodeType } from "../../types/node"
 import { ReactFlow, Background, Controls, applyNodeChanges, applyEdgeChanges, addEdge, BackgroundVariant } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useCallback, useEffect, useState } from "react"
@@ -16,7 +16,7 @@ import SubjectAreaAddModal from "../../shared/components/SubjectArea/Add"
 import { useNavigate } from "react-router-dom"
 import { urls } from "../../navigation/app.urls"
 import { getSubjectArea } from "../../services/subjectArea.service"
-import { setCurrentArea } from "../../store/reducers/subjectAreaReducer"
+import { setCurrentArea, setProjectOpened, setProjectSaved, setProjectUnsaved } from "../../store/reducers/subjectAreaReducer"
 import SubjectAreaChoiceModal from "../../shared/components/SubjectArea/Choice"
 import { getModels } from "../../services/model.service"
 import { Model } from "../../types/model"
@@ -34,6 +34,8 @@ import { getResources, getResourceTypes } from "../../services/resource.service"
 import { getMeasures } from "../../services/measure.service"
 import { setResources, setResTypes } from "../../store/reducers/resourceRedicer"
 import { setMeasures } from "../../store/reducers/measureReducer"
+import { setChartValues } from "../../store/reducers/chartReducer"
+import { ChartData } from "../../types/chart"
 
 interface INode {
     key: string | number;
@@ -60,6 +62,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
     const [nodesCount, setNodesCount] = useState(0);
     const [bpsimNodes, setBpsimNodes] = useState<Node[]>([]);
     const [relations, setRelations] = useState<Relation[]>([]);
+    const [modelClicked, setModelClicked] = useState(false);
     const context = useOutletContext<{ showLoading: (show: boolean) => void }>();
 
     const [logs, setLogs] = useState<string[]>([]);
@@ -73,6 +76,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const models = useSelector((state: any) => state.model.items);
     const currentModel = useSelector((state: any) => state.model.current);
+    const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
 
     const [showNewSubAreaModal, setShowNewSubAreaModal] = useState(isCreateSubAreaModal);
     const [showOpenSubAreaModal, setShowOpenSubAreaModal] = useState(isOpenSubAreaModal);
@@ -86,11 +90,21 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     errors.push(error);
                 });
             })
-            errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
+            if (errors.length == 0) {
+                toast.success('Данные сохранены')
+                dispatch(setProjectSaved());
+            }
+            else
+                toast.error('Данные сохранить не удалось');
         }
     }, []);
 
     const memoizedOnNodesChange = useCallback((changes: any) => {
+        if (modelClicked)
+            dispatch(setProjectOpened())
+        else
+            dispatch(setProjectUnsaved())
+
         setNodes((nds) => {
             const updatedNodes = applyNodeChanges(changes, nds);
             setBpsimNodes(prevNodes => {
@@ -106,6 +120,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             });
             return updatedNodes;
         });
+        setModelClicked(false);
     }, []);
 
     const onEdgesChange = useCallback(
@@ -133,8 +148,9 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     const onModelChoose = (model: Model) => {
         context.showLoading(true);
-
+        setModelClicked(true);
         dispatch(setCurrentModel(model));
+
         if (!model.id) return;
         localStorage.setItem('modelId', model.id.toString());
 
@@ -143,10 +159,8 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         getNodes(modelId).then((response: any) => {
             const data = response.data;
             setNodesCount(data.length);
-
             setBpsimNodes(data);
             setNodes(formatBpsimToGraphicNodes(data, setBpsimNodes));
-
             getRelations(modelId).then((response: any) => {
                 const data = response.data;
                 setRelations(data);
@@ -182,17 +196,15 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                     dispatch(setMeasures(response.data));
                 }
             })
-
+            context.showLoading(false);
             getModels(Number(localStorage.getItem('subjectAreaId'))).then((response: any) => {
+
                 if (response instanceof AxiosError) {
                     toast.error('Модели не загрузились');
-                    context.showLoading(false);
                 }
                 else {
                     dispatch(setModelItems(response.data));
-                    if (currentModel == null)
-                        context.showLoading(false);
-                    else if (models.length > 0) {
+                    if (models.length > 0) {
                         getNodes(currentModel.id).then((response: any) => {
                             setNodesCount(response.data.length);
 
@@ -211,7 +223,6 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                             }
                         })
                     }
-                    context.showLoading(false);
                 }
             })
             document.addEventListener('keydown', handleKeyPress);
@@ -237,7 +248,12 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 errors.push(error);
             });
         })
-        errors.length == 0 ? toast.success('Данные сохранены') : toast.error('Данные сохранить не удалось');
+        if (errors.length == 0) {
+            toast.success('Данные сохранены')
+            dispatch(setProjectSaved());
+        }
+        else
+            toast.error('Данные сохранить не удалось');
     }
 
     const onStartClick = () => {
@@ -246,10 +262,18 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             if (response.status == 200) {
                 setLogs(response.data.report);
                 toast.success('Симуляция прошла успешно!');
-                console.log(response.data.table);
+                if (chartObjectId && chartObjectId !== 0) {
+                    const chartValues: ChartData[] = response.data.table.reduce((acc: ChartData[], item: any) => {
+                        if (item.id === chartObjectId) {
+                            acc.push({ x: item.time, y: item.value });
+                        }
+                        return acc;
+                    }, []);
+                    dispatch(setChartValues(chartValues));
+                }
             }
             else {
-                toast.error('Симуляцию запустить не удалось');
+                toast.error('При запуске симуляции произошла ошибка');
             }
         })
     }
@@ -285,10 +309,10 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 },
             },
             position: {
-                x: 0,
-                y: 0
+                x: 10,
+                y: 10
             },
-            type: 'chartNode',
+            type: NodeType.CHART,
             key: 'chartField',
             id: 'chartField',
         }

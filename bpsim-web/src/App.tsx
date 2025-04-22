@@ -6,9 +6,7 @@ import { urls } from './navigation/app.urls';
 import Layout from './shared/components/Layout';
 import { useEffect } from 'react';
 
-
 const App: React.FC = () => {
-
   useEffect(() => {
     if (location.pathname == "/") {
       location.replace(urls.start);

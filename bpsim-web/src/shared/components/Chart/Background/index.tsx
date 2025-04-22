@@ -1,5 +1,5 @@
 import { Position } from "@xyflow/react";
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, useEffect } from "react";
 import "./chartBackground.css"
 import { NodeContextMenu } from "../../ContextMenu/Menu";
 import ContextMenu from "../../ContextMenu";
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setChartName, setChartObjectId, setChartObjectName } from "../../../../store/reducers/chartReducer";
 import { ResourcesModal } from "../../Modals/Resources";
 import { ModalType } from "../../../../enums/modalType.enum";
+import { ChartContent } from "../Content";
 
 interface IProps {
     id: string;
@@ -29,8 +30,9 @@ export const ChartBackground = ({ data }: IProps) => {
     const dispatch = useDispatch();
 
     const resources = useSelector((state: any) => state.resource.resources);
-    const chartObjectName = useSelector((state: any) => state.chart.currentChartObjectName);
     const chartObjectId = useSelector((state: any) => state.chart.currentChartObjectId);
+    const chartValues = useSelector((state: any) => state.chart.currentValues);
+    const chartName = useSelector((state: any) => state.chart.currentChartName);
 
     const onChange = (evt: any) => {
         setLabel(evt.target.value);
@@ -72,7 +74,6 @@ export const ChartBackground = ({ data }: IProps) => {
 
     const onResSelect = () => {
         setResSelectVisible(false);
-        console.log(chartObjectName)
     }
 
     return (
@@ -82,11 +83,11 @@ export const ChartBackground = ({ data }: IProps) => {
                 name="text"
                 onChange={onChange}
                 className="text--body-s chart-name-input"
-                defaultValue={label}
+                defaultValue={chartName}
             />
             <div className='chart-name-hr' />
             <div className="chart-content">
-                {`тут будет диаграмма`}
+                {chartValues && <ChartContent data={chartValues} />}
             </div>
             {contextVisible &&
                 <ContextMenu

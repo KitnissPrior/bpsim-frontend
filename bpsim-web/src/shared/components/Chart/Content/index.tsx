@@ -1,0 +1,77 @@
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import "./chartContent.css"
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+} from "recharts";
+
+interface IProps {
+    data?: any[]
+}
+
+export const ChartContent = ({ data }: IProps) => {
+    const xLegend = useSelector((state: any) => state.chart?.currentXLegend ?? 'X Axis');
+    const yLegend = useSelector((state: any) => state.chart?.currentYLegend ?? 'Y Axis');
+
+    const data2 = [
+        {
+            ['time']: 0,
+            [yLegend]: "ресурс1",
+        },
+        {
+            ['time']: 1,
+            [yLegend]: "ресурс1",
+        },
+    ]
+
+    const [values, setValues] = useState<any>(data2)
+
+    useEffect(() => {
+        if (data?.length) {
+            const chartValues = data.map((item) =>
+            ({
+                ['time']: item.x,
+                [yLegend]: item.y,
+            })
+            )
+            setValues(chartValues)
+        }
+    }, [data]);
+
+    try {
+        return (
+            <>
+                <BarChart width={700} height={250} data={values}
+                    margin={{ top: 5, right: 15, left: 0, bottom: 40 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{
+                        value: 'Время, у.е',
+                        position: 'bottom',
+                        offset: 15 // смещение в пикселях
+                    }}
+                        wordSpacing={-5}
+                    />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend
+                        verticalAlign="top"
+                        align='center'
+                        wrapperStyle={{
+                            top: -5,
+                            left: 30
+                        }} />
+                    <Bar dataKey={yLegend} fill="#33649c" />
+                </BarChart>
+            </>
+        );
+    } catch (error) {
+        console.error('Ошибка в компоненте GridLines:', error);
+        return <div>Произошла ошибка при отображении графика</div>;
+    }
+}

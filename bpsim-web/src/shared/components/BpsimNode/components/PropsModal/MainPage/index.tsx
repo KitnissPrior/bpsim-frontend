@@ -41,7 +41,7 @@ export const MainPage = ({ details, node_id, onClose }: IProps) => {
             </div>
             <div className="props-modal-block">
                 <div>Время операции</div>
-                <TextInput placeholder={"Добавьте время операции"}
+                <TextInput placeholder={"Добавьте время операции (усл. ед.)"}
                     type="text" id={"duration"} disabled={false}
                     defaultValue={details.duration}
                     register={{ ...register('duration', { required: "Добавьте время операции" }) }}
