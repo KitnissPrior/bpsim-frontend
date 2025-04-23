@@ -7,7 +7,7 @@ import "./dropdown.css"
 
 export const DropDownButton = ({ title, data1, data2 }: DropdownProps) => {
     return (
-        <DropdownButton id="dropdown-basic" title={title} className="bpsim-dropdown-button">
+        <DropdownButton id="dropdown-basic" title={title}>
             <DropdownMenu aria-labelledby="dropdown-basic" className="bpsim-dropdown-menu">
                 {data1.map((item, index) =>
                     <DropdownItem key={index} onClick={item.onClick}>

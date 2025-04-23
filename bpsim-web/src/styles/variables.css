@@ -8,9 +8,10 @@
 
   --grey-background: rgba(242, 242, 242, 1);
 
-  /*bpsim color*/
+  /*bpsim colors*/
   --grey-light: rgba(240, 240, 240, 1);
   --grey-semi-light: rgba(217, 217, 217, 1);
+  --grey-medium-light: rgba(190, 190, 190, 1);
   --grey-medium: rgba(100, 100, 100, 1);
   --grey-dark: rgba(87, 87, 87, 1);
 
@@ -19,7 +20,6 @@
   --box-shadow-black: 1px 1px 5px rgba(0, 0, 0, 0.25);
   --box-inner-shadow-black: inset 0 0 2px rgba(0, 0, 0, 0.25);
   --box-shadow-pink: 1px 1px 5px var(--pink);
-  --checkbox-shadow: 1px 1px 5px var(var(--grey));
 
   --hover-opasity: 0.8;
 
