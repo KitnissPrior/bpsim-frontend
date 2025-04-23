@@ -321,7 +321,15 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
     return (
         <div className="work-field">
-            <Toolbar onSaveClick={onSaveClick} />
+            <Toolbar
+                onSaveClick={onSaveClick}
+                onCreateSubArea={onCreateSubAreaModal}
+                onOpenSubArea={onOpenSubAreaModal}
+                onAddNode={onNodeAddClick}
+                onModelDelete={() => { }}
+                onAddChart={onChartAddClick}
+                onStartSimulation={onStartClick}
+            />
             <ItemsBar
                 onStart={onStartClick}
                 onCreateSubAreaModal={onCreateSubAreaModal}
