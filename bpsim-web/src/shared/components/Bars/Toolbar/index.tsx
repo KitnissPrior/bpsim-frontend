@@ -81,7 +81,8 @@ export const Toolbar = (props: IProps) => {
                 {toolbarItems.map((item, index) => (
                     <DropDownButton key={index} title={item.title} data1={item.data1} data2={item.data2} />
                 ))}
-                <BaseButton text="Сохранить" onClick={props.onSaveClick} className="toolbar-save-btn"
+                <BaseButton text="Сохранить" disabled={!currentModel}
+                onClick={props.onSaveClick} className="toolbar-save-btn"
                     iconPath={SaveIcon} />
             </div>
         </>

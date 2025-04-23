@@ -23,6 +23,7 @@
   --box-shadow-pink: 1px 1px 5px var(--pink);
 
   --hover-opasity: 0.8;
+  --disabled-opasity: 0.7;
 
   --window-width: 1600px;
   --border-radius: 10px;

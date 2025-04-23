@@ -30,3 +30,15 @@
     opacity: var(--hover-opasity);
     border: none;
 }
+
+.toolbar-save-btn:disabled {
+    cursor: not-allowed;
+    color: var(--grey-dark);
+    filter: grayscale(100%);
+    opacity: 1;
+}
+
+.toolbar-save-btn:disabled:hover {
+    filter: grayscale(100%);
+    opacity: 1;
+}

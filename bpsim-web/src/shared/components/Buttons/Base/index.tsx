@@ -10,6 +10,7 @@ interface IProps {
     | 'button'
     iconPath?: string,
     iconClassName?: string
+    disabled?: boolean
 }
 
 export const BaseButton = ({ text, onClick, className, ...props }: IProps) => {
@@ -26,7 +27,8 @@ export const BaseButton = ({ text, onClick, className, ...props }: IProps) => {
         </>
 
     return (
-        <button className={`base-button ${className} hoverable`} onClick={onClick} type={props.type ? props.type : 'button'}>
+        <button disabled={props.disabled}
+            className={`base-button ${className} hoverable`} onClick={onClick} type={props.type ? props.type : 'button'}>
             {iconPath ? <IconPlusText /> : text}
         </button>
     )
