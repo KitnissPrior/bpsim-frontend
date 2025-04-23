@@ -10,14 +10,14 @@ export const DropDownButton = ({ title, data1, data2 }: DropdownProps) => {
         <DropdownButton id="dropdown-basic" title={title}>
             <DropdownMenu aria-labelledby="dropdown-basic" className="bpsim-dropdown-menu">
                 {data1.map((item, index) =>
-                    <DropdownItem key={index} onClick={item.onClick}>
+                    <DropdownItem key={index} onClick={item.onClick} disabled={item.disabled}>
                         {item.label}
                     </DropdownItem>
                 )}
                 {data2 && [
                     <DropdownDivider key="divider" />,
                     ...data2.map((item, index) =>
-                        <DropdownItem key={`second-${index}`} onClick={item.onClick}>
+                        <DropdownItem key={`second-${index}`} onClick={item.onClick} disabled={item.disabled}>
                             {item.label}
                         </DropdownItem>
                     )

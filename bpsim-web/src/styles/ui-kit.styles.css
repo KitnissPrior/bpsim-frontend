@@ -22,7 +22,7 @@
 .btn-check:active,
 .btn-check,
 .btn-primary:active {
-    color: var(--grey-dark);
+    color: var(--grey-dark-2);
     background-color: transparent;
     border: none;
     box-shadow: none;

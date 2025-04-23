@@ -1,6 +1,7 @@
 type DropdownItem = {
     label: string;
     onClick: () => void
+    disabled?: boolean
 }
 
 export type DropdownProps = {

@@ -14,6 +14,7 @@ const defaultState: ChartState = {
     chartControls: [],
     currentChart: defaultChart,
     currentValues: [],
+    tableForExport: [],
     currentChartObjectId: undefined,
     currentChartObjectName: '',
     currentChartName: 'Диаграмма 1',
