@@ -129,3 +129,7 @@
     cursor: pointer;
     opacity: var(--hover-opasity);
 }
+
+.icon:disabled {
+    opacity: var(--hover-opasity);
+}

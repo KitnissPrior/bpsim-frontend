@@ -8,3 +8,7 @@
 .icon-button:hover {
     opacity: var(--hover-opasity);
 }
+
+.icon-button:disabled {
+    opacity: var(--hover-opasity);
+}
