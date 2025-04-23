@@ -3,7 +3,7 @@ import DropdownMenu from 'react-bootstrap/DropdownMenu';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 import { DropdownDivider } from "react-bootstrap";
 import { CSVLink } from "react-csv";
-import "../../../Buttons/DropDown/dropdown.css";
+import "./playButton.css"
 import { useSelector } from 'react-redux';
 
 interface IProps {
@@ -22,16 +22,14 @@ export const PlayDropDownButton = ({ onStartClick }: IProps) => {
 
     return (
         <DropdownButton id="dropdown-basic" title="Проигрывание">
-            <DropdownMenu aria-labelledby="dropdown-basic" className="bpsim-dropdown-menu">
+            <DropdownMenu aria-labelledby="dropdown-basic" className="play-button-dropdown-menu">
                 <DropdownItem key={'start'} onClick={onStartClick} disabled={!nodes}>
                     Старт
                 </DropdownItem>
                 <DropdownDivider key="divider" />
-                {/* <DropdownItem key={`second-${index}`} onClick={item.onClick} disabled={item.disabled}> */}
-                <CSVLink data={exportdata} filename="simulation.csv">
+                <CSVLink data={exportdata} filename="simulation.csv" className='csv-link'>
                     Скачать файл статистики .csv
                 </CSVLink>
-                {/* </DropdownItem> */}
             </DropdownMenu>
         </DropdownButton>
     );
