@@ -6,6 +6,7 @@ import { DropdownProps } from "../../../../types/dropdown";
 import { useNavigate } from "react-router-dom";
 import { urls } from "../../../../navigation/app.urls";
 import { useSelector } from "react-redux";
+import { PlayDropDownButton } from "./PlayButton";
 
 interface IProps {
     onSaveClick: () => void
@@ -58,31 +59,33 @@ export const Toolbar = (props: IProps) => {
                 { label: "Удалить модель", onClick: props.onModelDelete, disabled: true },
             ]
         },
-        {
-            title: "Проигрывание",
-            data1: [
-                { label: "Старт", onClick: props.onStartSimulation, disabled: !nodes },
-            ],
-            data2: [
-                {
-                    label: "Скачать файл статистики .csv", onClick: () => { },
-                    disabled: tableForExport.length === 0
-                },
-                {
-                    label: "Скачать файл статистики .xlsx", onClick: () => { },
-                    disabled: tableForExport.length === 0
-                },
-            ]
-        },
+        // {
+        //     title: "Проигрывание",
+        //     data1: [
+        //         { label: "Старт", onClick: props.onStartSimulation, disabled: !nodes },
+        //     ],
+        //     data2: [
+        //         {
+        //             label: "Скачать файл статистики .csv", onClick: () => { },
+        //             disabled: tableForExport.length === 0
+        //         },
+        //         {
+        //             label: "Скачать файл статистики .xlsx", onClick: () => { },
+        //             disabled: tableForExport.length === 0
+        //         },
+        //     ]
+        // },
     ]
+
     return (
         <>
             <div className="toolbar">
                 {toolbarItems.map((item, index) => (
                     <DropDownButton key={index} title={item.title} data1={item.data1} data2={item.data2} />
                 ))}
+                <PlayDropDownButton onStartClick={props.onStartSimulation} />
                 <BaseButton text="Сохранить" disabled={!currentModel}
-                onClick={props.onSaveClick} className="toolbar-save-btn"
+                    onClick={props.onSaveClick} className="toolbar-save-btn"
                     iconPath={SaveIcon} />
             </div>
         </>
