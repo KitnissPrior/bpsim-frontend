@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "kioskboard": "^2.3.0",
     "mathlive": "^0.105.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

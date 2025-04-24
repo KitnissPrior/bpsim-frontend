@@ -1,0 +1,6 @@
+.bpsim-dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    margin-top: -40px;
+    margin-left: -2px;
+}
