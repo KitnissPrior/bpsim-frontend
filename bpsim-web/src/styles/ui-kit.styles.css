@@ -18,13 +18,44 @@
     transition: all 0.3s ease;
 } */
 
+.btn-primary,
+.btn-check:active,
+.btn-check,
+.btn-primary:active,
+.btn-check:checked:focus-visible,
+.btn-primary:focus {
+    color: var(--grey-dark-2);
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    border-radius: 5px;
+}
+
+.btn-primary:active,
+.btn-primary:hover,
+.btn-check:checked,
+.btn-primary:checked,
+.show>.btn-primary.dropdown-toggle {
+    color: black;
+    background-color: var(--white);
+    border: 1px solid;
+    border-color: var(--grey-medium-light);
+    box-shadow: none;
+    /*убирает синюю обводку*/
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
 .input:-webkit-autofill,
 .input:-webkit-autofill:hover,
 .input:-webkit-autofill:focus,
 .input:-webkit-autofill:active {
     background-color: transparent;
     border: none;
-    /* -webkit-box-shadow: 0 0 0 30px white inset !important; */
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
 }
 
 .input-text:enabled,
@@ -103,5 +134,9 @@
 
 .hoverable:hover {
     cursor: pointer;
+    opacity: var(--hover-opasity);
+}
+
+.icon:disabled {
     opacity: var(--hover-opasity);
 }

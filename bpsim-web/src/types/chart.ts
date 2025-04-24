@@ -36,6 +36,7 @@ export type ChartState = {
     currentXLegend: string
     currentYLegend: string
     currentValues: number[]
+    tableForExport: any[]
     currentX: number
     currentY: number
     currentWidth: number

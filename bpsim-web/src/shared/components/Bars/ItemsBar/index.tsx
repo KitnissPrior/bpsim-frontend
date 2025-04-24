@@ -10,6 +10,7 @@ import Coursor from "../../../../assets/icons/icon_coursor.svg"
 // import Radio from "../../../../assets/icons/icon_radio.svg"
 // import Slider from "../../../../assets/icons/icon_slider.svg"
 import Diagram from "../../../../assets/icons/icon_diagram.svg"
+import { useSelector } from "react-redux"
 // import Text from "../../../../assets/icons/icon_text.svg"
 
 interface IProps {
@@ -21,6 +22,8 @@ interface IProps {
 }
 
 export const ItemsBar = (props: IProps) => {
+    const currentModel = useSelector((state: any) => state.model.current);
+    const nodes = useSelector((state: any) => state.node.bpsimItems);
 
     return (
         <>
@@ -32,17 +35,17 @@ export const ItemsBar = (props: IProps) => {
                     <IconButton iconPath={SubAreaCreate} iconClassName="icon"
                         onClick={props.onCreateSubAreaModal} placeholder="Создать ПО (предметную область)" />
                     <div className="items-bar-divider" />
-                    <IconButton iconPath={Play} iconClassName="icon"
+                    <IconButton iconPath={Play} disabled={!nodes} iconClassName="icon"
                         onClick={props.onStart} placeholder="Старт" />
                     <div className="items-bar-divider" />
-                    <IconButton iconPath={Coursor} iconClassName="icon" placeholder="Курсор" />
-                    <IconButton iconPath={NodeAdd} iconClassName="icon"
+                    <IconButton iconPath={Coursor} disabled={!currentModel} iconClassName="icon" placeholder="Курсор" />
+                    <IconButton iconPath={NodeAdd} disabled={!currentModel} iconClassName="icon"
                         onClick={props.onNodeAddClick} placeholder="Узел" />
                     {/* <IconButton iconPath={Agent} iconClassName="icon" placeholder="Агент" />
             <IconButton iconPath={Checkbox} iconClassName="icon" placeholder="Чекбокс" />
             <IconButton iconPath={Radio} iconClassName="icon" placeholder="Радиогруппа" />
             <IconButton iconPath={Slider} iconClassName="icon" placeholder="Бегунок" /> */}
-                    <IconButton iconPath={Diagram} iconClassName="icon" placeholder="Диаграмма"
+                    <IconButton iconPath={Diagram} disabled={!currentModel} iconClassName="icon" placeholder="Диаграмма"
                         onClick={props.onChartAddClick} />
                     {/* <IconButton iconPath={Text} iconClassName="icon" placeholder="Текст" /> */}
                 </div>

@@ -1,0 +1,24 @@
+.play-button-dropdown-menu {
+    position: absolute;
+    z-index: 1000;
+    margin-top: -40px;
+    margin-left: -2px;
+    width: 310px;
+}
+
+.csv-link {
+    padding: 5px 24px 5px 15px;
+    color: var(--black);
+}
+
+.csv-link:hover {
+    color: var(--black);
+    background-color: var(--dropdown-menu-hover-background);
+}
+
+.csv-link-disabled,
+.csv-link-disabled:hover {
+    padding: 5px 24px 5px 15px;
+    color: var(--grey-medium-light-2);
+    cursor: pointer;
+}

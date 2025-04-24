@@ -1,16 +1,12 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import FormModal from "../../../../Modals/Form";
-import KioskBoard from "kioskboard";
 import { Table } from "../../../../Table";
 import { ITableRes } from "../ResSelect";
 import "./formulaModal.css"
-import TextInput from "../../../../Inputs/Text";
 import { TableType } from "../../../../../../enums/tableType.enum";
 import { useDispatch, useSelector } from "react-redux";
 import { addReadyResource, addResIn, addResOut, setValue } from "../../../../../../store/reducers/nodeResReducer";
 import { BaseButton } from "../../../../Buttons/Base";
-import { createNodeRes } from "../../../../../../services/nodeDetails";
-import { toast } from "react-toastify";
 import { formatNodeResToTable } from "../../../../../hooks/tableNodeResFormatter";
 import { NodeRes } from "../../../../../../types/node";
 import { NodeResType } from "../../../../../../types/resource";
