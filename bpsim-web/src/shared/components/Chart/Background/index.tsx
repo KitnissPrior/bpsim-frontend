@@ -82,7 +82,7 @@ export const ChartBackground = ({ data }: IProps) => {
                 id="text"
                 name="text"
                 onChange={onChange}
-                className="text--body-s chart-name-input"
+                className="text--body-l chart-name-input"
                 defaultValue={chartName}
             />
             <div className='chart-name-hr' />

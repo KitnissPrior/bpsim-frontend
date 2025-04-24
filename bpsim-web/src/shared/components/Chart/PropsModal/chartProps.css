@@ -8,3 +8,7 @@
     width: 180px;
     height: 40px;
 }
+
+.chart-props-modal-row {
+    justify-content: center;
+}
