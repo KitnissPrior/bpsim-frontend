@@ -3,8 +3,9 @@ import DropdownMenu from 'react-bootstrap/DropdownMenu';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 import { DropdownDivider } from "react-bootstrap";
 import { CSVLink } from "react-csv";
-import "./playButton.css"
 import { useSelector } from 'react-redux';
+import { exportToExcel } from '../../../../hooks/fileExport/excel';
+import "./playButton.css"
 
 interface IProps {
     onStartClick: () => void;
@@ -13,13 +14,6 @@ interface IProps {
 export const PlayDropDownButton = ({ onStartClick }: IProps) => {
     const nodes = useSelector((state: any) => state.node.bpsimItems);
     const simulationValues = useSelector((state: any) => state.simulation.values);
-    //const simulationValues = useSelector((state: any) => state.chart.currentValues);
-
-    const exportdata = [
-        ['firstname', 'lastname'],
-        ['Koriolan', 'Snow'],
-        ['Katniss', 'Everdeen'],
-    ];
 
     return (
         <DropdownButton id="dropdown-basic" title="Проигрывание">
@@ -38,7 +32,7 @@ export const PlayDropDownButton = ({ onStartClick }: IProps) => {
                         Скачать файл статистики .csv
                     </CSVLink>}
                 <DropdownItem key={'xlsx'} disabled={simulationValues.length === 0}
-                    onClick={() => console.log(simulationValues)}>
+                    onClick={() => exportToExcel(simulationValues)}>
                     Скачать файл статистики .xlsx
                 </DropdownItem>
             </DropdownMenu>
