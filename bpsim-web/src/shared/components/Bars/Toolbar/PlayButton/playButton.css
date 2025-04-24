@@ -7,5 +7,18 @@
 }
 
 .csv-link {
-    margin: 0px 15px;
+    padding: 5px 24px 5px 15px;
+    color: var(--black);
+}
+
+.csv-link:hover {
+    color: var(--black);
+    background-color: var(--dropdown-menu-hover-background);
+}
+
+.csv-link-disabled,
+.csv-link-disabled:hover {
+    padding: 5px 24px 5px 15px;
+    color: var(--grey-medium-light-2);
+    cursor: pointer;
 }

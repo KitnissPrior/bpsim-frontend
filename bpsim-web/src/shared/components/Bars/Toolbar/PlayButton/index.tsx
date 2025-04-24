@@ -12,12 +12,13 @@ interface IProps {
 
 export const PlayDropDownButton = ({ onStartClick }: IProps) => {
     const nodes = useSelector((state: any) => state.node.bpsimItems);
-    const tableForExport = useSelector((state: any) => state.chart.tableForExport);
-    const simulationValues = useSelector((state: any) => state.chart.currentValues);
+    const simulationValues = useSelector((state: any) => state.simulation.values);
+    //const simulationValues = useSelector((state: any) => state.chart.currentValues);
 
     const exportdata = [
-        { firstName: 'Koriolan', lastName: 'Snow' },
-        { firstName: 'Katniss', lastName: 'Everdeen' },
+        ['firstname', 'lastname'],
+        ['Koriolan', 'Snow'],
+        ['Katniss', 'Everdeen'],
     ];
 
     return (
@@ -27,9 +28,19 @@ export const PlayDropDownButton = ({ onStartClick }: IProps) => {
                     Старт
                 </DropdownItem>
                 <DropdownDivider key="divider" />
-                <CSVLink data={exportdata} filename="simulation.csv" className='csv-link'>
-                    Скачать файл статистики .csv
-                </CSVLink>
+                {simulationValues.length === 0 ?
+                    <DropdownItem key={'csv'} disabled={true}>
+                        Скачать файл статистики .csv
+                    </DropdownItem>
+                    :
+                    <CSVLink data={simulationValues} filename="simulation.csv"
+                        className='csv-link'>
+                        Скачать файл статистики .csv
+                    </CSVLink>}
+                <DropdownItem key={'xlsx'} disabled={simulationValues.length === 0}
+                    onClick={() => console.log(simulationValues)}>
+                    Скачать файл статистики .xlsx
+                </DropdownItem>
             </DropdownMenu>
         </DropdownButton>
     );

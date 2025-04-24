@@ -36,6 +36,7 @@ import { setResources, setResTypes } from "../../store/reducers/resourceRedicer"
 import { setMeasures } from "../../store/reducers/measureReducer"
 import { setChartValues } from "../../store/reducers/chartReducer"
 import { ChartData } from "../../types/chart"
+import { setSimulationValues } from "../../store/reducers/simulationReducer"
 
 interface INode {
     key: string | number;
@@ -261,9 +262,10 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         startSimulation(Number(localStorage.getItem('subjectAreaId')), currentModel.id).then((response: any) => {
             if (response.status == 200) {
                 setLogs(response.data.report);
+                dispatch(setSimulationValues(response.data.export_table));
                 toast.success('Симуляция прошла успешно!');
                 if (chartObjectId && chartObjectId !== 0) {
-                    const chartValues: ChartData[] = response.data.table.reduce((acc: ChartData[], item: any) => {
+                    const chartValues: ChartData[] = response.data.chart_table.reduce((acc: ChartData[], item: any) => {
                         if (item.id === chartObjectId) {
                             acc.push({ x: item.time, y: item.value });
                         }

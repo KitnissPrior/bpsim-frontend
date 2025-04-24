@@ -16,9 +16,6 @@ interface IProps {
 
 export const IconButton = ({ placeholder, onClick, className, ...props }: IProps) => {
 
-    useEffect(() => {
-        console.log(placeholder, "disabled=", props.disabled)
-    })
     const Icon = () => props.iconPath ?
         <img src={props.iconPath} alt="icon" className={props.iconClassName}
             style={{
