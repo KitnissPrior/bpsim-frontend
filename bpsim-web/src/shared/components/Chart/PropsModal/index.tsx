@@ -55,8 +55,8 @@ export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
     return (
         <FormModal isOpen={isOpen} onClose={onClose} title="Свойства диаграммы" content={
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="row-block">
-                    <div>Название диаграммы</div>
+                <div className="row-block chart-props-modal-row">
+                    <div className="text--body-s">Название диаграммы</div>
                     <TextInput placeholder={""} type={"text"} id={"name"} defaultValue={chartName}
                         register={{
                             ...register('name', {
@@ -66,10 +66,10 @@ export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
                             })
                         }} error={errors.name} />
                 </div>
-                <div className="row-block">
-                    <div>Привязка к объекту</div>
+                <div className="row-block chart-props-modal-row">
+                    <div className="text--body-s">Привязка к объекту</div>
                     <div className="text--body-xs text-field">{chartObjectName}</div>
-                    <BaseButton text="+Выбрать объект" onClick={props.onResSelectOpen} />
+                    <BaseButton text="+выбрать" onClick={props.onResSelectOpen} />
                 </div>
                 {/* <div className="row-block">
                     <div>Подпись по оси Х</div>
@@ -83,8 +83,8 @@ export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
                             })
                         }} error={errors.x_legend} />
                 </div> */}
-                <div className="row-block">
-                    <div>Подпись по оси Y</div>
+                <div className="row-block chart-props-modal-row ">
+                    <div className="text--body-s">Подпись по оси Y</div>
                     <TextInput placeholder={""} type={"text"} id={"y-legend"}
                         register={{
                             ...register('y_legend', {
