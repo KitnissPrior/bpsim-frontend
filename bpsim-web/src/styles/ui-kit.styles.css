@@ -21,11 +21,14 @@
 .btn-primary,
 .btn-check:active,
 .btn-check,
-.btn-primary:active {
+.btn-primary:active,
+.btn-check:checked:focus-visible,
+.btn-primary:focus {
     color: var(--grey-dark-2);
     background-color: transparent;
     border: none;
     box-shadow: none;
+    border-radius: 5px;
 }
 
 .btn-primary:active,
@@ -40,6 +43,10 @@
     box-shadow: none;
     /*убирает синюю обводку*/
     -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+.dropdown-toggle::after {
+    display: none;
 }
 
 .input:-webkit-autofill,
