@@ -56,7 +56,13 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
                     <div className="modal-row">
                         <div className="text--body-s modal-field-name">Наименование ПО</div>
                         <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
-                            register={{ ...register('name', { required: "Введите название ПО" }) }}
+                            register={{
+                                ...register('name', {
+                                    required: "Введите название ПО"
+                                }),
+                                minLength: { value: 3, message: "Минимальная длина 3 символа" },
+                                maxLength: { value: 50, message: "Максимальная длина 50 символов" },
+                            }}
                             error={errors.name} />
 
                     </div>
@@ -65,7 +71,9 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
                                 ...register('description',
-                                    { maxLength: { value: 255, message: "Максимальная длина 255 символов" } })
+                                    {
+                                        maxLength: { value: 255, message: "Максимальная длина 255 символов" }
+                                    })
                             }}
                             error={errors.description} />
                     </div>

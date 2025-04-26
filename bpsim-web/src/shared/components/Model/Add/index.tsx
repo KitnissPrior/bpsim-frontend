@@ -61,6 +61,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                 ...register('name', {
                                     required: "Введите наименование модели",
                                     value: " ",
+                                    minLength: { value: 3, message: "Минимальная длина 3 символа" },
                                     maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                                 })
                             }} error={errors.name} />
@@ -77,7 +78,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                             error={errors.description} />
                     </div>
                     <TextError text={error} />
-                    <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
+                    <BaseButton type='submit' text={loading ? 'Создание...' : 'Создать'}
                         className="modal-save-btn" />
                 </form >
             } className="model-add-form" />)
