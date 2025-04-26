@@ -26,9 +26,10 @@
 .btn-primary:focus {
     color: var(--grey-dark-2);
     background-color: transparent;
-    border: none;
+    border: 1px solid;
     box-shadow: none;
     border-radius: 5px;
+    border-color: var(--grey-background);
 }
 
 .btn-primary:active,
@@ -139,4 +140,17 @@
 
 .icon:disabled {
     opacity: var(--hover-opasity);
+}
+
+.modal-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    padding: 5px 0px 0px 0px;
+}
+
+.modal-field-name {
+    padding: 0px 0px 15px 0px;
+    width: 200px;
 }

@@ -22,6 +22,6 @@ export const nodeReducer = (state = defaultState, action: any) => {
     }
 }
 
-export const setGraphicItems = (items: any) => ({ type: actions.SET_BPSIM_ITEMS, payload: items })
+export const setGraphicItems = (items: any) => ({ type: actions.SET_GRAPHIC_ITEMS, payload: items })
 
-export const setBpsimItems = (items: any) => ({ type: actions.SET_GRAPHIC_ITEMS, payload: items })
+export const setBpsimItems = (items: any) => ({ type: actions.SET_BPSIM_ITEMS, payload: items })

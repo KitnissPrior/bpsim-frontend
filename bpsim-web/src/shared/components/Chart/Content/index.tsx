@@ -47,11 +47,12 @@ export const ChartContent = ({ data }: IProps) => {
     try {
         return (
             <>
-                <BarChart width={700} height={250} data={values}
-                    margin={{ top: 5, right: 15, left: 0, bottom: 40 }}>
+                <BarChart width={500} height={200} data={values}
+                    margin={{ top: 5, right: 15, left: 0, bottom: 40 }}
+                    barCategoryGap={'5%'} maxBarSize={60}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="time" label={{
-                        value: 'Время, у.е',
+                        value: 'Время моделирования',
                         position: 'bottom',
                         offset: 15 // смещение в пикселях
                     }}
@@ -63,8 +64,9 @@ export const ChartContent = ({ data }: IProps) => {
                         verticalAlign="top"
                         align='center'
                         wrapperStyle={{
-                            top: -5,
-                            left: 30
+                            top: -20,
+                            left: 30,
+                            fontSize: '18px'
                         }} />
                     <Bar dataKey={yLegend} fill="#33649c" />
                 </BarChart>

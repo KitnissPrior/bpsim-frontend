@@ -41,9 +41,11 @@
 .sub-area-text {
     margin-left: calc(15%);
     padding: 0px;
+    cursor: pointer;
 }
 
 .project-status-text {
     margin-left: -5px;
     opacity: 0.8;
+    cursor: pointer;
 }
