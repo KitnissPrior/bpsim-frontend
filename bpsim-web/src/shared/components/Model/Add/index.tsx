@@ -54,8 +54,8 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
             content={
                 <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}
                     onFocus={() => setError('')}>
-                    <div className="row-block">
-                        <div className="text--body-s">Наименование модели</div>
+                    <div className="modal-row">
+                        <div className="text--body-s modal-field-name">Наименование модели</div>
                         <TextInput placeholder={"Наименование"} type="text" id={"name"}
                             register={{
                                 ...register('name', {
@@ -65,8 +65,8 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                                 })
                             }} error={errors.name} />
                     </div>
-                    <div className="row-block">
-                        <div className="text--body-s">Описание модели</div>
+                    <div className="modal-row">
+                        <div className="text--body-s modal-field-name">Описание модели</div>
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
                                 ...register('description', {
@@ -79,7 +79,7 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                     <TextError text={error} />
                     <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
                         className="modal-save-btn" />
-                </form>
+                </form >
             } className="model-add-form" />)
 }
 

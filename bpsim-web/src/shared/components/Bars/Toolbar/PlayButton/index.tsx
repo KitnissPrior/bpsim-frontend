@@ -18,7 +18,7 @@ export const PlayDropDownButton = ({ onStartClick }: IProps) => {
     return (
         <DropdownButton id="dropdown-basic" title="Проигрывание">
             <DropdownMenu aria-labelledby="dropdown-basic" className="play-button-dropdown-menu">
-                <DropdownItem key={'start'} onClick={onStartClick} disabled={!nodes}>
+                <DropdownItem key={'start'} onClick={onStartClick} disabled={nodes.length === 0}>
                     Старт
                 </DropdownItem>
                 <DropdownDivider key="divider" />

@@ -53,15 +53,15 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
         <FormModal isOpen={props.isOpen} title={"Создать предметную область"} onClose={onClose}
             content={
                 <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)} onFocus={onFormFocus}>
-                    <div className="row-block">
-                        <div className="text--body-s">Наименование ПО</div>
+                    <div className="modal-row">
+                        <div className="text--body-s modal-field-name">Наименование ПО</div>
                         <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
                             register={{ ...register('name', { required: "Введите название ПО" }) }}
                             error={errors.name} />
 
                     </div>
-                    <div className="row-block">
-                        <div className="text--body-s">Описание ПО</div>
+                    <div className="modal-row">
+                        <div className="text--body-s modal-field-name">Описание ПО</div>
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
                                 ...register('description',
@@ -71,7 +71,7 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
                     </div>
                     <TextError text={error} />
                     <BaseButton type='submit' className="modal-save-btn"
-                        text={loading ? 'Добавление...' : 'Добавить'} />
+                        text={loading ? 'Создание...' : 'Создать'} />
                 </form>
             } className="subarea-add-modal" />)
 }

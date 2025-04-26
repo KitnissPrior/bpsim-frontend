@@ -35,7 +35,7 @@ export const ItemsBar = (props: IProps) => {
                     <IconButton iconPath={SubAreaCreate} iconClassName="icon"
                         onClick={props.onCreateSubAreaModal} placeholder="Создать ПО (предметную область)" />
                     <div className="items-bar-divider" />
-                    <IconButton iconPath={Play} disabled={!nodes} iconClassName="icon"
+                    <IconButton iconPath={Play} disabled={nodes.length === 0} iconClassName="icon"
                         onClick={props.onStart} placeholder="Старт" />
                     <div className="items-bar-divider" />
                     <IconButton iconPath={Coursor} disabled={!currentModel} iconClassName="icon" placeholder="Курсор" />

@@ -6,7 +6,7 @@ export interface ITextInputProps {
     defaultValue?: string
     disabled?: boolean
     containerClassName?: string
-    placeholder: string
+    placeholder?: string
     type: string
     id: string
     error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined
