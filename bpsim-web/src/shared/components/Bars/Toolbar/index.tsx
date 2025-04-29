@@ -22,8 +22,6 @@ export const Toolbar = (props: IProps) => {
     const navigate = useNavigate();
 
     const currentModel = useSelector((state: any) => state.model.current);
-    const tableForExport = useSelector((state: any) => state.chart.tableForExport);
-    const nodes = useSelector((state: any) => state.node.bpsimItems);
 
     const toolbarItems: DropdownProps[] = [
         {
@@ -59,22 +57,6 @@ export const Toolbar = (props: IProps) => {
                 { label: "Удалить модель", onClick: props.onModelDelete, disabled: true },
             ]
         },
-        // {
-        //     title: "Проигрывание",
-        //     data1: [
-        //         { label: "Старт", onClick: props.onStartSimulation, disabled: !nodes },
-        //     ],
-        //     data2: [
-        //         {
-        //             label: "Скачать файл статистики .csv", onClick: () => { },
-        //             disabled: tableForExport.length === 0
-        //         },
-        //         {
-        //             label: "Скачать файл статистики .xlsx", onClick: () => { },
-        //             disabled: tableForExport.length === 0
-        //         },
-        //     ]
-        // },
     ]
 
     return (
