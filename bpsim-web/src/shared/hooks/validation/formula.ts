@@ -28,5 +28,4 @@ export const formulaSchema = yup.object().shape({
             'Формат:[переменная]:=[переменная] [оператор] [число]')
 
 
-
 });

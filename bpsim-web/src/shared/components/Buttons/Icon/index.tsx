@@ -26,7 +26,7 @@ export const IconButton = ({ placeholder, onClick, className, ...props }: IProps
 
     return (
         <Tooltip text={placeholder}>
-            <button className={`icon-button ${className}`}
+            <button className={`icon-button ${className}`} name={placeholder}
                 onClick={props.disabled ? undefined : onClick}
                 type={props.type ? props.type : 'button'} disabled={props.disabled}>
                 <Icon />

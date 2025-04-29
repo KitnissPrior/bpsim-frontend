@@ -55,7 +55,7 @@ const SubjectAreaAddModal = ({ onClose, onSubjectAdd, ...props }: IProps) => {
                 <form className="px-4 py-3 creation-subject-area-form" onSubmit={handleSubmit(onSubjectAreaSubmit)} onFocus={onFormFocus}>
                     <div className="modal-row">
                         <div className="text--body-s modal-field-name">Наименование ПО</div>
-                        <TextInput placeholder={"Добавьте название"} type="text" id={"name"}
+                        <TextInput placeholder={"Название"} type="text" id={"name"}
                             register={{
                                 ...register('name', {
                                     required: "Введите название ПО"

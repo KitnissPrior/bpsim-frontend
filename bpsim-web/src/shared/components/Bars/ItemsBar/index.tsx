@@ -38,7 +38,7 @@ export const ItemsBar = (props: IProps) => {
                     <IconButton iconPath={Play} disabled={nodes.length === 0} iconClassName="icon"
                         onClick={props.onStart} placeholder="Старт" />
                     <div className="items-bar-divider" />
-                    <IconButton iconPath={Coursor} disabled={!currentModel} iconClassName="icon" placeholder="Курсор" />
+                    {/* <IconButton iconPath={Coursor} disabled={!currentModel} iconClassName="icon" placeholder="Курсор" /> */}
                     <IconButton iconPath={NodeAdd} disabled={!currentModel} iconClassName="icon"
                         onClick={props.onNodeAddClick} placeholder="Узел" />
                     {/* <IconButton iconPath={Agent} iconClassName="icon" placeholder="Агент" />
