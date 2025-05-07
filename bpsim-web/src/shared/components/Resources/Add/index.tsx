@@ -137,7 +137,7 @@ const ResourceAddForm = ({ onClose, onResourceSave, ...props }: IProps) => {
                     </div>
                     <TextError text={error} />
                     <BaseButton type='submit' className="modal-save-btn"
-                        text={loading ? 'Добавление...' : 'Добавить'} />
+                        text={loading ? 'Создание...' : 'Создать'} />
                 </form>
             } className="resource-add-modal" />)
 }

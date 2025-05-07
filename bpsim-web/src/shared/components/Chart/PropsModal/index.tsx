@@ -85,7 +85,8 @@ export const ChartPropsModal = ({ isOpen, onClose, ...props }: IProps) => {
                 </div> */}
                 <div className="row-block chart-props-modal-row ">
                     <div className="text--body-s">Подпись по оси Y</div>
-                    <TextInput placeholder={""} type={"text"} id={"y-legend"}
+                    <TextInput placeholder={chartObjectName} type={"text"} id={"y-legend"}
+                        defaultValue={chartObjectName}
                         register={{
                             ...register('y_legend', {
                                 required: "Введите подпись по оси Y",

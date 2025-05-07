@@ -37,6 +37,7 @@ import { setMeasures } from "../../store/reducers/measureReducer"
 import { setChartValues } from "../../store/reducers/chartReducer"
 import { ChartData } from "../../types/chart"
 import { setSimulationValues } from "../../store/reducers/simulationReducer"
+import { setBpsimItems } from "../../store/reducers/nodeReducer"
 
 interface INode {
     key: string | number;
@@ -94,6 +95,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             if (errors.length == 0) {
                 toast.success('Данные сохранены')
                 dispatch(setProjectSaved());
+                dispatch(setBpsimItems(bpsimNodes))
             }
             else
                 toast.error('Данные сохранить не удалось');
@@ -162,6 +164,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
             setNodesCount(data.length);
             setBpsimNodes(data);
             setNodes(formatBpsimToGraphicNodes(data, setBpsimNodes));
+            dispatch(setBpsimItems(data))
             getRelations(modelId).then((response: any) => {
                 const data = response.data;
                 setRelations(data);
@@ -211,6 +214,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
 
                             const nodes = response.data;
                             setBpsimNodes(nodes);
+                            dispatch(setBpsimItems(nodes));
                             setNodes(formatBpsimToGraphicNodes(nodes, setBpsimNodes));
                         })
 
@@ -239,6 +243,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
                 const createdNode = response.data;
                 setBpsimNodes(prevNodes => [...prevNodes, createdNode]);
                 setNodesCount(prev => prev + 1);
+                dispatch(setBpsimItems([...bpsimNodes, createdNode]));
             })
     }
 
@@ -252,6 +257,7 @@ const WorkFieldScreen = ({ isCreateSubAreaModal = false, isOpenSubAreaModal = fa
         if (errors.length == 0) {
             toast.success('Данные сохранены')
             dispatch(setProjectSaved());
+            dispatch(setBpsimItems(bpsimNodes));
         }
         else
             toast.error('Данные сохранить не удалось');

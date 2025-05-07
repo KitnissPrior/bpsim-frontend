@@ -54,19 +54,20 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
             content={
                 <form className="px-4 py-3 creation-model-form" onSubmit={handleSubmit(onModelSubmit)}
                     onFocus={() => setError('')}>
-                    <div className="row-block">
-                        <div className="text--body-s">Наименование модели</div>
+                    <div className="modal-row">
+                        <div className="text--body-s modal-field-name">Наименование модели</div>
                         <TextInput placeholder={"Наименование"} type="text" id={"name"}
                             register={{
                                 ...register('name', {
                                     required: "Введите наименование модели",
                                     value: " ",
+                                    minLength: { value: 3, message: "Минимальная длина 3 символа" },
                                     maxLength: { value: 50, message: "Максимальная длина 50 символов" }
                                 })
                             }} error={errors.name} />
                     </div>
-                    <div className="row-block">
-                        <div className="text--body-s">Описание модели</div>
+                    <div className="modal-row">
+                        <div className="text--body-s modal-field-name">Описание модели</div>
                         <TextInput placeholder="Описание" type="text" id="description"
                             register={{
                                 ...register('description', {
@@ -77,9 +78,9 @@ const ModelAddForm = ({ onClose, onModelAdd: onSubjectAdd, ...props }: IProps) =
                             error={errors.description} />
                     </div>
                     <TextError text={error} />
-                    <BaseButton type='submit' text={loading ? 'Добавление...' : 'Добавить'}
+                    <BaseButton type='submit' text={loading ? 'Создание...' : 'Создать'}
                         className="modal-save-btn" />
-                </form>
+                </form >
             } className="model-add-form" />)
 }
 
