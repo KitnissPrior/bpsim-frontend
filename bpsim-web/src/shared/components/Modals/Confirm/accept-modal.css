@@ -3,7 +3,7 @@
     padding-top: 150px;
 }
 
-.mod-content{
+.mod-content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -13,17 +13,17 @@
     justify-content: center;
 }
 
-.mod-text{
+.mod-text {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0px;
+    padding: 20px 0px 20px 10px;
     width: 400px;
     text-align: center;
 }
 
-.mod-footer{    
+.mod-footer {
     display: flex;
     float: right;
     padding: 10px 20px 20px 20px;
@@ -31,7 +31,7 @@
     gap: 20px;
 }
 
-.mod-footer button{
+.mod-footer button {
     width: 210px;
     height: 40px;
 }

@@ -68,6 +68,7 @@ export const Toolbar = (props: IProps) => {
                 <PlayDropDownButton onStartClick={props.onStartSimulation} />
                 <BaseButton text="Сохранить" disabled={!currentModel}
                     onClick={props.onSaveClick} className="toolbar-save-btn"
+                    theme='grey-secondary'
                     iconPath={SaveIcon} />
             </div>
         </>

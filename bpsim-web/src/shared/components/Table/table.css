@@ -1,6 +1,10 @@
 .table-container {
     border-radius: 10px !important;
-    border: 1px solid var(--grey-light);
+    border: 1px solid var(--grey-medium-light-2);
+}
+
+.filled-cell {
+    background-color: var(--grey-light) !important;
 }
 
 .table-data {

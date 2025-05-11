@@ -83,7 +83,7 @@ export const NodePropsModal = ({ isOpen, node_id, details, onClose }: IProps) =>
                             data-bs-dismiss="modal" aria-label="Закрыть" onClick={onCheckUnsavedResources} />
                     </div>
                     <div className="modal-body node-props-modal-body">
-                        <div className="row-block">
+                        <div className="row-block node-props-tabs-row">
                             <NavigationTab variant={NodePropsTab.Main} label="Основное" activeTab={activeTab}
                                 handleTabChange={() => { dispatch(setActiveNodeTab(NodePropsTab.Main)) }} />
                             <NavigationTab variant={NodePropsTab.Resources} label="Ресурсы" activeTab={activeTab}

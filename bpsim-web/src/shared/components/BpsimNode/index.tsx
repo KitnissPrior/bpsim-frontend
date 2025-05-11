@@ -140,7 +140,7 @@ export const BpsimNode = ({ id, data }: IProps) => {
             setContextMenuVisible(false)
           }}
           onOk={onDelete}
-          content={"Вы уверены что хотите удалить узел?"}
+          content={"Вы уверены, что хотите удалить узел?"}
           okText="Удалить" />}
       {contextMenuVisible &&
         <ContextMenu

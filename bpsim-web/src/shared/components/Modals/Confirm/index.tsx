@@ -28,7 +28,7 @@ const ConfirmModal: React.FC<ModalProps> = (
                         {content}
                     </div>
                     <div className="mod-footer">
-                        <BaseButton text={cancelText ? cancelText : "Отмена"} onClick={onCancel} />
+                        <BaseButton text={cancelText ? cancelText : "Отмена"} onClick={onCancel} theme='white-secondary' />
                         <BaseButton text={okText} onClick={onOk} />
                     </div>
                 </div>
