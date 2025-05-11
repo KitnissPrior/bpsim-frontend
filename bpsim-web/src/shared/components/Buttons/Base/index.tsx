@@ -5,6 +5,10 @@ interface IProps {
     text: string,
     className?: string,
     onClick?: () => void
+    theme?:
+    | 'blue-primary'
+    | 'grey-secondary'
+    | 'white-secondary'
     type?:
     | 'submit'
     | 'button'
@@ -28,7 +32,9 @@ export const BaseButton = ({ text, onClick, className, ...props }: IProps) => {
 
     return (
         <button disabled={props.disabled}
-            className={`base-button ${className} hoverable`} onClick={onClick} type={props.type ? props.type : 'button'}>
+            className={`base-button ${className} hoverable`} onClick={onClick}
+            type={props.type ? props.type : 'button'}
+            data-theme={props.theme ? props.theme : 'blue-primary'}>
             {iconPath ? <IconPlusText /> : text}
         </button>
     )

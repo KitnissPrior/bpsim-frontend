@@ -16,9 +16,9 @@ export const Table = ({ data, headers, onItemClick, type, onAdd }: IProps) => {
         <table className={`table table-bordered table-container ${type == TableType.Select ? "table-hover" : ""}`}>
             <thead>
                 <tr >
-                    <th scope="col"></th>
+                    <th scope="col" className="filled-cell"></th>
                     {headers?.map((header, index) =>
-                        <th scope="col" className="table-data" key={index}>{header}</th>
+                        <th scope="col" className="table-data filled-cell" key={index}>{header}</th>
                     )}
                 </tr>
             </thead>
@@ -26,7 +26,7 @@ export const Table = ({ data, headers, onItemClick, type, onAdd }: IProps) => {
                 {data.map((item, index) => {
                     return (
                         <tr onClick={() => onItemClick && onItemClick(item)} key={"row" + index}>
-                            <th scope="row" className="table-data">{insertNull(index)}</th>
+                            <th scope="row" className="table-data filled-cell">{insertNull(index)}</th>
                             {Object.values(item).map((value: any, index: any) => {
                                 return (
                                     <td className="table-data" key={index}>{value}</td>
@@ -36,7 +36,7 @@ export const Table = ({ data, headers, onItemClick, type, onAdd }: IProps) => {
                     )
                 })}
                 {type == TableType.SelectAdd && <tr>
-                    <th scope="row" className="table-data">{insertNull(data.length)}</th>
+                    <th scope="row" className="table-data filled-cell">{insertNull(data.length)}</th>
                     <td></td>
                     <td onClick={onAdd} className="table-add-cell table-data">+</td>
                 </tr>}

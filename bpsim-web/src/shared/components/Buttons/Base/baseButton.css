@@ -1,18 +1,58 @@
 .base-button {
     margin-top: 5px;
-    padding: 7px 15px 10px 15px;
+    padding: 7px 15px 7px 15px;
     height: 40px;
-    border: 1px solid black;
-    background-color: var(--grey-light);
+    border: none;
+    color: white;
     align-items: center;
     justify-content: center;
     text-align: center;
     border-radius: 10px;
     cursor: pointer;
     gap: 10px;
+    min-width: 150px;
 }
 
 .btn-icon {
     padding: 10px 10px 10px 0px;
     margin-top: -2px;
+}
+
+.base-button[data-theme='blue-primary'] {
+    background-color: var(--blue);
+}
+
+.base-button[data-theme='blue-primary']:hover {
+    background-color: var(--blue-light);
+    color: white;
+}
+
+.base-button[data-theme='white-secondary'] {
+    background-color: white;
+    color: var(--blue);
+    border: 1px solid var(--blue);
+}
+
+.base-button[data-theme='white-secondary']:hover {
+    color: var(--blue-light);
+    border: 1px solid var(--blue-light);
+}
+
+.base-button[data-theme='grey-secondary'] {
+    background-color: var(--grey-light);
+    color: var(--green);
+}
+
+.base-button[data-theme='grey-secondary']:hover {
+    color: var(--green);
+}
+
+@media (prefers-color-scheme: dark) {
+    .base-button[data-theme='blue-primary']:hover {
+        color: white;
+    }
+
+    .base-button[data-theme='grey-secondary']:hover {
+        color: var(--green);
+    }
 }
