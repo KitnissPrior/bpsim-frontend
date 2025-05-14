@@ -21,6 +21,12 @@
     word-wrap: break-word;
 }
 
+@media (prefers-color-scheme: dark) {
+    .node-text-field:enabled {
+        color: var(--black);
+    }
+}
+
 .node-text-container {
     margin-top: -10px;
     width: fit-content;

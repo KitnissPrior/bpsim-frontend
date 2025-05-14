@@ -6,7 +6,7 @@
 .node-props-modal-header {
     display: flex;
     flex-direction: row;
-    background-color: var(--grey-medium);
+    background-color: var(--blue);
     color: white;
 }
 
@@ -25,4 +25,8 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+}
+
+.node-props-tabs-row {
+    padding: 0px;
 }

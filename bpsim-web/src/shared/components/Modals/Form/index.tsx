@@ -1,4 +1,4 @@
-import "./creationModal.css"
+import "./formModal.css"
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 
@@ -19,7 +19,7 @@ const FormModal: React.FC<IProps> = (
     return (
         <Modal show={isOpen} ref={modalRef} className={className ? className : ""}
             keyboard={false} backdrop='static' enforceFocus={false}>
-            <div className="modal-header node-props-modal-header">
+            <div className="modal-header form-modal-header">
                 <div className="modal-title node-props-title">{title}</div>
                 <button type="button" className="btn-close"
                     data-bs-dismiss="modal" aria-label="Закрыть" onClick={onClose} />
