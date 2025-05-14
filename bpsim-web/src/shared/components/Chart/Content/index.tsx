@@ -16,21 +16,16 @@ interface IProps {
 }
 
 export const ChartContent = ({ data }: IProps) => {
-    const xLegend = useSelector((state: any) => state.chart?.currentXLegend ?? 'X Axis');
     const yLegend = useSelector((state: any) => state.chart?.currentYLegend ?? 'Y Axis');
 
-    const data2 = [
+    const defaultData = [
         {
             ['time']: 0,
             [yLegend]: "ресурс1",
-        },
-        {
-            ['time']: 1,
-            [yLegend]: "ресурс1",
-        },
+        }
     ]
 
-    const [values, setValues] = useState<any>(data2)
+    const [values, setValues] = useState<any>(defaultData)
 
     useEffect(() => {
         if (data?.length) {

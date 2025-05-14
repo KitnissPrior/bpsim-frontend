@@ -1,11 +1,5 @@
 import { Workbook } from 'exceljs';
 import { saveAs } from 'file-saver';
-import { type } from 'node:os';
-
-interface Data {
-  headers: [];
-  data: [];
-}
 
 export const exportToExcel = (data: [][]) => {
   const workbook = new Workbook();
