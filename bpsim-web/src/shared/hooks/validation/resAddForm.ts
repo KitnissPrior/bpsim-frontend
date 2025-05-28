@@ -6,7 +6,7 @@ export const resourceSchema = yup.object().shape({
   name: yup.string()
     .required("Это поле не может быть пустым")
     .min(3, "Минимальная длина 3 символа")
-    .max(30, "Максимальная длина 30 символов"),
+    .max(50, "Максимальная длина 50 символов"),
   current_value: yup.number()
     .required("Это поле не может быть пустым"),
   // measure_id: yup.string()
