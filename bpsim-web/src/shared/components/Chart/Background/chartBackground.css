@@ -12,6 +12,7 @@
 .chart-name-input {
     text-align: center;
     border: none;
+    width: 500px !important;
 }
 
 .chart-name-input:hover,
