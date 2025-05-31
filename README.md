@@ -29,8 +29,6 @@
 ├── tsconfig.app.json - настройки компиляции проекта 
 ├── tsconfig.json - конфигурация проекта
 ├── vite.config.ts - конфигурация Vite
-├── tests/ - файлы для функционального тестирования
 ├── package.json - список зависимостей проекта
-├── playwright.config.ts - конфигурация Playwright, библиотеки для тестирования 
 └── README.md
 ```
